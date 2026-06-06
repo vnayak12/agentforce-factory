@@ -1,0 +1,11 @@
+{
+  "id": "staples-product-advisor",
+  "type": "ae",
+  "customer": "Staples",
+  "website": "staples.com",
+  "aeName": "Vandana Nayak",
+  "archetype": "Customer Service Agent (Pre & Post-Sales, Orders & Returns)",
+  "archetypeKey": "product-advisor",
+  "industry": "Retail",
+  "createdAt": "2026-06-06T22:00:00.000Z"
+}
