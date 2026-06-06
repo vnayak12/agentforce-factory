@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentforce POV</title>
+<script src="https://assets.meshmesh.io/system/tailwindcss-browser-4.js"></script>
+<style type="text/tailwindcss">
+@theme {
+  --color-sf-blue: #032D60;
+  --color-sf-light: #1B96FF;
+  --color-sf-accent: #0176D3;
+  --color-sf-purple: #5A52B5;
+  --color-sf-bg: #F3F3F8;
+  --color-sf-muted: #706E6B;
+  --color-sf-success: #2E844A;
+  --color-sf-warning: #FE9339;
+}
+</style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+* { font-family: 'Inter', sans-serif; }
+.fade-in { animation: fadeIn 0.4s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.tab-active { border-bottom: 3px solid #0176D3; color: #032D60; }
+.tab-inactive { color: #706E6B; border-bottom: 3px solid transparent; }
+.tab-inactive:hover { color: #032D60; }
+</style>
+</head>
+<body class="bg-sf-bg min-h-screen">
+
+<!-- Loading State -->
+<div id="loading" class="flex items-center justify-center min-h-screen">
+  <div class="text-center">
+    <div class="w-16 h-16 border-4 border-sf-accent border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+    <p class="text-sf-muted text-lg">Loading POV...</p>
+  </div>
+</div>
+
+<!-- Error State -->
+<div id="error" class="hidden flex items-center justify-center min-h-screen">
+  <div class="text-center max-w-md">
+    <div class="text-6xl mb-4">🔍</div>
+    <h1 class="text-2xl font-bold text-sf-blue mb-2">POV Not Found</h1>
+    <p class="text-sf-muted mb-6">This POV may have been removed or the link is incorrect.</p>
+    <a href="index.html" class="inline-block bg-sf-accent text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition">← Back to POV Studio</a>
+  </div>
+</div>
+
+<!-- POV Content -->
+<div id="pov-content" class="hidden fade-in">
+
+  <!-- Header Bar -->
+  <div class="bg-sf-blue text-white">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="text-white/60 hover:text-white text-sm transition">← POV Studio</a>
+        <span class="text-white/30">|</span>
+        <span class="text-sm font-medium" id="header-label">Loading...</span>
+      </div>
+      <div class="text-sm text-blue-200">Powered by Salesforce Agentforce</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="bg-white border-b sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-6 flex gap-8">
+      <button onclick="switchTab('pov')" id="tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">POV</button>
+      <button onclick="switchTab('demo')" id="tab-demo" class="py-4 px-2 text-sm tab-inactive cursor-pointer">Live Demo</button>
+    </div>
+  </div>
+
+  <!-- POV Tab Content -->
+  <div id="content-pov" class="max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Branded Header -->
+    <div id="pov-hero" class="bg-gradient-to-r from-red-700 to-red-900 rounded-2xl p-10 text-white mb-8">
+      <div class="flex justify-between items-start">
+        <div>
+          <div class="text-sm font-medium opacity-80 mb-2">AGENTFORCE POV</div>
+          <h1 class="text-4xl font-black mb-3" id="pov-customer-name">Customer</h1>
+          <p class="text-xl opacity-80" id="pov-archetype-label">Agent · Powered by Headless 360</p>
+        </div>
+        <div class="text-6xl opacity-30" id="pov-emoji">🤖</div>
+      </div>
+    </div>
+
+    <!-- What is Headless 360 -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <h2 class="text-2xl font-bold text-sf-blue mb-4">What is Headless 360?</h2>
+      <div class="bg-blue-50 rounded-xl p-6 text-center">
+        <p class="text-xl text-sf-blue leading-relaxed">Data, business logic, orchestration, and engagement are <strong class="text-sf-accent">exposed as APIs, MCPs, Skills, Script</strong>, so they can be accessed and activated from any surface or agent effectively.</p>
+      </div>
+    </div>
+
+    <!-- Architecture -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <h2 class="text-2xl font-bold text-sf-blue mb-6">Agentic Enterprise Architecture</h2>
+      <div class="space-y-4">
+        <div class="flex items-center gap-4 bg-blue-50 rounded-xl p-5">
+          <div class="bg-sf-blue text-white px-4 py-2 rounded-lg font-bold text-sm min-w-[140px] text-center">Engagement</div>
+          <div class="flex-1">
+            <div class="font-semibold text-sf-blue">Slack</div>
+            <div class="text-sm text-sf-muted">Slackbot · Canvas · Enterprise Search · Messaging & Huddles · Tableau Viz & Data Q&A</div>
+          </div>
+          <div class="text-sm text-sf-accent font-medium">Any workspace</div>
+        </div>
+        <div class="flex items-center gap-4 bg-purple-50 rounded-xl p-5">
+          <div class="bg-sf-purple text-white px-4 py-2 rounded-lg font-bold text-sm min-w-[140px] text-center">Agency</div>
+          <div class="flex-1">
+            <div class="font-semibold text-sf-blue">Agentforce Customer & Employee Agents</div>
+            <div class="text-sm text-sf-muted">Voice, Web, Mobile & Messaging · Agent Script · Builder · Observability · Orchestration · Agent Fabric</div>
+          </div>
+          <div class="text-sm text-sf-accent font-medium">Any agent</div>
+        </div>
+        <div class="flex items-center gap-4 bg-green-50 rounded-xl p-5">
+          <div class="bg-sf-success text-white px-4 py-2 rounded-lg font-bold text-sm min-w-[140px] text-center">Work</div>
+          <div class="flex-1">
+            <div class="font-semibold text-sf-blue">Customer 360</div>
+            <div class="text-sm text-sf-muted">Sales · Service · Field Service · Commerce · Marketing · Supply Chain · Platform</div>
+          </div>
+          <div class="text-sm text-sf-accent font-medium">Any app</div>
+        </div>
+        <div class="flex items-center gap-4 bg-orange-50 rounded-xl p-5">
+          <div class="bg-sf-warning text-white px-4 py-2 rounded-lg font-bold text-sm min-w-[140px] text-center">Context</div>
+          <div class="flex-1">
+            <div class="font-semibold text-sf-blue">Data 360</div>
+            <div class="text-sm text-sf-muted">CDP · Federation · MuleSoft · Informatica · Tableau · Structured & Unstructured · Zero Copy · Real-time</div>
+          </div>
+          <div class="text-sm text-sf-accent font-medium">Any data lake</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why Agentforce is Different -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <h2 class="text-2xl font-bold text-sf-blue mb-6">Why Agentforce is Different</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="bg-blue-50 rounded-xl p-6 border-l-4 border-sf-accent">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-2xl">🔍</span>
+            <h3 class="font-bold text-sf-blue text-lg">Full Observability</h3>
+          </div>
+          <div class="text-sm text-sf-muted">Complete visibility into agent reasoning, actions taken, and escalation paths. Know exactly what your agent is doing and why — in real time.</div>
+        </div>
+        <div class="bg-green-50 rounded-xl p-6 border-l-4 border-sf-success">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-2xl">⚡</span>
+            <h3 class="font-bold text-sf-blue text-lg">Ease of Use</h3>
+          </div>
+          <div class="text-sm text-sf-muted">Business users configure agents with natural language instructions — no code required. Agent Script and Builder make setup intuitive and fast.</div>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-6 border-l-4 border-sf-purple">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-2xl">🌐</span>
+            <h3 class="font-bold text-sf-blue text-lg">Self-Service Everywhere</h3>
+          </div>
+          <div class="text-sm text-sf-muted">Deploy agents to any channel — web, mobile, Slack, Teams, WhatsApp, voice. Meet customers where they already are.</div>
+        </div>
+        <div class="bg-orange-50 rounded-xl p-6 border-l-4 border-sf-warning">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-2xl">👥</span>
+            <h3 class="font-bold text-sf-blue text-lg">Business User Configurable</h3>
+          </div>
+          <div class="text-sm text-sf-muted">Admins configure with context via Metadata Grounding — the agent understands your business without a single line of code.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Way to Build -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <h2 class="text-2xl font-bold text-sf-blue mb-6">A New Way to Build with Skills, MCPs, Metadata</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-blue-50 rounded-xl p-6 text-center">
+          <div class="text-3xl mb-3">👨‍💻</div>
+          <h3 class="font-bold text-sf-blue mb-1">Developers</h3>
+          <div class="text-sf-accent font-semibold mb-2">Ship in days</div>
+          <div class="text-sm text-sf-muted">Pre-built Agentic Skills let developers focus on behavior, not infrastructure.</div>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-6 text-center">
+          <div class="text-3xl mb-3">🏗️</div>
+          <h3 class="font-bold text-sf-blue mb-1">Architects</h3>
+          <div class="text-sf-purple font-semibold mb-2">Orchestrate easily</div>
+          <div class="text-sm text-sf-muted">API & MCP Servers turn Salesforce into an engine that plugs into any tool or IDE.</div>
+        </div>
+        <div class="bg-green-50 rounded-xl p-6 text-center">
+          <div class="text-3xl mb-3">⚙️</div>
+          <h3 class="font-bold text-sf-blue mb-1">Admins</h3>
+          <div class="text-sf-success font-semibold mb-2">Configure with context</div>
+          <div class="text-sm text-sf-muted">Metadata Grounding understands your business without a single line of code.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agentforce for Retail -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <h2 class="text-2xl font-bold text-sf-blue mb-2">Agentforce for Retail</h2>
+      <p class="text-sf-muted mb-6">Unleash digital labor to grow revenue and relationships with agent-first retail</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-blue-50 rounded-xl p-6 border-l-4 border-sf-accent">
+          <div class="text-3xl mb-3">🎧</div>
+          <h3 class="font-bold text-sf-blue mb-1">Customer Service Agent</h3>
+          <div class="text-sf-accent font-semibold text-sm mb-2">Pre & Post-Sales · Orders & Returns</div>
+          <div class="text-sm text-sf-muted">Resolves inquiries 24/7 across every channel. Handles order status, returns, exchanges, and shipping — with smart escalation to human agents when needed.</div>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-6 border-l-4 border-sf-purple">
+          <div class="text-3xl mb-3">👗</div>
+          <h3 class="font-bold text-sf-blue mb-1">Personal Shopper Agent</h3>
+          <div class="text-sf-purple font-semibold text-sm mb-2">Styling · Recommendations · Commerce</div>
+          <div class="text-sm text-sf-muted">Provides personalized product recommendations and styling assistance through commerce sites or messaging apps like WhatsApp.</div>
+        </div>
+        <div class="bg-green-50 rounded-xl p-6 border-l-4 border-sf-success">
+          <div class="text-3xl mb-3">📣</div>
+          <h3 class="font-bold text-sf-blue mb-1">Campaign Agent</h3>
+          <div class="text-sf-success font-semibold text-sm mb-2">Audience · Content · Performance</div>
+          <div class="text-sm text-sf-muted">Automates marketing tasks including brief generation, audience segmentation, content creation, and campaign performance optimization.</div>
+        </div>
+      </div>
+      <div class="mt-5 bg-gray-50 rounded-xl p-4 flex items-center gap-3">
+        <span class="text-xl">🏗️</span>
+        <div class="text-sm text-sf-muted"><strong class="text-sf-blue">Built on trusted data:</strong> Domain-specific retail roles, inventory & order data models, product catalogs, loyalty systems, and pre-built actions — all grounded in the Einstein Trust Layer.</div>
+      </div>
+    </div>
+
+    <!-- Agentforce Coworker -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <h2 class="text-2xl font-bold text-sf-blue mb-6">Agentforce Coworker · Deeply Personalized</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-green-50 rounded-xl p-6">
+          <div class="bg-green-600 text-white text-sm font-bold px-4 py-1.5 rounded-full inline-block mb-4">Find</div>
+          <h3 class="font-bold text-sf-blue mb-2">Search everything, find anything</h3>
+          <div class="text-sm text-sf-muted space-y-1">
+            <div>Across all your data · 300+ sources</div>
+            <div>Intent driven · not just keywords</div>
+            <div>Context-aware results</div>
+          </div>
+          <div class="mt-4 bg-white rounded-lg p-3 text-sm italic text-sf-blue border">"Find the proposal we sent to <span class="coworker-name font-semibold">Customer</span> last quarter"</div>
+        </div>
+        <div class="bg-blue-50 rounded-xl p-6">
+          <div class="bg-sf-accent text-white text-sm font-bold px-4 py-1.5 rounded-full inline-block mb-4">Catch Up</div>
+          <h3 class="font-bold text-sf-blue mb-2">Stay current, without the scramble</h3>
+          <div class="text-sm text-sf-muted space-y-1">
+            <div>Multi-turn conversations</div>
+            <div>Change summaries</div>
+            <div>Proactive alerts</div>
+          </div>
+          <div class="mt-4 bg-white rounded-lg p-3 text-sm italic text-sf-blue border">"What happened to <span class="coworker-name font-semibold">Customer</span> while I was on vacation?"</div>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-6">
+          <div class="bg-sf-purple text-white text-sm font-bold px-4 py-1.5 rounded-full inline-block mb-4">Plan & Act</div>
+          <h3 class="font-bold text-sf-blue mb-2">Turn answers into action, instantly</h3>
+          <div class="text-sm text-sf-muted space-y-1">
+            <div>Activate workflows</div>
+            <div>Trigger flows and Agentforce</div>
+            <div>Works autonomously</div>
+          </div>
+          <div class="mt-4 bg-white rounded-lg p-3 text-sm italic text-sf-blue border">"Follow up with all stage 4 deals overdue by 14 days"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Use Case Section (dynamic per archetype) -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <h2 class="text-2xl font-bold text-sf-blue mb-4">Your Use Case: <span id="usecase-title">Agent</span></h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-sf-blue mb-3">What it does</h3>
+          <div id="usecase-capabilities" class="space-y-2 text-sm text-sf-muted"></div>
+        </div>
+        <div>
+          <h3 class="font-semibold text-sf-blue mb-3">Expected Impact</h3>
+          <div id="usecase-impact" class="grid grid-cols-2 gap-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next Steps -->
+    <div class="bg-sf-blue rounded-2xl p-8 text-white mb-6">
+      <h2 class="text-2xl font-bold mb-4">Next Steps</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white/10 rounded-xl p-5">
+          <div class="text-3xl mb-2">1️⃣</div>
+          <div class="font-semibold">Try the Live Demo</div>
+          <div class="text-sm text-blue-200 mt-1">Switch to the Live Demo tab and experience the agent firsthand</div>
+        </div>
+        <div class="bg-white/10 rounded-xl p-5">
+          <div class="text-3xl mb-2">2️⃣</div>
+          <div class="font-semibold">Discovery conversation</div>
+          <div class="text-sm text-blue-200 mt-1">Use the demo to drive deeper requirements gathering</div>
+        </div>
+        <div class="bg-white/10 rounded-xl p-5">
+          <div class="text-3xl mb-2">3️⃣</div>
+          <div class="font-semibold">Bring in the team</div>
+          <div class="text-sm text-blue-200 mt-1">Contact Vandana Nayak for a full architecture deep-dive</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Demo Tab Content -->
+  <div id="content-demo" class="hidden max-w-7xl mx-auto px-6 py-8">
+    <div id="demo-container" class="rounded-2xl overflow-hidden shadow-xl">
+      <!-- Dynamic demo header -->
+      <div id="demo-header" class="bg-gradient-to-r from-sf-accent to-sf-blue p-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl" id="demo-icon">🤖</div>
+          <div>
+            <div class="text-white font-bold text-lg" id="demo-brand">Customer</div>
+            <div class="text-blue-200 text-sm" id="demo-subtitle">Agent Assistant</div>
+          </div>
+        </div>
+        <div class="text-blue-200 text-sm">Powered by Agentforce</div>
+      </div>
+      <!-- Chat area — will be replaced by Embedded Service in Phase 2 -->
+      <div class="bg-white">
+        <div id="demo-chat" class="p-6 space-y-4 min-h-[400px]">
+          <!-- Messages rendered dynamically -->
+        </div>
+        <!-- Input -->
+        <div class="border-t p-4 flex gap-3">
+          <input type="text" id="demo-input" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2 text-sm focus:border-sf-accent focus:ring-1 focus:ring-sf-accent outline-none" onkeydown="if(event.key==='Enter')sendDemoMessage()">
+          <button onclick="sendDemoMessage()" class="bg-sf-accent text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition cursor-pointer">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Powered by notice -->
+    <div class="text-center mt-6 text-sm text-sf-muted">
+      This is an interactive demo powered by Agentforce. <a href="index.html" class="text-sf-accent hover:underline">Build your own →</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="bg-sf-blue text-white py-6 mt-8">
+    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <div><span class="font-semibold">Questions?</span> Contact <strong>Vandana Nayak</strong> · Field CTO</div>
+      <div class="text-sm text-blue-200">Powered by Salesforce Agentforce</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Archetype Configurations ───
+const ARCHETYPES = {
+  'product-advisor': {
+    label: 'Customer Service Agent',
+    subtitle: 'Pre & Post-Sales · Orders & Returns · Store Info',
+    emoji: '🎧',
+    gradient: 'from-blue-600 to-blue-900',
+    capabilities: [
+      'Real-time order status lookup across all channels',
+      'Automated returns and exchange initiation',
+      'Store locator with hours and availability',
+      'Proactive shipping delay notifications',
+      'Smart escalation to human agents when needed'
+    ],
+    impact: [
+      { value: '40%', label: 'Reduction in case volume', color: 'blue' },
+      { value: '3x', label: 'Faster resolution time', color: 'green' },
+      { value: '24/7', label: 'Always-on availability', color: 'purple' },
+      { value: '90%', label: 'Customer satisfaction', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hi there! 👋 I'm your ${name} Customer Service Assistant. I can help you with:`,
+    demoCapabilities: ['📦 Track your order status', '↩️ Start a return or exchange', '🏪 Find a store near you', '❓ Answer product questions'],
+    demoConversation: (name) => [
+      { role: 'user', text: `Where's my order #${name.substring(0,3).toUpperCase()}-48291?` },
+      { role: 'bot', text: `I found your order! Here's the status:`, card: { title: `Order #${name.substring(0,3).toUpperCase()}-48291`, status: 'In Transit', details: ['📍 Currently at: Memphis, TN Distribution Center', '📅 Estimated delivery: June 9, 2026', '📦 2 items in this shipment'] } },
+    ]
+  },
+  'loyalty': {
+    label: 'Loyalty & Rewards Agent',
+    subtitle: 'Points · Tiers · Redemption · Promotions',
+    emoji: '⭐',
+    gradient: 'from-amber-600 to-amber-900',
+    capabilities: [
+      'Real-time points balance and tier status lookup',
+      'Reward redemption and voucher management',
+      'Personalized promotion recommendations',
+      'Tier upgrade path guidance',
+      'Points earning history and projections'
+    ],
+    impact: [
+      { value: '25%', label: 'Increase in redemption rate', color: 'blue' },
+      { value: '2x', label: 'Member engagement', color: 'green' },
+      { value: '35%', label: 'Repeat purchase lift', color: 'purple' },
+      { value: '18%', label: 'Revenue from loyalty', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Welcome! ⭐ I'm your ${name} Rewards Assistant. I can help you with:`,
+    demoCapabilities: ['⭐ Check your points balance', '🎁 Redeem rewards', '📊 View your tier status', '🎯 Personalized offers'],
+    demoConversation: (name) => [
+      { role: 'user', text: 'How many points do I have?' },
+      { role: 'bot', text: 'Here\'s your rewards summary:', card: { title: 'Rewards Account', status: 'Gold Member', details: ['⭐ Points Balance: 12,450 pts', '🏆 Current Tier: Gold (next: Platinum at 15,000)', '🎁 Available Rewards: 3 active offers'] } },
+    ]
+  },
+  'sales-agent': {
+    label: 'Sales Agent',
+    subtitle: 'Lead Qualification · Product Recommendations · Deals',
+    emoji: '💰',
+    gradient: 'from-emerald-600 to-emerald-900',
+    capabilities: [
+      'Intelligent lead qualification and scoring',
+      'Personalized product recommendations',
+      'Real-time pricing and availability',
+      'Deal configuration and quote generation',
+      'Seamless handoff to sales representatives'
+    ],
+    impact: [
+      { value: '50%', label: 'Faster lead response', color: 'blue' },
+      { value: '30%', label: 'Increase in conversion', color: 'green' },
+      { value: '3x', label: 'More qualified leads', color: 'purple' },
+      { value: '20%', label: 'Revenue uplift', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 💰 I'm your ${name} Sales Assistant. I can help you with:`,
+    demoCapabilities: ['🔍 Find the right products', '💡 Get personalized recommendations', '📋 Request a quote', '📞 Connect with a specialist'],
+    demoConversation: (name) => [
+      { role: 'user', text: 'I need help finding the right solution for my business.' },
+      { role: 'bot', text: 'I\'d love to help! Let me understand your needs:', card: { title: 'Quick Assessment', status: 'In Progress', details: ['🏢 What industry are you in?', '👥 Team size: 1-10, 10-50, 50+?', '🎯 Primary goal: efficiency, growth, or cost reduction?'] } },
+    ]
+  },
+  'employee-ops': {
+    label: 'Employee Ops Agent',
+    subtitle: 'Inventory · Shifts · Internal Operations',
+    emoji: '👥',
+    gradient: 'from-violet-600 to-violet-900',
+    capabilities: [
+      'Real-time inventory level alerts and restocking',
+      'Shift scheduling and swap management',
+      'Internal knowledge base and policy lookup',
+      'Equipment and maintenance request handling',
+      'Cross-store communication and coordination'
+    ],
+    impact: [
+      { value: '60%', label: 'Fewer manual inquiries', color: 'blue' },
+      { value: '45%', label: 'Faster shift coverage', color: 'green' },
+      { value: '80%', label: 'Self-service resolution', color: 'purple' },
+      { value: '2x', label: 'Operational efficiency', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hi team! 👥 I'm your ${name} Employee Assistant. I can help with:`,
+    demoCapabilities: ['📦 Check inventory levels', '📅 View/swap shifts', '📋 Look up policies', '🔧 Submit maintenance requests'],
+    demoConversation: (name) => [
+      { role: 'user', text: 'What\'s the inventory status for running shoes?' },
+      { role: 'bot', text: 'Here\'s the current inventory snapshot:', card: { title: 'Inventory Alert', status: 'Low Stock', details: ['👟 Running Shoes — Size 10: 3 units (reorder triggered)', '👟 Running Shoes — Size 11: 12 units (OK)', '📦 Next shipment arriving: June 10, 2026'] } },
+    ]
+  },
+  'store-locator': {
+    label: 'Store Ops Agent',
+    subtitle: 'Store Operations · Locator · Hours · Inventory',
+    emoji: '🏪',
+    gradient: 'from-teal-600 to-teal-900',
+    capabilities: [
+      'Store location finder with real-time hours',
+      'In-store inventory availability by location',
+      'Store performance metrics and reporting',
+      'Customer traffic and conversion analytics',
+      'Cross-store inventory transfer management'
+    ],
+    impact: [
+      { value: '35%', label: 'Reduced store calls', color: 'blue' },
+      { value: '20%', label: 'Increase in foot traffic', color: 'green' },
+      { value: '15%', label: 'Better inventory turns', color: 'purple' },
+      { value: '95%', label: 'Store info accuracy', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 🏪 I'm your ${name} Store Operations Assistant. I can help with:`,
+    demoCapabilities: ['📍 Find nearest store', '🕐 Check store hours', '📦 Check in-store availability', '📊 View store metrics'],
+    demoConversation: (name) => [
+      { role: 'user', text: 'Is there a store near me with the new collection in stock?' },
+      { role: 'bot', text: 'I found 3 stores near you:', card: { title: 'Nearest Stores', status: 'In Stock', details: ['📍 Downtown — 0.8 mi · Open until 9 PM · ✅ In stock', '📍 Mall Location — 2.1 mi · Open until 10 PM · ✅ In stock', '📍 Outlet — 5.3 mi · Open until 8 PM · ⚠️ Limited sizes'] } },
+    ]
+  },
+  'order-returns': {
+    label: 'Order & Returns Agent',
+    subtitle: 'Order Tracking · Returns · Exchanges',
+    emoji: '📦',
+    gradient: 'from-red-700 to-red-900',
+    capabilities: [
+      'Real-time order status lookup across all channels',
+      'Automated returns and exchange initiation',
+      'Proactive shipping delay notifications',
+      'Smart escalation to human agents when needed',
+      'Integration with existing OMS and logistics'
+    ],
+    impact: [
+      { value: '40%', label: 'Reduction in case volume', color: 'blue' },
+      { value: '3x', label: 'Faster resolution time', color: 'green' },
+      { value: '24/7', label: 'Always-on availability', color: 'purple' },
+      { value: '90%', label: 'Customer satisfaction', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hi there! 👋 I'm your ${name} Order Assistant. I can help you with:`,
+    demoCapabilities: ['📦 Track your order status', '↩️ Start a return or exchange', '🚚 Check shipping updates', '❓ Answer product questions'],
+    demoConversation: (name) => [
+      { role: 'user', text: `Where is my order #${name.substring(0,3).toUpperCase()}-48291?` },
+      { role: 'bot', text: 'I found your order! Here\'s the status:', card: { title: `Order #${name.substring(0,3).toUpperCase()}-48291`, status: 'In Transit', details: ['📍 Currently at: Memphis, TN Distribution Center', '📅 Estimated delivery: June 9, 2026', '📦 2 items in this shipment'] } },
+    ]
+  }
+};
+
+// ─── Tab Switching ───
+function switchTab(tab) {
+  document.getElementById('tab-pov').className = tab === 'pov' ? 'py-4 px-2 text-sm font-semibold tab-active cursor-pointer' : 'py-4 px-2 text-sm tab-inactive cursor-pointer';
+  document.getElementById('tab-demo').className = tab === 'demo' ? 'py-4 px-2 text-sm font-semibold tab-active cursor-pointer' : 'py-4 px-2 text-sm tab-inactive cursor-pointer';
+  document.getElementById('content-pov').classList.toggle('hidden', tab !== 'pov');
+  document.getElementById('content-demo').classList.toggle('hidden', tab !== 'demo');
+  window.scrollTo(0, 0);
+}
+
+// ─── Render Demo Chat ───
+function renderDemoChat(config, customerName) {
+  const chat = document.getElementById('demo-chat');
+  let html = '';
+
+  // Bot greeting
+  html += `<div class="flex gap-3">
+    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
+      <p class="text-sm text-gray-800">${config.demoGreeting(customerName)}</p>
+      <div class="mt-2 space-y-1 text-sm text-gray-600">
+        ${config.demoCapabilities.map(c => `<div>${c}</div>`).join('')}
+      </div>
+      <p class="text-sm text-gray-800 mt-2">How can I help you today?</p>
+    </div>
+  </div>`;
+
+  // Conversation
+  config.demoConversation(customerName).forEach(msg => {
+    if (msg.role === 'user') {
+      html += `<div class="flex gap-3 justify-end">
+        <div class="bg-sf-accent text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-md">
+          <p class="text-sm">${msg.text}</p>
+        </div>
+      </div>`;
+    } else {
+      html += `<div class="flex gap-3">
+        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+        <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
+          <p class="text-sm text-gray-800">${msg.text}</p>`;
+      if (msg.card) {
+        const statusColor = msg.card.status === 'In Transit' || msg.card.status === 'In Stock' ? 'text-green-600' : msg.card.status === 'Low Stock' ? 'text-amber-600' : 'text-sf-accent';
+        html += `<div class="mt-3 bg-white rounded-lg p-3 border">
+            <div class="flex justify-between text-sm mb-1">
+              <span class="font-medium">${msg.card.title}</span>
+              <span class="${statusColor} font-medium">${msg.card.status}</span>
+            </div>
+            <div class="text-xs text-gray-500 space-y-1">
+              ${msg.card.details.map(d => `<div>${d}</div>`).join('')}
+            </div>
+          </div>`;
+      }
+      html += `<p class="text-sm text-gray-800 mt-2">Is there anything else I can help you with?</p>
+        </div>
+      </div>`;
+    }
+  });
+
+  chat.innerHTML = html;
+}
+
+// ─── Send Demo Message (interactive) ───
+function sendDemoMessage() {
+  const input = document.getElementById('demo-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+
+  const chat = document.getElementById('demo-chat');
+
+  // Add user message
+  chat.innerHTML += `<div class="flex gap-3 justify-end fade-in">
+    <div class="bg-sf-accent text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-md">
+      <p class="text-sm">${text}</p>
+    </div>
+  </div>`;
+
+  // Typing indicator
+  chat.innerHTML += `<div id="typing" class="flex gap-3 fade-in">
+    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
+      <div class="flex gap-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.1s"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.2s"></div></div>
+    </div>
+  </div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  // Simulate response after delay
+  setTimeout(() => {
+    const typing = document.getElementById('typing');
+    if (typing) typing.remove();
+    chat.innerHTML += `<div class="flex gap-3 fade-in">
+      <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+      <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
+        <p class="text-sm text-gray-800">Thanks for your question! In a full deployment, I'd be connected to your Salesforce data to give you real-time answers. Let me connect you with the team to set this up for your org.</p>
+        <p class="text-sm text-gray-800 mt-2">Would you like to <strong>schedule a deep-dive</strong> with our team?</p>
+      </div>
+    </div>`;
+    chat.scrollTop = chat.scrollHeight;
+  }, 1500);
+}
+
+// ─── Load POV ───
+async function loadPOV() {
+  const params = new URLSearchParams(window.location.search);
+  const povId = params.get('id');
+
+  if (!povId) {
+    showError();
+    return;
+  }
+
+  try {
+    const response = await fetch(`povs/${povId}.json`);
+    if (!response.ok) throw new Error('Not found');
+    const pov = await response.json();
+    renderPOV(pov);
+  } catch (err) {
+    // Try localStorage fallback
+    try {
+      const saved = JSON.parse(localStorage.getItem('agentforce-povs') || '[]');
+      const pov = saved.find(p => p.id === povId);
+      if (pov) {
+        renderPOV(pov);
+      } else {
+        showError();
+      }
+    } catch {
+      showError();
+    }
+  }
+}
+
+function renderPOV(pov) {
+  const config = ARCHETYPES[pov.archetypeKey] || ARCHETYPES['order-returns'];
+  const name = pov.customer || 'Customer';
+
+  // Update page title
+  document.title = `${name} — Agentforce POV`;
+
+  // Header bar
+  document.getElementById('header-label').textContent = `${name} · ${config.label}`;
+
+  // POV Hero
+  document.getElementById('pov-customer-name').textContent = name;
+  document.getElementById('pov-archetype-label').textContent = `${config.label} · Powered by Headless 360`;
+  document.getElementById('pov-emoji').textContent = config.emoji;
+  document.getElementById('pov-hero').className = `bg-gradient-to-r ${config.gradient} rounded-2xl p-10 text-white mb-8`;
+
+  // Coworker section names
+  document.querySelectorAll('.coworker-name').forEach(el => el.textContent = name);
+
+  // Use Case section
+  document.getElementById('usecase-title').textContent = config.label;
+  document.getElementById('usecase-capabilities').innerHTML = config.capabilities
+    .map(c => `<div class="flex gap-2"><span>✅</span> ${c}</div>`).join('');
+
+  const colorMap = { blue: 'bg-blue-50 text-sf-accent', green: 'bg-green-50 text-sf-success', purple: 'bg-purple-50 text-sf-purple', orange: 'bg-orange-50 text-sf-warning' };
+  document.getElementById('usecase-impact').innerHTML = config.impact
+    .map(i => `<div class="${colorMap[i.color].split(' ')[0]} rounded-xl p-4 text-center">
+      <div class="text-2xl font-black ${colorMap[i.color].split(' ')[1]}">${i.value}</div>
+      <div class="text-xs text-sf-muted">${i.label}</div>
+    </div>`).join('');
+
+  // Demo tab
+  document.getElementById('demo-brand').textContent = name;
+  document.getElementById('demo-subtitle').textContent = config.subtitle;
+  document.getElementById('demo-icon').textContent = config.emoji;
+  document.getElementById('demo-container').className = `rounded-2xl overflow-hidden shadow-xl`;
+  document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-6 flex items-center justify-between`;
+  renderDemoChat(config, name);
+
+  // Show content
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('pov-content').classList.remove('hidden');
+}
+
+function showError() {
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('error').classList.remove('hidden');
+}
+
+// ─── Init ───
+document.addEventListener('DOMContentLoaded', loadPOV);
+</script>
+</body>
+</html>

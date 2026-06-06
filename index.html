@@ -168,6 +168,18 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
     </div>
   </div>
 
+  <!-- Generated POVs Gallery (fetched from povs/index.json) -->
+  <div id="generated-povs-section" class="max-w-7xl mx-auto px-6 mb-16 hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-2xl font-bold text-sf-blue">Generated POVs</h2>
+        <span class="text-sm text-sf-muted" id="generated-povs-count"></span>
+      </div>
+      <p class="text-sf-muted mb-6">POVs created by AEs across the team — click to view or share</p>
+      <div id="generated-povs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </div>
+  </div>
+
   <!-- Subindustry Cards -->
   <div class="max-w-7xl mx-auto px-6 mb-16">
     <h2 class="text-2xl font-bold text-sf-blue mb-2">Choose a Subindustry</h2>
@@ -300,10 +312,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
               <input type="radio" name="archetype" value="store-locator" class="sr-only">
               <div class="flex items-start gap-3">
-                <span class="text-2xl">📍</span>
+                <span class="text-2xl">🏪</span>
                 <div>
-                  <div class="font-semibold text-sf-blue">Store Locator & Inventory</div>
-                  <div class="text-sm text-sf-muted">Product availability, store hours</div>
+                  <div class="font-semibold text-sf-blue">Store Ops Agent</div>
+                  <div class="text-sm text-sf-muted">Store operations, locator, hours, inventory</div>
                 </div>
               </div>
             </label>
@@ -1618,7 +1630,7 @@ function renderMyPOVs() {
     'Loyalty & Rewards Agent': '⭐',
     'Customer Service Agent (Pre & Post-Sales, Orders & Returns)': '🎧',
     'Sales Agent': '💰',
-    'Store Locator & Inventory Agent': '📍',
+    'Store Ops Agent': '🏪',
     'Employee Ops Agent': '👥'
   };
 
@@ -1691,17 +1703,16 @@ function loadSavedPOV(povId) {
   }
 }
 
-// Auto-push POV to GitHub as JSON
+// Auto-push POV to GitHub as JSON + update index
 async function pushPOVToGitHub(pov) {
-  // Get GitHub token from localStorage (user sets once)
   const token = localStorage.getItem('github-token');
-  if (!token) return; // Silent fail if no token configured
+  if (!token) return;
 
   const filename = `povs/${pov.id}.json`;
   const content = btoa(unescape(encodeURIComponent(JSON.stringify(pov, null, 2))));
 
   try {
-    // Check if file exists
+    // 1. Push individual POV file
     let sha = null;
     try {
       const existing = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filename}?ref=${GITHUB_BRANCH}`, {
@@ -1722,15 +1733,132 @@ async function pushPOVToGitHub(pov) {
 
     await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filename}`, {
       method: 'PUT',
-      headers: {
-        'Authorization': `token ${token}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
     console.log(`✅ POV saved to GitHub: ${filename}`);
+
+    // 2. Update povs/index.json with this entry
+    await updatePOVIndex(pov, token);
   } catch (err) {
     console.log('GitHub push skipped:', err.message);
+  }
+}
+
+// Update povs/index.json — fetch current, upsert entry, push back
+async function updatePOVIndex(pov, token) {
+  const indexFile = 'povs/index.json';
+  let index = [];
+  let indexSha = null;
+
+  try {
+    // Fetch current index
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${indexFile}?ref=${GITHUB_BRANCH}`, {
+      headers: { 'Authorization': `token ${token}` }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      indexSha = data.sha;
+      index = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g, '')))));
+    }
+  } catch {}
+
+  // Upsert: find by id and replace, or add new
+  const entry = {
+    id: pov.id,
+    customer: pov.customer,
+    archetype: pov.archetype,
+    archetypeKey: pov.archetypeKey,
+    industry: pov.industry || 'Retail',
+    aeName: pov.aeName || '',
+    type: pov.type,
+    createdAt: pov.createdAt
+  };
+  const existingIdx = index.findIndex(p => p.id === pov.id);
+  if (existingIdx >= 0) index[existingIdx] = entry; else index.unshift(entry);
+
+  const indexContent = btoa(unescape(encodeURIComponent(JSON.stringify(index, null, 2))));
+  const indexBody = {
+    message: `Update POV index: ${pov.customer}`,
+    content: indexContent,
+    branch: GITHUB_BRANCH
+  };
+  if (indexSha) indexBody.sha = indexSha;
+
+  await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${indexFile}`, {
+    method: 'PUT',
+    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(indexBody)
+  });
+  console.log('✅ POV index updated');
+
+  // Refresh the gallery
+  loadGeneratedPOVs();
+}
+
+// Fetch and render Generated POVs from povs/index.json
+async function loadGeneratedPOVs() {
+  const section = document.getElementById('generated-povs-section');
+  const grid = document.getElementById('generated-povs-grid');
+  const countEl = document.getElementById('generated-povs-count');
+
+  try {
+    // Try fetching from GitHub Pages first, fall back to local
+    let povs = [];
+    try {
+      const res = await fetch('povs/index.json');
+      if (res.ok) povs = await res.json();
+    } catch {}
+
+    if (!povs.length) { section.classList.add('hidden'); return; }
+    section.classList.remove('hidden');
+    countEl.textContent = `${povs.length} POV${povs.length !== 1 ? 's' : ''}`;
+
+    const archetypeEmojis = {
+      'Order & Returns Agent': '📦',
+      'Loyalty & Rewards Agent': '⭐',
+      'Customer Service Agent (Pre & Post-Sales, Orders & Returns)': '🎧',
+      'Sales Agent': '💰',
+      'Store Ops Agent': '🏪',
+      'Employee Ops Agent': '👥',
+      'Architecture POV': '🏗️'
+    };
+
+    const archetypeGradients = {
+      'order-returns': 'from-orange-600 to-amber-700',
+      'loyalty': 'from-purple-600 to-indigo-700',
+      'product-advisor': 'from-blue-600 to-cyan-700',
+      'sales-agent': 'from-emerald-600 to-teal-700',
+      'store-locator': 'from-rose-600 to-pink-700',
+      'employee-ops': 'from-slate-600 to-gray-700'
+    };
+
+    grid.innerHTML = povs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(pov => {
+      const emoji = archetypeEmojis[pov.archetype] || '🤖';
+      const gradient = archetypeGradients[pov.archetypeKey] || 'from-blue-800 to-indigo-900';
+      const date = new Date(pov.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const shareUrl = `https://vnayak12.github.io/agentforce-factory/pov.html?id=${pov.id}`;
+      const aeTag = pov.aeName ? `<span class="text-xs text-white/60">by ${pov.aeName}</span>` : '';
+      return `
+        <a href="${shareUrl}" target="_blank" class="group block rounded-xl border-2 border-gray-100 hover:border-sf-accent hover:shadow-lg transition-all overflow-hidden">
+          <div class="bg-gradient-to-r ${gradient} px-5 py-4 text-white">
+            <div class="flex justify-between items-center mb-2">
+              <span class="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">${pov.industry || 'Retail'}</span>
+              <span class="text-xs text-white/60">${date}</span>
+            </div>
+            <div class="text-lg font-bold">${pov.customer}</div>
+            <div class="text-sm text-white/80">${emoji} ${pov.archetype || 'POV'}</div>
+            ${aeTag}
+          </div>
+          <div class="bg-white px-5 py-3 flex justify-between items-center">
+            <span class="text-sm text-sf-accent font-medium group-hover:underline">View POV →</span>
+            <button onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText('${shareUrl}');this.textContent='✅ Copied!';setTimeout(()=>this.textContent='🔗 Share',1500)" class="text-xs text-sf-muted hover:text-sf-accent transition cursor-pointer" title="Copy share link">🔗 Share</button>
+          </div>
+        </a>
+      `;
+    }).join('');
+  } catch (err) {
+    console.log('Generated POVs load skipped:', err.message);
   }
 }
 
@@ -1746,6 +1874,7 @@ function checkSharedPOV() {
 // Initialize: render saved POVs on load
 document.addEventListener('DOMContentLoaded', () => {
   renderMyPOVs();
+  loadGeneratedPOVs();
   checkSharedPOV();
 });
 
@@ -1807,12 +1936,15 @@ function generateAEOutput() {
     'loyalty': 'Loyalty & Rewards Agent',
     'product-advisor': 'Customer Service Agent (Pre & Post-Sales, Orders & Returns)',
     'sales-agent': 'Sales Agent',
-    'store-locator': 'Store Locator & Inventory Agent',
+    'store-locator': 'Store Ops Agent',
     'employee-ops': 'Employee Ops Agent'
   };
   const selected = document.querySelector('input[name="archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'order-returns';
   const archetype = archetypeLabels[archetypeKey];
+
+  // Create stable slug for shareable URL
+  const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
 
   // Show generating modal
   showGeneratingModal(() => {
@@ -1828,18 +1960,48 @@ function generateAEOutput() {
     setViewMode('internal');
     showScreen('screen-ae-output');
 
-    // Save POV
-    savePOV({
-      id: `ae-${account.toLowerCase().replace(/[^a-z0-9]/g,'-')}-${Date.now()}`,
+    // Save POV with stable slug
+    const pov = {
+      id: slug,
       type: 'ae',
       customer: account,
       website: website,
       aeName: aeName,
       archetype: archetype,
       archetypeKey: archetypeKey,
+      industry: 'Retail',
       createdAt: new Date().toISOString()
-    });
+    };
+    savePOV(pov);
+
+    // Show shareable link
+    showShareableLink(slug, account);
   });
+}
+
+// Show shareable link toast
+function showShareableLink(slug, customer) {
+  const baseUrl = 'https://vnayak12.github.io/agentforce-factory';
+  const shareUrl = `${baseUrl}/pov.html?id=${slug}`;
+  const toast = document.createElement('div');
+  toast.className = 'fixed bottom-6 right-6 bg-white rounded-2xl shadow-2xl p-5 max-w-sm z-50 border-2 border-sf-accent fade-in';
+  toast.innerHTML = `
+    <div class="flex items-start gap-3">
+      <div class="text-2xl">🔗</div>
+      <div class="flex-1">
+        <div class="font-bold text-sf-blue mb-1">POV Ready to Share!</div>
+        <div class="text-sm text-sf-muted mb-3">Send this link to ${customer}:</div>
+        <div class="bg-gray-50 rounded-lg p-2 text-xs text-sf-blue break-all font-mono mb-3">${shareUrl}</div>
+        <div class="flex gap-2">
+          <button onclick="navigator.clipboard.writeText('${shareUrl}');this.textContent='✅ Copied!';setTimeout(()=>this.textContent='📋 Copy Link',2000)" class="bg-sf-accent text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition cursor-pointer">📋 Copy Link</button>
+          <button onclick="this.closest('.fixed').remove()" class="text-sf-muted px-3 py-2 rounded-lg text-sm hover:bg-gray-100 transition cursor-pointer">Dismiss</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(toast);
+  // Auto-dismiss after 15s
+  setTimeout(() => { if (toast.parentNode) toast.remove(); }, 15000);
 }
 
 // Generate Architect output
