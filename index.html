@@ -156,6 +156,18 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
     </div>
   </div>
 
+  <!-- My POVs Gallery -->
+  <div id="my-povs-section" class="max-w-7xl mx-auto px-6 mb-16 hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-2xl font-bold text-sf-blue">My POVs</h2>
+        <button onclick="clearAllPOVs()" class="text-sm text-red-400 hover:text-red-600 transition cursor-pointer">Clear All</button>
+      </div>
+      <p class="text-sf-muted mb-6">Your recently generated POVs — click to reopen</p>
+      <div id="my-povs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </div>
+  </div>
+
   <!-- Subindustry Cards -->
   <div class="max-w-7xl mx-auto px-6 mb-16">
     <h2 class="text-2xl font-bold text-sf-blue mb-2">Choose a Subindustry</h2>
@@ -1567,6 +1579,176 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
 </div>
 
 <script>
+// ===== POV PERSISTENCE =====
+const GITHUB_REPO = 'vnayak12/agentforce-factory';
+const GITHUB_BRANCH = 'main';
+
+function getSavedPOVs() {
+  try { return JSON.parse(localStorage.getItem('agentforce-povs') || '[]'); }
+  catch { return []; }
+}
+
+function savePOV(pov) {
+  const povs = getSavedPOVs();
+  // Deduplicate by id
+  const idx = povs.findIndex(p => p.id === pov.id);
+  if (idx >= 0) povs[idx] = pov; else povs.unshift(pov);
+  localStorage.setItem('agentforce-povs', JSON.stringify(povs));
+  renderMyPOVs();
+  // Auto-push to GitHub
+  pushPOVToGitHub(pov);
+}
+
+function clearAllPOVs() {
+  if (confirm('Remove all saved POVs from your browser?')) {
+    localStorage.removeItem('agentforce-povs');
+    renderMyPOVs();
+  }
+}
+
+function renderMyPOVs() {
+  const povs = getSavedPOVs();
+  const section = document.getElementById('my-povs-section');
+  const grid = document.getElementById('my-povs-grid');
+  if (!povs.length) { section.classList.add('hidden'); return; }
+  section.classList.remove('hidden');
+
+  const archetypeEmojis = {
+    'Order & Returns Agent': '📦',
+    'Loyalty & Rewards Agent': '⭐',
+    'Customer Service Agent (Pre & Post-Sales, Orders & Returns)': '🎧',
+    'Sales Agent': '💰',
+    'Store Locator & Inventory Agent': '📍',
+    'Employee Ops Agent': '👥'
+  };
+
+  grid.innerHTML = povs.map(pov => {
+    const emoji = archetypeEmojis[pov.archetype] || '🤖';
+    const date = new Date(pov.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const typeBadge = pov.type === 'ae' ? '<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">AE</span>' :
+                      pov.type === 'architect' ? '<span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full">ARCH</span>' :
+                      '<span class="bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded-full">SE</span>';
+    const shareUrl = `${window.location.origin}${window.location.pathname}#pov=${pov.id}`;
+    return `
+      <div class="group rounded-xl border-2 border-gray-100 hover:border-sf-accent hover:shadow-lg transition-all overflow-hidden cursor-pointer" onclick="loadSavedPOV('${pov.id}')">
+        <div class="bg-gradient-to-r from-blue-800 to-indigo-900 px-5 py-4 text-white">
+          <div class="flex justify-between items-center mb-2">
+            ${typeBadge}
+            <span class="text-xs text-white/60">${date}</span>
+          </div>
+          <div class="text-lg font-bold">${pov.customer}</div>
+          <div class="text-sm text-blue-200">${emoji} ${pov.archetype || 'Architecture POV'}</div>
+        </div>
+        <div class="bg-white px-5 py-3 flex justify-between items-center">
+          <span class="text-sm text-sf-accent font-medium group-hover:underline">Open POV →</span>
+          <button onclick="event.stopPropagation(); copyShareLink('${shareUrl}')" class="text-xs text-sf-muted hover:text-sf-accent transition cursor-pointer" title="Copy share link">🔗 Share</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function copyShareLink(url) {
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+function loadSavedPOV(povId) {
+  const povs = getSavedPOVs();
+  const pov = povs.find(p => p.id === povId);
+  if (!pov) return;
+
+  if (pov.type === 'ae') {
+    document.getElementById('ae-output-title').textContent = `${pov.customer} · ${pov.archetype}`;
+    document.getElementById('pov-customer-name').textContent = pov.customer;
+    document.getElementById('pov-archetype-name').textContent = `${pov.archetype} · Powered by Headless 360`;
+    document.getElementById('pov-usecase-title').textContent = pov.archetype;
+    document.getElementById('pov-inline-name-1').textContent = pov.customer;
+    document.getElementById('pov-inline-name-2').textContent = pov.customer;
+    document.getElementById('demo-brand-name').textContent = pov.customer;
+    document.getElementById('demo-agent-label').textContent = pov.customer;
+    setViewMode('internal');
+    showScreen('screen-ae-output');
+  } else if (pov.type === 'architect') {
+    document.getElementById('arch-output-title').textContent = `${pov.customer} · Architecture POV`;
+    document.getElementById('arch-pov-customer').textContent = pov.customer;
+    document.getElementById('arch-mapped-customer').textContent = pov.customer;
+    document.getElementById('arch-demo-brand').textContent = pov.customer;
+    document.getElementById('arch-demo-label').textContent = pov.customer;
+    setViewMode('internal');
+    showScreen('screen-architect-output');
+  } else if (pov.type === 'se') {
+    document.getElementById('se-output-title').textContent = `${pov.customer} · Agentforce Opportunity Assessment`;
+    document.getElementById('se-customer-name').textContent = pov.customer;
+    document.getElementById('se-recommended-agents').textContent = pov.agents || 'No agents selected';
+    document.getElementById('se-recommended-channels').textContent = pov.channels || 'No channels selected';
+    document.getElementById('se-recommended-timeline').textContent = pov.timeline || 'Exploring';
+    showScreen('screen-se-output');
+  }
+}
+
+// Auto-push POV to GitHub as JSON
+async function pushPOVToGitHub(pov) {
+  // Get GitHub token from localStorage (user sets once)
+  const token = localStorage.getItem('github-token');
+  if (!token) return; // Silent fail if no token configured
+
+  const filename = `povs/${pov.id}.json`;
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(pov, null, 2))));
+
+  try {
+    // Check if file exists
+    let sha = null;
+    try {
+      const existing = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filename}?ref=${GITHUB_BRANCH}`, {
+        headers: { 'Authorization': `token ${token}` }
+      });
+      if (existing.ok) {
+        const data = await existing.json();
+        sha = data.sha;
+      }
+    } catch {}
+
+    const body = {
+      message: `POV: ${pov.customer} - ${pov.archetype || 'Architecture POV'}`,
+      content: content,
+      branch: GITHUB_BRANCH
+    };
+    if (sha) body.sha = sha;
+
+    await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${filename}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    console.log(`✅ POV saved to GitHub: ${filename}`);
+  } catch (err) {
+    console.log('GitHub push skipped:', err.message);
+  }
+}
+
+// Check URL hash for shared POV link
+function checkSharedPOV() {
+  const hash = window.location.hash;
+  if (hash.startsWith('#pov=')) {
+    const povId = hash.replace('#pov=', '');
+    loadSavedPOV(povId);
+  }
+}
+
+// Initialize: render saved POVs on load
+document.addEventListener('DOMContentLoaded', () => {
+  renderMyPOVs();
+  checkSharedPOV();
+});
+
 // Screen management
 function showScreen(screenId) {
   document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
@@ -1618,6 +1800,8 @@ function setViewMode(mode) {
 // Generate AE output
 function generateAEOutput() {
   const account = document.getElementById('ae-account').value || 'Lululemon';
+  const website = document.getElementById('ae-website').value || '';
+  const aeName = document.getElementById('ae-name').value || '';
   const archetypeLabels = {
     'order-returns': 'Order & Returns Agent',
     'loyalty': 'Loyalty & Rewards Agent',
@@ -1627,7 +1811,8 @@ function generateAEOutput() {
     'employee-ops': 'Employee Ops Agent'
   };
   const selected = document.querySelector('input[name="archetype"]:checked');
-  const archetype = selected ? archetypeLabels[selected.value] : 'Order & Returns Agent';
+  const archetypeKey = selected ? selected.value : 'order-returns';
+  const archetype = archetypeLabels[archetypeKey];
 
   // Show generating modal
   showGeneratingModal(() => {
@@ -1642,12 +1827,27 @@ function generateAEOutput() {
     document.getElementById('demo-agent-label').textContent = account;
     setViewMode('internal');
     showScreen('screen-ae-output');
+
+    // Save POV
+    savePOV({
+      id: `ae-${account.toLowerCase().replace(/[^a-z0-9]/g,'-')}-${Date.now()}`,
+      type: 'ae',
+      customer: account,
+      website: website,
+      aeName: aeName,
+      archetype: archetype,
+      archetypeKey: archetypeKey,
+      createdAt: new Date().toISOString()
+    });
   });
 }
 
 // Generate Architect output
 function generateArchOutput() {
   const customer = document.getElementById('arch-customer').value || 'Nordstrom';
+  const website = document.getElementById('arch-website').value || '';
+  const archName = document.getElementById('arch-name').value || '';
+  const usecase = document.getElementById('arch-usecase').value || '';
 
   showGeneratingModal(() => {
     document.getElementById('arch-output-title').textContent = `${customer} · Architecture POV`;
@@ -1657,6 +1857,18 @@ function generateArchOutput() {
     document.getElementById('arch-demo-label').textContent = customer;
     setViewMode('internal');
     showScreen('screen-architect-output');
+
+    // Save POV
+    savePOV({
+      id: `arch-${customer.toLowerCase().replace(/[^a-z0-9]/g,'-')}-${Date.now()}`,
+      type: 'architect',
+      customer: customer,
+      website: website,
+      architectName: archName,
+      usecase: usecase,
+      archetype: 'Architecture POV',
+      createdAt: new Date().toISOString()
+    });
   });
 }
 
@@ -1715,6 +1927,18 @@ function generateSEOutput() {
     document.getElementById('se-recommended-channels').textContent = channels.length ? channels.join(', ') : 'No channels selected yet';
     document.getElementById('se-recommended-timeline').textContent = timeline;
     showScreen('screen-se-output');
+
+    // Save POV
+    savePOV({
+      id: `se-${customer.toLowerCase().replace(/[^a-z0-9]/g,'-')}-${Date.now()}`,
+      type: 'se',
+      customer: customer,
+      agents: agents.join(', '),
+      channels: channels.join(', '),
+      timeline: timeline,
+      archetype: 'Agentforce Discovery',
+      createdAt: new Date().toISOString()
+    });
   });
 }
 
