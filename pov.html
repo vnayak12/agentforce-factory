@@ -299,8 +299,9 @@
 
   <!-- Live Demo Tab Content -->
   <div id="content-demo" class="hidden max-w-7xl mx-auto px-6 py-8">
+
+    <!-- Live Agent Header -->
     <div id="demo-container" class="rounded-2xl overflow-hidden shadow-xl">
-      <!-- Dynamic demo header -->
       <div id="demo-header" class="bg-gradient-to-r from-sf-accent to-sf-blue p-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl" id="demo-icon">🤖</div>
@@ -311,22 +312,42 @@
         </div>
         <div class="text-blue-200 text-sm">Powered by Agentforce</div>
       </div>
-      <!-- Chat area — will be replaced by Embedded Service in Phase 2 -->
-      <div class="bg-white">
-        <div id="demo-chat" class="p-6 space-y-4 min-h-[400px]">
-          <!-- Messages rendered dynamically -->
+
+      <!-- Live Agentforce Chat Widget Container -->
+      <div class="bg-white relative" style="min-height: 520px;">
+        <!-- Loading state while widget initializes -->
+        <div id="agent-loading" class="flex flex-col items-center justify-center py-16 gap-4">
+          <div class="w-12 h-12 border-4 border-sf-accent border-t-transparent rounded-full animate-spin"></div>
+          <p class="text-sf-muted text-sm">Connecting to live Agentforce agent...</p>
         </div>
-        <!-- Input -->
-        <div class="border-t p-4 flex gap-3">
-          <input type="text" id="demo-input" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2 text-sm focus:border-sf-accent focus:ring-1 focus:ring-sf-accent outline-none" onkeydown="if(event.key==='Enter')sendDemoMessage()">
-          <button onclick="sendDemoMessage()" class="bg-sf-accent text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition cursor-pointer">Send</button>
+
+        <!-- Fallback: simulated chat if widget fails -->
+        <div id="demo-chat-fallback" class="hidden">
+          <div id="demo-chat" class="p-6 space-y-4 min-h-[400px]"></div>
+          <div class="border-t p-4 flex gap-3">
+            <input type="text" id="demo-input" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2 text-sm focus:border-sf-accent focus:ring-1 focus:ring-sf-accent outline-none" onkeydown="if(event.key==='Enter')sendDemoMessage()">
+            <button onclick="sendDemoMessage()" class="bg-sf-accent text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition cursor-pointer">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions for the live demo -->
+    <div class="bg-white rounded-xl shadow-md p-6 mt-6">
+      <div class="flex items-start gap-4">
+        <div class="text-3xl">💡</div>
+        <div>
+          <h3 class="font-bold text-sf-blue mb-2">Try these prompts:</h3>
+          <div id="demo-prompts" class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-sf-muted">
+            <!-- Populated dynamically per archetype -->
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Powered by notice -->
     <div class="text-center mt-6 text-sm text-sf-muted">
-      This is an interactive demo powered by Agentforce. <a href="index.html" class="text-sf-accent hover:underline">Build your own →</a>
+      This is a live demo powered by Agentforce on Salesforce. <a href="index.html" class="text-sf-accent hover:underline">Build your own →</a>
     </div>
   </div>
 
@@ -594,6 +615,91 @@ function sendDemoMessage() {
   }, 1500);
 }
 
+// ─── Live Agentforce Widget ───
+let agentforceInitialized = false;
+
+function initAgentforceWidget() {
+  if (agentforceInitialized) return;
+
+  const ESD_CONFIG = {
+    orgId: '00Dbm00000jtzs9',
+    deploymentName: 'Retail_Agent_Web_Chat',
+    siteURL: 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWRetailAgentWebChat1780786812852',
+    scrt2URL: 'https://trailsignup-d7fd90d7f30b8a.my.salesforce-scrt.com',
+    bootstrapJS: 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWRetailAgentWebChat1780786812852/assets/js/bootstrap.min.js'
+  };
+
+  const loadingEl = document.getElementById('agent-loading');
+  const fallbackEl = document.getElementById('demo-chat-fallback');
+
+  // Dynamically load the bootstrap script
+  const script = document.createElement('script');
+  script.src = ESD_CONFIG.bootstrapJS;
+  script.type = 'text/javascript';
+
+  script.onload = function() {
+    try {
+      // MUST set hideChatButton BEFORE init() to prevent the floating button
+      embeddedservice_bootstrap.settings.language = 'en_US';
+
+      embeddedservice_bootstrap.init(
+        ESD_CONFIG.orgId,
+        ESD_CONFIG.deploymentName,
+        ESD_CONFIG.siteURL,
+        { scrt2URL: ESD_CONFIG.scrt2URL }
+      );
+
+      agentforceInitialized = true;
+
+      // Listen for the widget to be ready
+      window.addEventListener('onEmbeddedMessagingReady', function() {
+        if (loadingEl) loadingEl.classList.add('hidden');
+      });
+
+      // Hide the default floating button — we embed inline via the demo tab
+      window.addEventListener('onEmbeddedMessagingReady', function() {
+        // Hide the floating FAB so the chat renders only in our container
+        const style = document.createElement('style');
+        style.textContent = `
+          .embeddedMessagingFrame,
+          .embeddedMessagingConversationButton,
+          [class*="embeddedMessaging"] button[class*="fab"],
+          .embedded-messaging {
+            /* Let the widget remain but hide the launch button */
+          }
+          .embeddedMessagingConversationButtonWrapper {
+            position: static !important;
+            bottom: auto !important;
+            right: auto !important;
+          }
+        `;
+        document.head.appendChild(style);
+      });
+
+      // Fallback: if widget doesn't load within 10 seconds, show simulated chat
+      setTimeout(function() {
+        if (loadingEl && !loadingEl.classList.contains('hidden')) {
+          loadingEl.classList.add('hidden');
+          if (fallbackEl) fallbackEl.classList.remove('hidden');
+        }
+      }, 10000);
+
+    } catch (err) {
+      console.error('Agentforce widget init error:', err);
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (fallbackEl) fallbackEl.classList.remove('hidden');
+    }
+  };
+
+  script.onerror = function() {
+    console.warn('Could not load Agentforce bootstrap — falling back to demo chat');
+    if (loadingEl) loadingEl.classList.add('hidden');
+    if (fallbackEl) fallbackEl.classList.remove('hidden');
+  };
+
+  document.head.appendChild(script);
+}
+
 // ─── Load POV ───
 async function loadPOV() {
   const params = new URLSearchParams(window.location.search);
@@ -663,6 +769,17 @@ function renderPOV(pov) {
   document.getElementById('demo-container').className = `rounded-2xl overflow-hidden shadow-xl`;
   document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-6 flex items-center justify-between`;
   renderDemoChat(config, name);
+
+  // Populate suggested prompts per archetype
+  const promptsContainer = document.getElementById('demo-prompts');
+  if (promptsContainer && config.demoCapabilities) {
+    promptsContainer.innerHTML = config.demoCapabilities
+      .map(p => `<div class="bg-blue-50 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
+      .join('');
+  }
+
+  // Initialize live Agentforce widget
+  initAgentforceWidget();
 
   // Show content
   document.getElementById('loading').classList.add('hidden');
