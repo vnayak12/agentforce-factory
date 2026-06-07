@@ -577,24 +577,26 @@ let currentPOVName = '';
 let pendingBotMessage = '';
 let typingIndicatorActive = false;
 
-// ─── Multi-Agent Tab Support ───
-const AGENT_TABS = {
-  'sales-agent': [
-    { key: 'sales-agent', label: '💰 Sales Agent', active: true },
-    { key: 'store-locator', label: '🏪 Store Ops Agent' },
-    { key: 'employee-ops', label: '👥 Employee Ops Agent' }
-  ],
-  'store-locator': [
-    { key: 'sales-agent', label: '💰 Sales Agent' },
-    { key: 'store-locator', label: '🏪 Store Ops Agent', active: true },
-    { key: 'employee-ops', label: '👥 Employee Ops Agent' }
-  ],
-  'employee-ops': [
-    { key: 'sales-agent', label: '💰 Sales Agent' },
-    { key: 'store-locator', label: '🏪 Store Ops Agent' },
-    { key: 'employee-ops', label: '👥 Employee Ops Agent', active: true }
-  ]
-};
+// ─── Multi-Agent Tab Support (Teams) ───
+// Two teams: customer-facing agents and internal ops agents
+const CUSTOMER_TEAM_KEYS = ['product-advisor', 'loyalty', 'order-returns'];
+const OPS_TEAM_KEYS = ['sales-agent', 'store-locator', 'employee-ops'];
+
+function getAgentTabs(archetypeKey) {
+  let teamKeys;
+  if (CUSTOMER_TEAM_KEYS.includes(archetypeKey)) {
+    teamKeys = CUSTOMER_TEAM_KEYS;
+  } else if (OPS_TEAM_KEYS.includes(archetypeKey)) {
+    teamKeys = OPS_TEAM_KEYS;
+  } else {
+    return null; // No tabs for unknown archetypes
+  }
+  return teamKeys.map(key => {
+    const cfg = ARCHETYPES[key];
+    if (!cfg) return null;
+    return { key, label: `${cfg.emoji} ${cfg.label}`, active: key === archetypeKey };
+  }).filter(Boolean);
+}
 
 function switchAgentTab(archetypeKey) {
   const config = ARCHETYPES[archetypeKey];
@@ -606,7 +608,7 @@ function switchAgentTab(archetypeKey) {
   document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-5 flex items-center justify-between`;
   renderScenarios(config);
   renderQuickPrompts(config);
-  const tabs = AGENT_TABS[archetypeKey] || AGENT_TABS[Object.keys(AGENT_TABS).find(k => AGENT_TABS[k].some(t => t.key === archetypeKey))];
+  const tabs = getAgentTabs(archetypeKey);
   if (tabs) {
     const tabBar = document.getElementById('agent-tabs-bar');
     tabBar.innerHTML = tabs.map(t => `
@@ -1087,8 +1089,8 @@ function renderPOV(pov) {
   renderScenarios(config);
   renderQuickPrompts(config);
 
-  // Show agent tabs if multi-agent experience is supported
-  const tabs = AGENT_TABS[pov.archetypeKey];
+  // Show agent team tabs for ALL archetypes (customer-facing or internal ops)
+  const tabs = getAgentTabs(pov.archetypeKey);
   const agentTabsEl = document.getElementById('agent-tabs');
   if (tabs && agentTabsEl) {
     agentTabsEl.classList.remove('hidden');
