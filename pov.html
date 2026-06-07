@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agentforce Showcase</title>
+<title>Agentforce Demo</title>
 <script src="https://assets.meshmesh.io/system/tailwindcss-browser-4.js"></script>
 <style type="text/tailwindcss">
 @theme {
@@ -33,7 +33,7 @@
 <div id="loading" class="flex items-center justify-center min-h-screen">
   <div class="text-center">
     <div class="w-16 h-16 border-4 border-sf-accent border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-    <p class="text-sf-muted text-lg">Loading Showcase...</p>
+    <p class="text-sf-muted text-lg">Loading Demo...</p>
   </div>
 </div>
 
@@ -41,9 +41,9 @@
 <div id="error" class="hidden flex items-center justify-center min-h-screen">
   <div class="text-center max-w-md">
     <div class="text-6xl mb-4">🔍</div>
-    <h1 class="text-2xl font-bold text-sf-blue mb-2">Showcase Not Found</h1>
-    <p class="text-sf-muted mb-6">This Showcase may have been removed or the link is incorrect.</p>
-    <a href="index.html" class="inline-block bg-sf-accent text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition">← Back to Showcase Studio</a>
+    <h1 class="text-2xl font-bold text-sf-blue mb-2">Demo Not Found</h1>
+    <p class="text-sf-muted mb-6">This Demo may have been removed or the link is incorrect.</p>
+    <a href="index.html" class="inline-block bg-sf-accent text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition">← Back to Demo Studio</a>
   </div>
 </div>
 
@@ -54,7 +54,7 @@
   <div class="bg-sf-blue text-white">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="text-white/60 hover:text-white text-sm transition">← Showcase Studio</a>
+        <a href="index.html" class="text-white/60 hover:text-white text-sm transition">← Demo Studio</a>
         <span class="text-white/30">|</span>
         <span class="text-sm font-medium" id="header-label">Loading...</span>
       </div>
@@ -65,7 +65,7 @@
   <!-- Tabs -->
   <div class="bg-white border-b sticky top-0 z-10">
     <div class="max-w-7xl mx-auto px-6 flex gap-8">
-      <button onclick="switchTab('pov')" id="tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">Showcase</button>
+      <button onclick="switchTab('pov')" id="tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">Demo</button>
       <button onclick="switchTab('demo')" id="tab-demo" class="py-4 px-2 text-sm tab-inactive cursor-pointer">Live Demo</button>
     </div>
   </div>
@@ -349,7 +349,7 @@
 
     <!-- Powered by notice -->
     <div class="text-center mt-6 text-sm text-sf-muted">
-      This is a live demo powered by Agentforce on Salesforce. <a href="index.html" class="text-sf-accent hover:underline">Build your own Showcase →</a>
+      This is a live demo powered by Agentforce on Salesforce. <a href="index.html" class="text-sf-accent hover:underline">Build your own Demo →</a>
     </div>
   </div>
 
@@ -1049,16 +1049,23 @@ function renderPOV(pov) {
   currentPOVName = name;
 
   // Update page title
-  document.title = `${name} — Agentforce Showcase`;
+  document.title = `${name} — Agentforce Demo`;
 
   // Header bar
   document.getElementById('header-label').textContent = `${name} · ${config.label}`;
 
-  // POV Hero
+  // POV Hero — use brand color if available, else archetype gradient
   document.getElementById('pov-customer-name').textContent = name;
   document.getElementById('pov-archetype-label').textContent = `${config.label} · Powered by Headless 360`;
   document.getElementById('pov-emoji').textContent = config.emoji;
-  document.getElementById('pov-hero').className = `bg-gradient-to-r ${config.gradient} rounded-2xl p-10 text-white mb-8`;
+  const heroEl = document.getElementById('pov-hero');
+  if (pov.brandColor) {
+    heroEl.className = 'rounded-2xl p-10 text-white mb-8';
+    heroEl.style.background = `linear-gradient(135deg, ${pov.brandColor} 0%, ${pov.brandColorEnd || pov.brandColor} 100%)`;
+  } else {
+    heroEl.className = `bg-gradient-to-r ${config.gradient} rounded-2xl p-10 text-white mb-8`;
+    heroEl.style.background = '';
+  }
 
   // Coworker section names
   document.querySelectorAll('.coworker-name').forEach(el => el.textContent = name);
@@ -1075,12 +1082,19 @@ function renderPOV(pov) {
       <div class="text-xs text-sf-muted">${i.label}</div>
     </div>`).join('');
 
-  // Demo tab
+  // Demo tab — use brand color if available
   document.getElementById('demo-brand').textContent = name;
   document.getElementById('demo-subtitle').textContent = config.subtitle;
   document.getElementById('demo-icon').textContent = config.emoji;
   document.getElementById('demo-container').className = `rounded-2xl overflow-hidden shadow-xl`;
-  document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-5 flex items-center justify-between`;
+  const demoHeaderEl = document.getElementById('demo-header');
+  if (pov.brandColor) {
+    demoHeaderEl.className = 'p-5 flex items-center justify-between';
+    demoHeaderEl.style.background = `linear-gradient(135deg, ${pov.brandColor} 0%, ${pov.brandColorEnd || pov.brandColor} 100%)`;
+  } else {
+    demoHeaderEl.className = `bg-gradient-to-r ${config.gradient} p-5 flex items-center justify-between`;
+    demoHeaderEl.style.background = '';
+  }
   renderScenarios(config);
   renderQuickPrompts(config);
 

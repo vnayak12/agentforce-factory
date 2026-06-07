@@ -7,6 +7,8 @@
     "industry": "Retail",
     "aeName": "Vandana Nayak",
     "type": "ae",
+    "brandColor": "#CC0000",
+    "brandColorEnd": "#8B0000",
     "createdAt": "2026-06-06T22:00:00.000Z"
   }
 ]

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agentforce Showcase Studio</title>
+<title>Agentforce Demo Studio</title>
 <script src="https://assets.meshmesh.io/system/tailwindcss-browser-4.js"></script>
 <style type="text/tailwindcss">
 @theme {
@@ -58,20 +58,20 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
               <rect x="10" y="22" width="3" height="6" rx="1.5" fill="#00c8e0"/>
               <rect x="35" y="22" width="3" height="6" rx="1.5" fill="#00c8e0"/>
             </svg>
-          <span class="text-xl font-bold tracking-tight">Agentforce Showcase Studio</span>
+          <span class="text-xl font-bold tracking-tight">Agentforce Demo Studio</span>
         </div>
       </div>
     </div>
     <div class="max-w-7xl mx-auto px-6 pb-20 pt-10">
       <div class="max-w-3xl">
-        <h1 class="text-5xl font-black leading-tight mb-6">Build customer-ready<br>Agentforce Showcases<br><span class="text-blue-200">in minutes.</span></h1>
+        <h1 class="text-5xl font-black leading-tight mb-6">Build customer-ready<br>Agentforce Demos<br><span class="text-blue-200">in minutes.</span></h1>
         <p class="text-xl text-blue-100 mb-10 leading-relaxed">Select your role, pick an industry, enter a customer name and get a branded, live Agentforce demo you can show today.</p>
         <div class="flex gap-5">
           <button onclick="showScreen('screen-ae-form')" class="group flex items-center gap-4 bg-white text-sf-blue pl-5 pr-7 py-5 rounded-2xl font-bold text-lg hover:bg-blue-50 hover:scale-105 transition-all shadow-lg cursor-pointer border-2 border-white hover:border-blue-200">
             <span class="text-2xl">💼</span>
             <div class="text-left">
               <div>I'm an AE</div>
-              <div class="text-xs font-medium text-sf-muted">Build a customer Showcase</div>
+              <div class="text-xs font-medium text-sf-muted">Build a customer demo</div>
             </div>
             <span class="text-sf-accent ml-2 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
           </button>
@@ -101,7 +101,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
   <div class="max-w-7xl mx-auto px-6 -mt-10 mb-16">
     <div class="bg-white rounded-2xl shadow-xl p-8">
       <h2 class="text-2xl font-bold text-sf-blue mb-2">Recent Examples</h2>
-      <p class="text-sf-muted mb-6">Real-world Agentforce Showcases built with this studio</p>
+      <p class="text-sf-muted mb-6">Real-world Agentforce demos built with this studio</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- Wingstop — brand green #006938 -->
         <a href="https://vnayak12.github.io/wingstop-pov/" target="_blank" class="group block rounded-xl hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden border border-gray-200">
@@ -111,7 +111,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
           <div class="px-5 pb-5 pt-3" style="background: linear-gradient(135deg, #006938 0%, #004d29 100%);">
             <div class="text-white/70 text-xs font-medium mb-2">Retail · QSR</div>
-            <div class="text-sm text-white/90">Architecture Showcase & Guest Service Agent</div>
+            <div class="text-sm text-white/90">Architecture Demo & Guest Service Agent</div>
             <div class="text-xs text-white/60 font-medium mt-1">+ Pre-defined Scenarios & Live Demo</div>
             <div class="text-white text-sm font-semibold mt-3 group-hover:underline">View →</div>
           </div>
@@ -207,10 +207,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
   <div id="my-povs-section" class="max-w-7xl mx-auto px-6 mb-16 hidden">
     <div class="bg-white rounded-2xl shadow-xl p-8">
       <div class="flex justify-between items-center mb-2">
-        <h2 class="text-2xl font-bold text-sf-blue">My Showcases</h2>
+        <h2 class="text-2xl font-bold text-sf-blue">My Demos</h2>
         <button onclick="clearAllPOVs()" class="text-sm text-red-400 hover:text-red-600 transition cursor-pointer">Clear All</button>
       </div>
-      <p class="text-sf-muted mb-6">Your recently generated Showcases — click to reopen</p>
+      <p class="text-sf-muted mb-6">Your recently generated demos — click to reopen</p>
       <div id="my-povs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
     </div>
   </div>
@@ -219,10 +219,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
   <div id="generated-povs-section" class="max-w-7xl mx-auto px-6 mb-16 hidden">
     <div class="bg-white rounded-2xl shadow-xl p-8">
       <div class="flex justify-between items-center mb-2">
-        <h2 class="text-2xl font-bold text-sf-blue">Generated Showcases</h2>
+        <h2 class="text-2xl font-bold text-sf-blue">Generated Demos</h2>
         <span class="text-sm text-sf-muted" id="generated-povs-count"></span>
       </div>
-      <p class="text-sf-muted mb-6">Showcases created by AEs across the team — click to view or share</p>
+      <p class="text-sf-muted mb-6">Demos created by AEs across the team — click to view or share</p>
       <div id="generated-povs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
     </div>
   </div>
@@ -246,7 +246,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       <button onclick="showScreen('screen-landing')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
       <div class="flex items-center gap-2">
         <span class="bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">AE</span>
-        <span class="font-bold text-lg">Create a Showcase · Retail</span>
+        <span class="font-bold text-lg">Create a Demo · Retail</span>
       </div>
     </div>
   </div>
@@ -350,14 +350,14 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
           <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
             <div class="text-3xl mb-2">📎</div>
-            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored Showcase</div>
+            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
             <input type="file" class="hidden">
           </div>
         </div>
 
         <!-- Generate Button -->
         <button onclick="generateAEOutput()" class="w-full bg-sf-accent text-white py-4 rounded-xl font-bold text-lg hover:bg-sf-blue transition-all shadow-lg cursor-pointer">
-          ✨ Generate Showcase
+          ✨ Generate Demo
         </button>
       </div>
     </div>
@@ -372,7 +372,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       <button onclick="showScreen('screen-landing')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
       <div class="flex items-center gap-2">
         <span class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">ARCHITECT</span>
-        <span class="font-bold text-lg">Architecture Showcase Builder</span>
+        <span class="font-bold text-lg">Architecture Demo Builder</span>
       </div>
     </div>
   </div>
@@ -380,7 +380,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
   <div class="max-w-4xl mx-auto px-6 py-10">
     <div class="bg-white rounded-2xl shadow-lg p-8">
       <h2 class="text-2xl font-bold text-sf-blue mb-2">Customer Deep Dive</h2>
-      <p class="text-sf-muted mb-8">Provide detailed context for a comprehensive architecture Showcase.</p>
+      <p class="text-sf-muted mb-8">Provide detailed context for a comprehensive architecture demo.</p>
 
       <div class="space-y-6">
         <!-- Row 1 -->
@@ -526,7 +526,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
 
         <!-- Generate Button -->
         <button onclick="generateArchOutput()" class="w-full bg-sf-purple text-white py-4 rounded-xl font-bold text-lg hover:bg-sf-blue transition-all shadow-lg cursor-pointer">
-          🏗️ Generate Architecture Showcase
+          🏗️ Generate Architecture Demo
         </button>
       </div>
     </div>
@@ -902,7 +902,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       <div class="flex items-center gap-4">
         <button onclick="showScreen('screen-architect-form')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
         <span class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">ARCHITECT</span>
-        <span class="font-bold" id="arch-output-title">Nordstrom ·Architecture Showcase</span>
+        <span class="font-bold" id="arch-output-title">Nordstrom ·Architecture Demo</span>
       </div>
       <div class="flex items-center gap-3">
         <div class="flex bg-white/10 rounded-lg p-0.5">
@@ -916,7 +916,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
   <!-- Tabs -->
   <div class="bg-white border-b">
     <div class="max-w-7xl mx-auto px-6 flex gap-8">
-      <button onclick="switchTab('arch', 'pov')" id="arch-tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">Architecture Showcase</button>
+      <button onclick="switchTab('arch', 'pov')" id="arch-tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">Architecture Demo</button>
       <button onclick="switchTab('arch', 'demo')" id="arch-tab-demo" class="py-4 px-2 text-sm tab-inactive cursor-pointer">Live Demo</button>
     </div>
   </div>
@@ -1517,13 +1517,13 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-white/10 rounded-xl p-5">
           <div class="text-3xl mb-2">1️⃣</div>
-          <div class="font-semibold">Build a Showcase</div>
+          <div class="font-semibold">Build a Demo</div>
           <div class="text-sm text-blue-200 mt-1">Use the AE flow to generate a branded demo for this customer</div>
         </div>
         <div class="bg-white/10 rounded-xl p-5">
           <div class="text-3xl mb-2">2️⃣</div>
           <div class="font-semibold">Architecture Deep-Dive</div>
-          <div class="text-sm text-blue-200 mt-1">Use the Architect flow for a Headless 360 architecture Showcase</div>
+          <div class="text-sm text-blue-200 mt-1">Use the Architect flow for a Headless 360 architecture demo</div>
         </div>
         <div class="bg-white/10 rounded-xl p-5">
           <div class="text-3xl mb-2">3️⃣</div>
@@ -1536,10 +1536,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
     <!-- Back to Home -->
     <div class="flex justify-center gap-4">
       <button onclick="showScreen('screen-ae-form')" class="bg-white border-2 border-sf-accent text-sf-accent px-8 py-3 rounded-xl font-semibold hover:bg-blue-50 transition cursor-pointer">
-        💼 Build an AE Showcase
+        💼 Build an AE Demo
       </button>
       <button onclick="showScreen('screen-architect-form')" class="bg-white border-2 border-sf-purple text-sf-purple px-8 py-3 rounded-xl font-semibold hover:bg-purple-50 transition cursor-pointer">
-        🏗️ Build Architecture Showcase
+        🏗️ Build Architecture Demo
       </button>
     </div>
   </div>
@@ -1549,7 +1549,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
 <div id="modify-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
   <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-8 fade-in">
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-xl font-bold text-sf-blue">✏️ Modify Showcase</h2>
+      <h2 class="text-xl font-bold text-sf-blue">✏️ Modify Demo</h2>
       <button onclick="hideModifyModal()" class="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer">&times;</button>
     </div>
     <div class="space-y-4">
@@ -1579,7 +1579,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
 <div id="generating-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
   <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-10 text-center fade-in">
     <div class="text-6xl mb-4 animate-bounce">✨</div>
-    <h2 class="text-2xl font-bold text-sf-blue mb-3">Generating your Showcase...</h2>
+    <h2 class="text-2xl font-bold text-sf-blue mb-3">Generating your demo...</h2>
     <p class="text-sf-muted mb-6">Extracting brand from website, building agent, preparing demo</p>
     <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
       <div id="progress-bar" class="bg-sf-accent h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
@@ -1589,6 +1589,78 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
 </div>
 
 <script>
+// ===== BRAND COLOR EXTRACTION =====
+const BRAND_COLORS = {
+  'staples': { primary: '#CC0000', secondary: '#8B0000' },
+  'wingstop': { primary: '#006938', secondary: '#004d29' },
+  'starbucks': { primary: '#006242', secondary: '#1E3932' },
+  'nike': { primary: '#111111', secondary: '#2D2D2D' },
+  'constellation': { primary: '#1B2A4A', secondary: '#0F1A2E' },
+  'nordstrom': { primary: '#000000', secondary: '#1a1a1a' },
+  'lululemon': { primary: '#D31334', secondary: '#8B0E23' },
+  'target': { primary: '#CC0000', secondary: '#990000' },
+  'walmart': { primary: '#0071DC', secondary: '#004C91' },
+  'costco': { primary: '#E31837', secondary: '#005DAA' },
+  'pacsun': { primary: '#000000', secondary: '#1a1a1a' },
+  'hot topic': { primary: '#E4002B', secondary: '#B80025' },
+  'hottopic': { primary: '#E4002B', secondary: '#B80025' },
+  'sephora': { primary: '#000000', secondary: '#1a1a1a' },
+  'ulta': { primary: '#E85D00', secondary: '#C44D00' },
+  'gap': { primary: '#000066', secondary: '#000044' },
+  'old navy': { primary: '#003366', secondary: '#002244' },
+  'zara': { primary: '#000000', secondary: '#1a1a1a' },
+  'h&m': { primary: '#E50010', secondary: '#CC000E' },
+  'adidas': { primary: '#000000', secondary: '#1a1a1a' },
+  'puma': { primary: '#000000', secondary: '#1a1a1a' },
+  'under armour': { primary: '#1D1D1D', secondary: '#333333' },
+  'forever 21': { primary: '#FFD700', secondary: '#B8960F' },
+  'urban outfitters': { primary: '#1a1a1a', secondary: '#333333' },
+  'anthropologie': { primary: '#2C2C2C', secondary: '#4A4A4A' },
+  'best buy': { primary: '#0046BE', secondary: '#003399' },
+  'home depot': { primary: '#F96302', secondary: '#C44F01' },
+  'lowes': { primary: '#004990', secondary: '#003366' },
+  'macys': { primary: '#E21A2C', secondary: '#B8151F' },
+  'whole foods': { primary: '#00674B', secondary: '#004D38' },
+  'trader joes': { primary: '#BA1F31', secondary: '#8B1724' },
+  'chipotle': { primary: '#441500', secondary: '#2D0E00' },
+  'mcdonalds': { primary: '#DA291C', secondary: '#FFC72C' },
+  'chick-fil-a': { primary: '#E51636', secondary: '#B31229' },
+  'dominos': { primary: '#006491', secondary: '#E31837' },
+  'panera': { primary: '#4E7C32', secondary: '#3A5C25' },
+  'dunkin': { primary: '#FF671F', secondary: '#E05A1A' },
+  'taco bell': { primary: '#702082', secondary: '#521860' },
+  'subway': { primary: '#008C15', secondary: '#006B10' },
+  'kroger': { primary: '#1952A4', secondary: '#133D7A' },
+  'publix': { primary: '#3D8B37', secondary: '#2D6829' },
+  'cvs': { primary: '#CC0000', secondary: '#990000' },
+  'walgreens': { primary: '#E31837', secondary: '#B31229' },
+  'rite aid': { primary: '#003DA5', secondary: '#002D7B' }
+};
+
+function extractBrandColor(websiteOrName) {
+  const input = (websiteOrName || '').toLowerCase()
+    .replace(/https?:\/\/(www\.)?/, '')
+    .replace(/\.com.*$/, '')
+    .replace(/\.org.*$/, '')
+    .replace(/\.net.*$/, '')
+    .trim();
+  // Check exact match
+  if (BRAND_COLORS[input]) return BRAND_COLORS[input];
+  // Check partial match
+  for (const [brand, colors] of Object.entries(BRAND_COLORS)) {
+    if (input.includes(brand) || brand.includes(input)) return colors;
+  }
+  // Generate a deterministic color from the name
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    hash = input.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const hue = Math.abs(hash) % 360;
+  const primary = `hsl(${hue}, 65%, 35%)`;
+  const secondary = `hsl(${hue}, 65%, 25%)`;
+  return { primary, secondary };
+}
+
 // ===== POV PERSISTENCE =====
 const GITHUB_REPO = 'vnayak12/agentforce-factory';
 const GITHUB_BRANCH = 'main';
@@ -1610,7 +1682,7 @@ function savePOV(pov) {
 }
 
 function clearAllPOVs() {
-  if (confirm('Remove all saved Showcases from your browser?')) {
+  if (confirm('Remove all saved demos from your browser?')) {
     localStorage.removeItem('agentforce-povs');
     renderMyPOVs();
   }
@@ -1635,23 +1707,25 @@ function renderMyPOVs() {
   grid.innerHTML = povs.map(pov => {
     const emoji = archetypeEmojis[pov.archetype] || '🤖';
     const date = new Date(pov.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    const typeBadge = pov.type === 'ae' ? '<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">AE</span>' :
-                      pov.type === 'architect' ? '<span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full">ARCH</span>' :
-                      '<span class="bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded-full">SE</span>';
     const shareUrl = (pov.type === 'ae' || pov.type === 'architect') ? `${window.location.origin}/pov.html?id=${pov.id}` : `${window.location.origin}${window.location.pathname}#pov=${pov.id}`;
+    const brandColor = pov.brandColor || '#032D60';
+    const brandColorEnd = pov.brandColorEnd || brandColor;
     return `
-      <div class="group rounded-xl border-2 border-gray-100 hover:border-sf-accent hover:shadow-lg transition-all overflow-hidden cursor-pointer" onclick="loadSavedPOV('${pov.id}')">
-        <div class="bg-gradient-to-r from-blue-800 to-indigo-900 px-5 py-4 text-white">
-          <div class="flex justify-between items-center mb-2">
-            ${typeBadge}
-            <span class="text-xs text-white/60">${date}</span>
+      <div class="group rounded-xl border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden cursor-pointer" onclick="loadSavedPOV('${pov.id}')">
+        <div class="bg-white px-5 py-4 flex items-center gap-3 border-b border-gray-100">
+          <span class="text-2xl">${emoji}</span>
+          <div>
+            <div class="text-lg font-bold tracking-wide" style="color: ${brandColor};">${pov.customer}</div>
+            <div class="text-xs text-sf-muted">${date}</div>
           </div>
-          <div class="text-lg font-bold">${pov.customer}</div>
-          <div class="text-sm text-blue-200">${emoji} ${pov.archetype || 'Architecture Showcase'}</div>
         </div>
-        <div class="bg-white px-5 py-3 flex justify-between items-center">
-          <span class="text-sm text-sf-accent font-medium group-hover:underline">Open Showcase →</span>
-          <button onclick="event.stopPropagation(); copyShareLink('${shareUrl}')" class="text-xs text-sf-muted hover:text-sf-accent transition cursor-pointer" title="Copy share link">🔗 Share</button>
+        <div class="px-5 pb-5 pt-3" style="background: linear-gradient(135deg, ${brandColor} 0%, ${brandColorEnd} 100%);">
+          <div class="text-white/70 text-xs font-medium mb-2">${pov.industry || 'Retail'}</div>
+          <div class="text-sm text-white/90">${pov.archetype || 'Architecture Demo'}</div>
+          <div class="flex justify-between items-center mt-3">
+            <span class="text-white text-sm font-semibold group-hover:underline">View →</span>
+            <button onclick="event.stopPropagation(); copyShareLink('${shareUrl}')" class="text-white/60 hover:text-white text-xs transition cursor-pointer" title="Copy share link">🔗 Share</button>
+          </div>
         </div>
       </div>
     `;
@@ -1711,7 +1785,7 @@ async function pushPOVToGitHub(pov) {
     } catch {}
 
     const body = {
-      message: `POV: ${pov.customer} - ${pov.archetype || 'Architecture Showcase'}`,
+      message: `POV: ${pov.customer} - ${pov.archetype || 'Architecture Demo'}`,
       content: content,
       branch: GITHUB_BRANCH
     };
@@ -1798,7 +1872,7 @@ async function loadGeneratedPOVs() {
 
     if (!povs.length) { section.classList.add('hidden'); return; }
     section.classList.remove('hidden');
-    countEl.textContent = `${povs.length} POV${povs.length !== 1 ? 's' : ''}`;
+    countEl.textContent = `${povs.length} demo${povs.length !== 1 ? 's' : ''}`;
 
     const archetypeEmojis = {
       'Order & Returns Agent': '📦',
@@ -1807,7 +1881,7 @@ async function loadGeneratedPOVs() {
       'Sales Agent': '💰',
       'Store Ops Agent': '🏪',
       'Employee Ops Agent': '👥',
-      'Architecture Showcase': '🏗️'
+      'Architecture Demo': '🏗️'
     };
 
     const archetypeGradients = {
@@ -1821,24 +1895,26 @@ async function loadGeneratedPOVs() {
 
     grid.innerHTML = povs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(pov => {
       const emoji = archetypeEmojis[pov.archetype] || '🤖';
-      const gradient = archetypeGradients[pov.archetypeKey] || 'from-blue-800 to-indigo-900';
       const date = new Date(pov.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const shareUrl = `https://vnayak12.github.io/agentforce-factory/pov.html?id=${pov.id}`;
-      const aeTag = pov.aeName ? `<span class="text-xs text-white/60">by ${pov.aeName}</span>` : '';
+      const brandColor = pov.brandColor || '#032D60';
+      const brandColorEnd = pov.brandColorEnd || brandColor;
       return `
-        <a href="${shareUrl}" target="_blank" class="group block rounded-xl border-2 border-gray-100 hover:border-sf-accent hover:shadow-lg transition-all overflow-hidden">
-          <div class="bg-gradient-to-r ${gradient} px-5 py-4 text-white">
-            <div class="flex justify-between items-center mb-2">
-              <span class="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">${pov.industry || 'Retail'}</span>
-              <span class="text-xs text-white/60">${date}</span>
+        <a href="${shareUrl}" target="_blank" class="group block rounded-xl border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden">
+          <div class="bg-white px-5 py-4 flex items-center gap-3 border-b border-gray-100">
+            <span class="text-2xl">${emoji}</span>
+            <div>
+              <div class="text-lg font-bold tracking-wide" style="color: ${brandColor};">${pov.customer}</div>
+              <div class="text-xs text-sf-muted">${date}${pov.aeName ? ' · ' + pov.aeName : ''}</div>
             </div>
-            <div class="text-lg font-bold">${pov.customer}</div>
-            <div class="text-sm text-white/80">${emoji} ${pov.archetype || 'POV'}</div>
-            ${aeTag}
           </div>
-          <div class="bg-white px-5 py-3 flex justify-between items-center">
-            <span class="text-sm text-sf-accent font-medium group-hover:underline">View →</span>
-            <button onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText('${shareUrl}');this.textContent='✅ Copied!';setTimeout(()=>this.textContent='🔗 Share',1500)" class="text-xs text-sf-muted hover:text-sf-accent transition cursor-pointer" title="Copy share link">🔗 Share</button>
+          <div class="px-5 pb-5 pt-3" style="background: linear-gradient(135deg, ${brandColor} 0%, ${brandColorEnd} 100%);">
+            <div class="text-white/70 text-xs font-medium mb-2">${pov.industry || 'Retail'}</div>
+            <div class="text-sm text-white/90">${pov.archetype || 'Demo'}</div>
+            <div class="flex justify-between items-center mt-3">
+              <span class="text-white text-sm font-semibold group-hover:underline">View →</span>
+              <button onclick="event.preventDefault();event.stopPropagation();navigator.clipboard.writeText('${shareUrl}');this.textContent='✅ Copied!';setTimeout(()=>this.textContent='🔗 Share',1500)" class="text-white/60 hover:text-white text-xs transition cursor-pointer" title="Copy share link">🔗 Share</button>
+            </div>
           </div>
         </a>
       `;
@@ -1932,9 +2008,9 @@ function generateAEOutput() {
   // Create stable slug for shareable URL
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
 
-  // Show generating modal, save POV, then redirect to full pov.html experience
+  // Extract brand color from website, then generate
+  const brandColors = extractBrandColor(website || account);
   showGeneratingModal(() => {
-    // Save POV with stable slug
     const pov = {
       id: slug,
       type: 'ae',
@@ -1944,11 +2020,11 @@ function generateAEOutput() {
       archetype: archetype,
       archetypeKey: archetypeKey,
       industry: 'Retail',
+      brandColor: brandColors.primary,
+      brandColorEnd: brandColors.secondary,
       createdAt: new Date().toISOString()
     };
     savePOV(pov);
-
-    // Redirect to full pov.html (has teams, scenarios, live SCRT2 demo)
     window.location.href = `pov.html?id=${slug}`;
   });
 }
@@ -1963,7 +2039,7 @@ function showShareableLink(slug, customer) {
     <div class="flex items-start gap-3">
       <div class="text-2xl">🔗</div>
       <div class="flex-1">
-        <div class="font-bold text-sf-blue mb-1">POV Ready to Share!</div>
+        <div class="font-bold text-sf-blue mb-1">Demo Ready to Share!</div>
         <div class="text-sm text-sf-muted mb-3">Send this link to ${customer}:</div>
         <div class="bg-gray-50 rounded-lg p-2 text-xs text-sf-blue break-all font-mono mb-3">${shareUrl}</div>
         <div class="flex gap-2">
@@ -1986,7 +2062,7 @@ function generateArchOutput() {
   const usecase = document.getElementById('arch-usecase').value || '';
 
   showGeneratingModal(() => {
-    document.getElementById('arch-output-title').textContent = `${customer} · Architecture Showcase`;
+    document.getElementById('arch-output-title').textContent = `${customer} · Architecture Demo`;
     document.getElementById('arch-pov-customer').textContent = customer;
     document.getElementById('arch-mapped-customer').textContent = customer;
     document.getElementById('arch-demo-brand').textContent = customer;
@@ -2002,7 +2078,7 @@ function generateArchOutput() {
       website: website,
       architectName: archName,
       usecase: usecase,
-      archetype: 'Architecture Showcase',
+      archetype: 'Architecture Demo',
       createdAt: new Date().toISOString()
     });
   });
