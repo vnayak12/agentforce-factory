@@ -295,13 +295,6 @@
   <!-- Live Demo Tab Content -->
   <div id="content-demo" class="hidden max-w-7xl mx-auto px-6 py-8">
 
-    <!-- Agent Tabs (shown when multi-agent experience is enabled) -->
-    <div id="agent-tabs" class="hidden mb-4">
-      <div class="bg-white rounded-xl shadow-md p-1 inline-flex gap-1" id="agent-tabs-bar">
-        <!-- Populated dynamically -->
-      </div>
-    </div>
-
     <!-- Try a Scenario (ABOVE the chat, like Wingstop) -->
     <div class="bg-white rounded-xl shadow-md p-6 mb-6">
       <h3 class="text-lg font-bold text-sf-blue mb-1">Try a Scenario</h3>
@@ -573,48 +566,6 @@ let typingIndicatorActive = false;
 let sessionInitialized = false;
 let initPromise = null;
 
-// ─── Multi-Agent Tab Support (Teams) ───
-// Two teams: customer-facing agents and internal ops agents
-const CUSTOMER_TEAM_KEYS = ['product-advisor', 'loyalty', 'order-returns'];
-const OPS_TEAM_KEYS = ['sales-agent', 'store-locator', 'employee-ops'];
-
-function getAgentTabs(archetypeKey) {
-  let teamKeys;
-  if (CUSTOMER_TEAM_KEYS.includes(archetypeKey)) {
-    teamKeys = CUSTOMER_TEAM_KEYS;
-  } else if (OPS_TEAM_KEYS.includes(archetypeKey)) {
-    teamKeys = OPS_TEAM_KEYS;
-  } else {
-    return null; // No tabs for unknown archetypes
-  }
-  return teamKeys.map(key => {
-    const cfg = ARCHETYPES[key];
-    if (!cfg) return null;
-    return { key, label: `${cfg.emoji} ${cfg.label}`, active: key === archetypeKey };
-  }).filter(Boolean);
-}
-
-function switchAgentTab(archetypeKey) {
-  const config = ARCHETYPES[archetypeKey];
-  if (!config) return;
-  currentPOVConfig = config;
-  document.getElementById('demo-brand').textContent = currentPOVName;
-  document.getElementById('demo-subtitle').textContent = config.subtitle;
-  document.getElementById('demo-icon').textContent = config.emoji;
-  document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-5 flex items-center justify-between`;
-  renderScenarios(config);
-  renderQuickPrompts(config);
-  const tabs = getAgentTabs(archetypeKey);
-  if (tabs) {
-    const tabBar = document.getElementById('agent-tabs-bar');
-    tabBar.innerHTML = tabs.map(t => `
-      <button onclick="switchAgentTab('${t.key}')" class="px-4 py-2.5 rounded-lg text-sm font-semibold transition cursor-pointer ${t.key === archetypeKey ? 'bg-sf-accent text-white shadow-md' : 'text-sf-muted hover:bg-gray-100'}">
-        ${t.label}
-      </button>
-    `).join('');
-  }
-}
-
 // ─── Render scenario cards ───
 function renderScenarios(config) {
   const el = document.getElementById('demo-scenarios');
@@ -770,7 +721,7 @@ async function createConversation(token) {
   return convId;
 }
 
-// ─── SCRT2: Connect SSE Stream ───
+// ─── SCRT2: Connect SSE Stream (matches working Wingstop pattern) ───
 async function connectSSE(token) {
   try {
     const resp = await fetch(`${SCRT2_BASE}/eventrouter/v1/sse`, {
@@ -793,12 +744,18 @@ async function connectSSE(token) {
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
         buffer = lines.pop() || '';
+
+        // SSE format: event: TYPE\ndata: JSON\n\n
+        let currentEvent = null;
         for (const line of lines) {
-          if (line.startsWith('data:')) {
-            try {
-              const payload = JSON.parse(line.slice(5).trim());
-              handleSSEEvent(payload);
-            } catch (e) { /* ignore parse errors */ }
+          if (line.startsWith('event:')) {
+            currentEvent = line.slice(6).trim();
+          } else if (line.startsWith('data:') && currentEvent) {
+            const dataStr = line.slice(5).trim();
+            handleSSELine(currentEvent, dataStr);
+            currentEvent = null;
+          } else if (line === '') {
+            currentEvent = null;
           }
         }
       }
@@ -808,73 +765,65 @@ async function connectSSE(token) {
   }
 }
 
-// ─── SCRT2: Handle SSE Events ───
-function handleSSEEvent(event) {
-  const type = event.type || event.eventType || '';
-
-  if (type === 'CONVERSATION_MESSAGE' || type === 'conversationMessage') {
-    const payload = event.payload || event;
-    const abstractMsg = payload.abstractMessage || payload;
-    const msgType = abstractMsg.messageType;
-
-    // Only process agent messages
-    const sender = payload.senderRole || abstractMsg.senderRole || payload.sender?.role || '';
-    if (sender === 'EndUser' || sender === 'endUser') return;
-
-    if (msgType === 'StaticContentMessage') {
-      const content = abstractMsg.staticContent || {};
-      const text = content.text || '';
-      if (text) {
-        removeTypingIndicator();
-        appendMessage('bot', escapeHtml(text));
-      }
-    } else if (msgType === 'RichContentMessage' || msgType === 'ChoicesMessage') {
-      // Handle rich messages with choices/buttons
-      const entries = abstractMsg.content?.entries || abstractMsg.choices || [];
-      let text = abstractMsg.text || abstractMsg.content?.text || '';
-      const choices = [];
-      for (const entry of entries) {
-        if (entry.entryType === 'Text' || entry.type === 'Text') {
-          text += (text ? '\n' : '') + (entry.text || '');
-        } else if (entry.entryType === 'Choices' || entry.type === 'Choices') {
-          for (const choice of (entry.choices || [])) {
-            choices.push(choice.title || choice.text || '');
-          }
-        } else if (entry.title || entry.text) {
-          choices.push(entry.title || entry.text);
-        }
-      }
+// ─── SCRT2: Handle SSE event line (event type + data) ───
+function handleSSELine(eventType, dataStr) {
+  if (eventType === 'ping') return;
+  try {
+    const data = JSON.parse(dataStr);
+    if (eventType === 'CONVERSATION_MESSAGE') {
+      handleAgentMessage(data);
+    } else if (eventType === 'CONVERSATION_TYPING_STARTED_INDICATOR') {
+      showTypingIndicator();
+    } else if (eventType === 'CONVERSATION_TYPING_STOPPED_INDICATOR') {
       removeTypingIndicator();
-      if (text) appendMessage('bot', escapeHtml(text));
-      if (choices.length > 0) {
-        const choiceHtml = `<div class="flex gap-3 fade-in">
-          <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
-          <div class="flex flex-wrap gap-2 max-w-md">
-            ${choices.map(c => `<button onclick="sendQuickReply('${c.replace(/'/g, "\\'")}')" class="bg-blue-50 text-sf-accent border border-sf-accent/30 rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-sf-accent hover:text-white transition">${escapeHtml(c)}</button>`).join('')}
-          </div>
-        </div>`;
-        const chat = document.getElementById('demo-chat');
-        if (chat) { chat.innerHTML += choiceHtml; chat.scrollTop = chat.scrollHeight; }
-      }
+    } else if (eventType === 'CONVERSATION_ROUTING_RESULT') {
+      console.log('Routing result:', data);
+    } else if (eventType === 'CONVERSATION_PARTICIPANT_CHANGED') {
+      console.log('Participant changed:', data);
     }
-  } else if (type === 'CONVERSATION_TYPING_STARTED_INDICATOR' || type === 'typingStartedIndicator') {
-    showTypingIndicator();
-  } else if (type === 'CONVERSATION_TYPING_STOPPED_INDICATOR' || type === 'typingStoppedIndicator') {
-    removeTypingIndicator();
-  } else if (type === 'CONVERSATION_ROUTING_RESULT' || type === 'routingResult') {
-    const result = (event.payload || event).routingType || (event.payload || event).result || '';
-    if (result === 'Initial' || result === 'Transfer') {
-      console.log('Routing result:', result);
-    }
-  } else if (type === 'CONVERSATION_PARTICIPANT_CHANGED' || type === 'participantChanged') {
-    const entries = (event.payload || event).entries || (event.payload || event).participants || [];
-    for (const p of entries) {
-      if (p.role === 'Agent' || p.role === 'Chatbot') {
-        const agentName = p.displayName || p.name || 'Agent';
-        const subEl = document.getElementById('demo-subtitle');
-        if (subEl) subEl.textContent = agentName;
-      }
-    }
+  } catch (e) {
+    console.log('SSE parse error:', eventType, dataStr.slice(0, 100));
+  }
+}
+
+// ─── SCRT2: Extract text from any message payload format ───
+function extractMessageText(payload) {
+  // Try StaticContentMessage: payload.abstractMessage.staticContent.text
+  if (payload.abstractMessage) {
+    const am = payload.abstractMessage;
+    if (am.staticContent && am.staticContent.text) return am.staticContent.text;
+  }
+  // Direct staticContent
+  if (payload.staticContent && payload.staticContent.text) return payload.staticContent.text;
+  // Flat text
+  if (payload.text) return payload.text;
+  if (payload.message && payload.message.text) return payload.message.text;
+  if (typeof payload === 'string') return payload;
+  // Fallback: regex search through stringified JSON
+  const str = JSON.stringify(payload);
+  const match = str.match(/"text"\s*:\s*"([^"]+)"/);
+  if (match) return match[1].replace(/\\n/g, '\n');
+  return null;
+}
+
+// ─── SCRT2: Handle agent message (matches Wingstop pattern) ───
+function handleAgentMessage(data) {
+  if (!data.conversationEntry) return;
+  const entry = data.conversationEntry;
+  const sender = entry.sender || {};
+  // Skip messages from the end user (our own messages echoed back)
+  if (sender.role === 'EndUser') return;
+
+  let payload = entry.entryPayload;
+  if (typeof payload === 'string') {
+    try { payload = JSON.parse(payload); } catch(e) { return; }
+  }
+  if (!payload) return;
+
+  removeTypingIndicator();
+  const msgText = extractMessageText(payload);
+  if (msgText) {
+    appendMessage('bot', escapeHtml(msgText));
   }
 }
 
@@ -1154,19 +1103,6 @@ function renderPOV(pov) {
   }
   renderScenarios(config);
   renderQuickPrompts(config);
-
-  // Show agent team tabs for ALL archetypes (customer-facing or internal ops)
-  const tabs = getAgentTabs(pov.archetypeKey);
-  const agentTabsEl = document.getElementById('agent-tabs');
-  if (tabs && agentTabsEl) {
-    agentTabsEl.classList.remove('hidden');
-    const tabBar = document.getElementById('agent-tabs-bar');
-    tabBar.innerHTML = tabs.map(t => `
-      <button onclick="switchAgentTab('${t.key}')" class="px-4 py-2.5 rounded-lg text-sm font-semibold transition cursor-pointer ${t.active ? 'bg-sf-accent text-white shadow-md' : 'text-sf-muted hover:bg-gray-100'}">
-        ${t.label}
-      </button>
-    `).join('');
-  }
 
   // Initialize live SCRT2 agent connection (falls back to simulated mode)
   initLiveAgent();
