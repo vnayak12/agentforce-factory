@@ -65,7 +65,7 @@
   <!-- Tabs -->
   <div class="bg-white border-b sticky top-0 z-10">
     <div class="max-w-7xl mx-auto px-6 flex gap-8">
-      <button onclick="switchTab('pov')" id="tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">Demo</button>
+      <button onclick="switchTab('pov')" id="tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">POV</button>
       <button onclick="switchTab('demo')" id="tab-demo" class="py-4 px-2 text-sm tab-inactive cursor-pointer">Live Demo</button>
     </div>
   </div>
@@ -329,8 +329,19 @@
         </div>
       </div>
 
-      <!-- Chat area -->
-      <div class="bg-white" style="min-height: 450px; max-height: 550px; display: flex; flex-direction: column;">
+      <!-- Live Agent Launch Area (shown when MIAW is loaded) -->
+      <div id="demo-live-area" class="hidden bg-white p-8 text-center" style="min-height: 450px; display: none; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="text-6xl mb-4">💬</div>
+        <h3 class="text-xl font-bold text-sf-blue mb-2">Live Agentforce Agent Ready</h3>
+        <p class="text-sf-muted mb-6 max-w-md">Chat with a real Agentforce-powered agent. The agent is connected to live Salesforce data and can answer questions, look up orders, and help resolve issues.</p>
+        <button onclick="openLiveChat()" class="bg-sf-accent text-white px-8 py-3.5 rounded-full text-lg font-semibold hover:bg-blue-700 transition cursor-pointer shadow-lg hover:shadow-xl transform hover:scale-105">
+          Start Agent Conversation →
+        </button>
+        <p class="text-xs text-sf-muted mt-4">Powered by Salesforce Agentforce · Embedded Messaging</p>
+      </div>
+
+      <!-- Simulated Chat area (fallback when MIAW fails) -->
+      <div id="demo-sim-area" class="bg-white" style="min-height: 450px; max-height: 550px; display: flex; flex-direction: column;">
         <div id="demo-chat" class="flex-1 p-5 space-y-4 overflow-y-auto" style="min-height: 380px;"></div>
         <div class="border-t p-4 flex gap-3">
           <input type="text" id="demo-input" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2.5 text-sm focus:border-sf-accent focus:ring-1 focus:ring-sf-accent outline-none" onkeydown="if(event.key==='Enter')sendMessage()">
@@ -556,17 +567,17 @@ function switchTab(tab) {
   window.scrollTo(0, 0);
 }
 
-// ─── SCRT2 Live Agent Connection (same pattern as Wingstop) ───
-const SCRT2_CONFIG = {
+// ─── MIAW Embedded Messaging Config ───
+const MIAW_CONFIG = {
   orgId: '00Dbm00000jtzs9',
-  developerName: 'Sales_Assistant_Teams_API',
-  baseURL: 'https://trailsignup-d7fd90d7f30b8a.my.salesforce-scrt.com'
+  deploymentName: 'Retail_Agent_Web_Chat',
+  siteURL: 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWRetailAgentWebChat1780786812852',
+  scrt2URL: 'https://trailsignup-d7fd90d7f30b8a.my.salesforce-scrt.com',
+  bootstrapJS: 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWRetailAgentWebChat1780786812852/assets/js/bootstrap.min.js'
 };
 
-let scrt2Token = null;
-let conversationId = null;
-let sseConnection = null;
 let isLiveAgent = false;
+let miawLoaded = false;
 let currentPOVConfig = null;
 let currentPOVName = '';
 let pendingBotMessage = '';
@@ -639,10 +650,20 @@ function renderQuickPrompts(config) {
 // ─── Trigger Scenario from card/chip click ───
 function triggerScenario(prompt) {
   switchTab('demo');
-  const input = document.getElementById('demo-input');
-  if (input) {
-    input.value = prompt;
-    sendMessage();
+  if (isLiveAgent) {
+    // Open MIAW widget and let user paste the scenario prompt
+    try {
+      embeddedservice_bootstrap.utilAPI.launchChat();
+      setTimeout(() => {
+        try { embeddedservice_bootstrap.sendMessage(prompt); } catch(e) { console.log('Auto-send not supported'); }
+      }, 1500);
+    } catch(e) { console.log('Widget not ready'); }
+  } else {
+    const input = document.getElementById('demo-input');
+    if (input) {
+      input.value = prompt;
+      sendMessage();
+    }
   }
 }
 
@@ -719,198 +740,67 @@ function removeTypingIndicator() {
   if (el) el.remove();
 }
 
-// ─── SCRT2: Get Access Token ───
-async function getAccessToken() {
-  const url = `${SCRT2_CONFIG.baseURL}/iamessage/api/v2/authorization/unauthenticated/access-token`;
-  const resp = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      orgId: SCRT2_CONFIG.orgId,
-      esDeveloperName: SCRT2_CONFIG.developerName,
-      capabilitiesVersion: '1',
-      platform: 'Web'
-    })
-  });
-  if (!resp.ok) throw new Error(`Token request failed: ${resp.status}`);
-  const data = await resp.json();
-  return data.accessToken;
-}
+// ─── Load MIAW Embedded Messaging Widget ───
+function loadMIAWWidget() {
+  if (miawLoaded) return;
+  miawLoaded = true;
 
-// ─── SCRT2: Create Conversation ───
-async function createConversation(token) {
-  const url = `${SCRT2_CONFIG.baseURL}/iamessage/api/v2/conversation`;
-  const resp = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify({
-      conversationId: crypto.randomUUID(),
-      esDeveloperName: SCRT2_CONFIG.developerName
-    })
-  });
-  if (!resp.ok) throw new Error(`Conversation creation failed: ${resp.status}`);
-  const data = await resp.json();
-  return data;
-}
+  // Load the bootstrap script
+  const script = document.createElement('script');
+  script.src = MIAW_CONFIG.bootstrapJS;
+  script.onload = () => {
+    try {
+      embeddedservice_bootstrap.settings.language = 'en_US';
+      // Hide the default floating chat button — we embed inline
+      embeddedservice_bootstrap.settings.hideChatButton = true;
 
-// ─── SCRT2: Connect SSE Stream ───
-function connectSSE(token) {
-  if (sseConnection) { sseConnection.close(); sseConnection = null; }
-  const url = `${SCRT2_CONFIG.baseURL}/eventrouter/v1/sse?_ts=${Date.now()}`;
-  const es = new EventSource(url + `&Authorization=Bearer ${encodeURIComponent(token)}`);
+      embeddedservice_bootstrap.init(
+        MIAW_CONFIG.orgId,
+        MIAW_CONFIG.deploymentName,
+        MIAW_CONFIG.siteURL,
+        { scrt2URL: MIAW_CONFIG.scrt2URL }
+      );
 
-  // Fallback: if EventSource doesn't support auth header, use fetch-based SSE
-  es.onerror = () => {
-    es.close();
-    connectSSEFetch(token);
+      isLiveAgent = true;
+      setAgentStatus('connected');
+      console.log('MIAW widget initialized successfully');
+
+      // Show the live agent launch area, hide simulated chat
+      const liveArea = document.getElementById('demo-live-area');
+      const simArea = document.getElementById('demo-sim-area');
+      if (liveArea) { liveArea.style.display = 'flex'; liveArea.classList.remove('hidden'); }
+      if (simArea) { simArea.style.display = 'none'; }
+    } catch (err) {
+      console.error('MIAW init failed:', err);
+      isLiveAgent = false;
+      setAgentStatus('simulated');
+      showGreeting();
+    }
   };
-
-  es.addEventListener('CONVERSATION_MESSAGE', (e) => handleSSEEvent('CONVERSATION_MESSAGE', e.data));
-  es.addEventListener('CONVERSATION_TYPING_STARTED_INDICATOR', () => showTypingIndicator());
-  es.addEventListener('CONVERSATION_TYPING_STOPPED_INDICATOR', () => removeTypingIndicator());
-  es.addEventListener('CONVERSATION_ROUTING_RESULT', (e) => handleSSEEvent('CONVERSATION_ROUTING_RESULT', e.data));
-
-  sseConnection = es;
+  script.onerror = () => {
+    console.warn('MIAW bootstrap script failed to load, using simulated mode');
+    isLiveAgent = false;
+    setAgentStatus('simulated');
+    showGreeting();
+  };
+  document.head.appendChild(script);
 }
 
-// ─── SCRT2: Fetch-based SSE (fallback) ───
-async function connectSSEFetch(token) {
+// ─── Open the live MIAW chat widget ───
+function openLiveChat() {
   try {
-    const url = `${SCRT2_CONFIG.baseURL}/eventrouter/v1/sse`;
-    const resp = await fetch(url, {
-      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'text/event-stream' }
-    });
-    if (!resp.ok) throw new Error(`SSE fetch failed: ${resp.status}`);
-    const reader = resp.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    function processBuffer() {
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-      let currentEvent = '';
-      for (const line of lines) {
-        if (line.startsWith('event:')) {
-          currentEvent = line.substring(6).trim();
-        } else if (line.startsWith('data:') && currentEvent) {
-          const data = line.substring(5).trim();
-          if (currentEvent === 'CONVERSATION_MESSAGE') handleSSEEvent('CONVERSATION_MESSAGE', data);
-          else if (currentEvent === 'CONVERSATION_TYPING_STARTED_INDICATOR') showTypingIndicator();
-          else if (currentEvent === 'CONVERSATION_TYPING_STOPPED_INDICATOR') removeTypingIndicator();
-          else if (currentEvent === 'CONVERSATION_ROUTING_RESULT') handleSSEEvent('CONVERSATION_ROUTING_RESULT', data);
-          currentEvent = '';
-        }
-      }
-    }
-
-    async function read() {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        processBuffer();
-      }
-    }
-    read().catch(err => console.warn('SSE stream ended:', err));
-  } catch (err) {
-    console.warn('Fetch SSE failed, using simulated mode:', err);
-  }
-}
-
-// ─── Handle SSE Events ───
-function handleSSEEvent(eventType, data) {
-  try {
-    const parsed = JSON.parse(data);
-    if (eventType === 'CONVERSATION_MESSAGE') {
-      const content = parsed.conversationEntry?.entryPayload;
-      if (!content) return;
-      let payload;
-      try { payload = typeof content === 'string' ? JSON.parse(content) : content; } catch { payload = content; }
-      // Extract text from various message formats
-      let text = '';
-      if (payload.abstractMessage?.messageType === 'StaticContentMessage') {
-        text = payload.abstractMessage.staticContent?.formatType === 'RichLink'
-          ? payload.abstractMessage.staticContent?.text || ''
-          : payload.abstractMessage.text || '';
-      } else if (payload.abstractMessage?.text) {
-        text = payload.abstractMessage.text;
-      } else if (payload.text) {
-        text = payload.text;
-      } else if (typeof payload === 'string') {
-        text = payload;
-      }
-      // Only show messages from the agent (not echo of user messages)
-      const role = parsed.conversationEntry?.sender?.role;
-      if (text && role !== 'EndUser') {
-        removeTypingIndicator();
-        appendMessage('bot', text);
-      }
-    } else if (eventType === 'CONVERSATION_ROUTING_RESULT') {
-      const result = parsed.conversationEntry?.entryPayload;
-      if (result) {
-        let payload;
-        try { payload = typeof result === 'string' ? JSON.parse(result) : result; } catch { payload = result; }
-        if (payload.routingType === 'Initial' || payload.failureType) {
-          console.log('Routing result:', payload);
-        }
-      }
+    if (typeof embeddedservice_bootstrap !== 'undefined') {
+      embeddedservice_bootstrap.utilAPI.launchChat();
     }
   } catch (err) {
-    console.warn('SSE parse error:', err);
-  }
-}
-
-// ─── SCRT2: Send Message ───
-async function sendMessageToAgent(text) {
-  if (!scrt2Token || !conversationId) return false;
-  const url = `${SCRT2_CONFIG.baseURL}/iamessage/api/v2/conversation/${conversationId}/message`;
-  try {
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${scrt2Token}`
-      },
-      body: JSON.stringify({
-        message: {
-          id: crypto.randomUUID(),
-          messageType: 'StaticContentMessage',
-          staticContent: {
-            formatType: 'Text',
-            text: text
-          }
-        },
-        esDeveloperName: SCRT2_CONFIG.developerName,
-        isNewMessagingSession: false
-      })
-    });
-    return resp.ok;
-  } catch (err) {
-    console.warn('Send message failed:', err);
-    return false;
+    console.warn('Could not launch chat:', err);
   }
 }
 
 // ─── Initialize Live Agent Connection ───
 async function initLiveAgent() {
   setAgentStatus('connecting');
-  try {
-    scrt2Token = await getAccessToken();
-    const conv = await createConversation(scrt2Token);
-    conversationId = conv.conversationId || conv.id;
-    connectSSE(scrt2Token);
-    isLiveAgent = true;
-    setAgentStatus('connected');
-    console.log('Live agent connected, conversation:', conversationId);
-  } catch (err) {
-    console.warn('Live agent connection failed, using simulated mode:', err);
-    isLiveAgent = false;
-    setAgentStatus('simulated');
-    showGreeting();
-  }
+  loadMIAWWidget();
 }
 
 // ─── Show initial greeting in simulated mode ───
@@ -977,14 +867,17 @@ async function sendMessage() {
   appendMessage('user', text);
 
   if (isLiveAgent) {
-    // Send to live SCRT2 agent
-    showTypingIndicator();
-    const sent = await sendMessageToAgent(text);
-    if (!sent) {
-      removeTypingIndicator();
-      appendMessage('bot', 'Sorry, I had trouble sending that message. Please try again.');
+    // When MIAW is active, open the chat widget and pass the message
+    try {
+      embeddedservice_bootstrap.utilAPI.launchChat();
+      // Use sendMessage API if available
+      setTimeout(() => {
+        try { embeddedservice_bootstrap.sendMessage(text); } catch(e) { console.log('Auto-send not supported, user can type in widget'); }
+      }, 1500);
+    } catch (err) {
+      appendMessage('bot', 'Please click "Start Agent Conversation" to chat with the live agent.');
     }
-    // Response will come through SSE
+    return;
   } else {
     // Simulated fallback
     showTypingIndicator();
