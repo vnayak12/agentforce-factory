@@ -426,32 +426,32 @@ const ARCHETYPES = {
   },
   'sales-agent': {
     label: 'Sales Agent',
-    subtitle: 'Lead Qualification · Product Recommendations · Deals',
+    subtitle: 'Daily Brief · Pipeline · Accounts · Visit Planning',
     emoji: '💰',
     gradient: 'from-emerald-600 to-emerald-900',
     scenarios: [
-      { icon: '🔍', title: 'Lead Qualification', desc: 'New prospect wants to understand which product best fits their needs', prompt: 'I\'m looking for a solution for my mid-size retail business. What do you recommend?' },
-      { icon: '💡', title: 'Quote & Pricing', desc: 'Qualified lead requests pricing details and a custom quote', prompt: 'Can you give me pricing for the enterprise plan for 50 users?' },
-      { icon: '📞', title: 'Handoff to Sales Rep', desc: 'Prospect is ready for a deeper conversation with a specialist', prompt: 'I\'d like to schedule a demo with your sales team.' }
+      { icon: '📊', title: 'Daily Brief', desc: 'Get a summary of today\'s meetings, follow-ups, and top priorities', prompt: 'Give me my daily brief — what meetings do I have today and what should I prioritize?' },
+      { icon: '🏢', title: 'Top Accounts Review', desc: 'Review your highest-value accounts with pipeline and activity insights', prompt: 'Show me my top accounts and their pipeline status.' },
+      { icon: '📅', title: 'Visit Planning', desc: 'Plan your next field visit with account context and talking points', prompt: 'Help me plan my visit to my top account this week. What should I prepare?' }
     ],
     capabilities: [
-      'Intelligent lead qualification and scoring',
-      'Personalized product recommendations',
-      'Real-time pricing and availability',
-      'Deal configuration and quote generation',
-      'Seamless handoff to sales representatives'
+      'Morning daily brief with meetings, tasks, and priorities',
+      'Top accounts dashboard with pipeline and activity status',
+      'Field visit planning with account context and prep notes',
+      'Deal pipeline review and next-step recommendations',
+      'Competitive intelligence and account research'
     ],
     impact: [
-      { value: '50%', label: 'Faster lead response', color: 'blue' },
-      { value: '30%', label: 'Increase in conversion', color: 'green' },
-      { value: '3x', label: 'More qualified leads', color: 'purple' },
+      { value: '50%', label: 'Faster deal prep', color: 'blue' },
+      { value: '30%', label: 'Increase in pipeline velocity', color: 'green' },
+      { value: '3x', label: 'More productive field visits', color: 'purple' },
       { value: '20%', label: 'Revenue uplift', color: 'orange' }
     ],
-    demoGreeting: (name) => `Hello! 💰 I'm your ${name} Sales Assistant. I can help you with:`,
-    demoCapabilities: ['🔍 Find the right products', '💡 Get personalized recommendations', '📋 Request a quote', '📞 Connect with a specialist'],
+    demoGreeting: (name) => `Good morning! 💰 I'm your ${name} Sales Assistant. I can help you with:`,
+    demoCapabilities: ['📊 Get your daily brief', '🏢 Review top accounts & pipeline', '📅 Plan field visits with prep notes', '🎯 Deal strategy & next steps'],
     demoConversation: (name) => [
-      { role: 'user', text: 'I need help finding the right solution for my business.' },
-      { role: 'bot', text: 'I\'d love to help! Let me understand your needs:', card: { title: 'Quick Assessment', status: 'In Progress', details: ['🏢 What industry are you in?', '👥 Team size: 1-10, 10-50, 50+?', '🎯 Primary goal: efficiency, growth, or cost reduction?'] } },
+      { role: 'user', text: 'Give me my daily brief.' },
+      { role: 'bot', text: 'Here\'s your morning brief:', card: { title: 'Daily Brief', status: 'Today', details: ['📅 3 meetings scheduled (9am, 11am, 2pm)', '🏢 2 accounts need follow-up', '💰 Pipeline: $1.2M in deals closing this month', '⚠️ 1 deal at risk — needs attention'] } },
     ]
   },
   'employee-ops': {
@@ -571,6 +571,7 @@ let pendingBotMessage = '';
 let typingIndicatorActive = false;
 let sessionInitialized = false;
 let initPromise = null;
+let suppressNextWelcome = true; // Suppress first agent greeting — we show our own
 
 // ─── Get brand logo URL from website domain ───
 function getBrandLogoUrl(websiteOrName) {
@@ -820,6 +821,18 @@ function extractMessageText(payload) {
   return null;
 }
 
+// ─── Detect if a message is the agent's auto-welcome greeting ───
+function isWelcomeMessage(text) {
+  if (!text) return false;
+  const lower = text.toLowerCase();
+  // Common patterns in the agent's auto-greeting
+  return (lower.includes('virtual shopping assistant') ||
+          lower.includes('how can i help you today') ||
+          lower.includes('how can i assist you') ||
+          lower.includes('welcome!') ||
+          (lower.includes('hi!') && lower.includes('help you') && text.length < 300));
+}
+
 // ─── SCRT2: Handle agent message (matches Wingstop pattern) ───
 function handleAgentMessage(data) {
   if (!data.conversationEntry) return;
@@ -837,6 +850,12 @@ function handleAgentMessage(data) {
   removeTypingIndicator();
   const msgText = extractMessageText(payload);
   if (msgText) {
+    // Suppress the agent's generic welcome greeting — we show our own archetype-appropriate one
+    if (suppressNextWelcome && isWelcomeMessage(msgText)) {
+      suppressNextWelcome = false;
+      console.log('Suppressed agent welcome:', msgText.slice(0, 60));
+      return;
+    }
     appendMessage('bot', escapeHtml(msgText));
   }
 }
@@ -905,15 +924,19 @@ async function initLiveAgent() {
       if (liveArea) { liveArea.style.display = 'none'; }
       if (simArea) { simArea.style.display = 'flex'; }
 
-      // Show a welcome message in the chat
+      // Show archetype-appropriate welcome message in the chat
       const chat = document.getElementById('demo-chat');
-      if (chat) {
+      if (chat && currentPOVConfig) {
         const name = currentPOVName || 'Customer';
+        const config = currentPOVConfig;
+        const greeting = config.demoGreeting ? config.demoGreeting(name) : `👋 I'm your ${name} assistant powered by Agentforce.`;
+        const capabilities = config.demoCapabilities || [];
         chat.innerHTML = `<div class="flex gap-3 fade-in">
-          <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+          <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">${config.emoji || '🤖'}</div>
           <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
-            <p class="text-sm text-gray-800">👋 Live agent connected! I'm your ${name} assistant powered by Agentforce.</p>
-            <p class="text-sm text-gray-800 mt-2">Type a message or click a scenario above to get started.</p>
+            <p class="text-sm text-gray-800">${greeting}</p>
+            ${capabilities.length ? `<div class="mt-2 space-y-1 text-sm text-gray-600">${capabilities.map(c => `<div>${c}</div>`).join('')}</div>` : ''}
+            <p class="text-sm text-gray-800 mt-2">How can I help you today?</p>
           </div>
         </div>`;
       }
