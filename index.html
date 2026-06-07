@@ -112,6 +112,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           <div class="bg-gradient-to-r from-green-600 to-green-800 px-5 py-4 flex-1">
             <div class="text-white text-xs font-medium opacity-80 mb-2">Retail · QSR</div>
             <div class="text-sm text-green-100">Architecture POV & Guest Service Agent</div>
+            <div class="text-xs text-green-200 font-medium mt-1">+ Pre-defined Scenarios & Live Demo</div>
             <div class="text-white text-sm font-medium mt-2 group-hover:underline">View POV →</div>
           </div>
         </a>
@@ -137,6 +138,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           <div class="bg-gradient-to-r from-blue-800 to-blue-950 px-5 py-4 flex-1">
             <div class="text-white text-xs font-medium opacity-80 mb-2">Energy</div>
             <div class="text-sm text-blue-200">Sales Assistant Agent</div>
+            <div class="text-xs text-blue-300 font-medium mt-1">+ Store Ops & Employee Ops Agents (Tabbed)</div>
             <div class="text-white text-sm font-medium mt-2 group-hover:underline">View POV →</div>
           </div>
         </a>
@@ -149,34 +151,11 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           <div class="bg-gradient-to-r from-gray-900 to-gray-700 px-5 py-4 flex-1">
             <div class="text-white text-xs font-medium opacity-80 mb-2">Retail · Apparel</div>
             <div class="text-sm text-gray-300">Customer Service Agent (Pre & Post-Sales)</div>
+            <div class="text-xs text-gray-400 font-medium mt-1">+ Storefront Experience & Order Tracking</div>
             <div class="text-white text-sm font-medium mt-2 group-hover:underline">View POV →</div>
           </div>
         </a>
       </div>
-    </div>
-  </div>
-
-  <!-- My POVs Gallery -->
-  <div id="my-povs-section" class="max-w-7xl mx-auto px-6 mb-16 hidden">
-    <div class="bg-white rounded-2xl shadow-xl p-8">
-      <div class="flex justify-between items-center mb-2">
-        <h2 class="text-2xl font-bold text-sf-blue">My POVs</h2>
-        <button onclick="clearAllPOVs()" class="text-sm text-red-400 hover:text-red-600 transition cursor-pointer">Clear All</button>
-      </div>
-      <p class="text-sf-muted mb-6">Your recently generated POVs — click to reopen</p>
-      <div id="my-povs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
-    </div>
-  </div>
-
-  <!-- Generated POVs Gallery (fetched from povs/index.json) -->
-  <div id="generated-povs-section" class="max-w-7xl mx-auto px-6 mb-16 hidden">
-    <div class="bg-white rounded-2xl shadow-xl p-8">
-      <div class="flex justify-between items-center mb-2">
-        <h2 class="text-2xl font-bold text-sf-blue">Generated POVs</h2>
-        <span class="text-sm text-sf-muted" id="generated-povs-count"></span>
-      </div>
-      <p class="text-sf-muted mb-6">POVs created by AEs across the team — click to view or share</p>
-      <div id="generated-povs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
     </div>
   </div>
 
@@ -221,6 +200,30 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <div class="text-sm text-sf-muted mt-1">3 agent archetypes</div>
         <div class="coming-soon-badge bg-gray-200 text-gray-600 text-xs font-bold px-2 py-1 rounded-full">COMING SOON</div>
       </div>
+    </div>
+  </div>
+
+  <!-- My POVs Gallery -->
+  <div id="my-povs-section" class="max-w-7xl mx-auto px-6 mb-16 hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-2xl font-bold text-sf-blue">My POVs</h2>
+        <button onclick="clearAllPOVs()" class="text-sm text-red-400 hover:text-red-600 transition cursor-pointer">Clear All</button>
+      </div>
+      <p class="text-sf-muted mb-6">Your recently generated POVs — click to reopen</p>
+      <div id="my-povs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </div>
+  </div>
+
+  <!-- Generated POVs Gallery (fetched from povs/index.json) -->
+  <div id="generated-povs-section" class="max-w-7xl mx-auto px-6 mb-16 hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-2xl font-bold text-sf-blue">Generated POVs</h2>
+        <span class="text-sm text-sf-muted" id="generated-povs-count"></span>
+      </div>
+      <p class="text-sf-muted mb-6">POVs created by AEs across the team — click to view or share</p>
+      <div id="generated-povs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
     </div>
   </div>
 

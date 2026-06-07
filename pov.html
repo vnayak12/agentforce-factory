@@ -300,6 +300,13 @@
   <!-- Live Demo Tab Content -->
   <div id="content-demo" class="hidden max-w-7xl mx-auto px-6 py-8">
 
+    <!-- Agent Tabs (shown when multi-agent experience is enabled) -->
+    <div id="agent-tabs" class="hidden mb-4">
+      <div class="bg-white rounded-xl shadow-md p-1 inline-flex gap-1" id="agent-tabs-bar">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+
     <!-- Live Agent Header -->
     <div id="demo-container" class="rounded-2xl overflow-hidden shadow-xl">
       <div id="demo-header" class="bg-gradient-to-r from-sf-accent to-sf-blue p-6 flex items-center justify-between">
@@ -332,16 +339,20 @@
       </div>
     </div>
 
-    <!-- Instructions for the live demo -->
+    <!-- Try a Scenario -->
     <div class="bg-white rounded-xl shadow-md p-6 mt-6">
-      <div class="flex items-start gap-4">
-        <div class="text-3xl">💡</div>
-        <div>
-          <h3 class="font-bold text-sf-blue mb-2">Try these prompts:</h3>
-          <div id="demo-prompts" class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-sf-muted">
-            <!-- Populated dynamically per archetype -->
-          </div>
-        </div>
+      <h3 class="text-lg font-bold text-sf-blue mb-1">Try a Scenario</h3>
+      <p class="text-sm text-sf-muted mb-4">Click a scenario to see how the agent handles common use cases</p>
+      <div id="demo-scenarios" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Populated dynamically per archetype -->
+      </div>
+    </div>
+
+    <!-- Quick Prompts -->
+    <div class="bg-white rounded-xl shadow-md p-6 mt-4">
+      <h3 class="text-sm font-semibold text-sf-blue mb-3">💡 Or try your own prompt:</h3>
+      <div id="demo-prompts" class="flex flex-wrap gap-2">
+        <!-- Populated dynamically per archetype -->
       </div>
     </div>
 
@@ -368,6 +379,11 @@ const ARCHETYPES = {
     subtitle: 'Pre & Post-Sales · Orders & Returns · Store Info',
     emoji: '🎧',
     gradient: 'from-blue-600 to-blue-900',
+    scenarios: [
+      { icon: '📦', title: 'Order Issue → Resolution', desc: 'Customer received wrong item and wants a replacement or refund', prompt: 'I received the wrong item in my order. I want a replacement.' },
+      { icon: '⭐', title: 'Post-Purchase Support', desc: 'Customer needs help with product setup or has a question after buying', prompt: 'I just bought a product and need help setting it up.' },
+      { icon: '🔁', title: 'Escalation to Human Agent', desc: 'Frustrated customer demands to speak to a human representative', prompt: 'I want to speak to a real person right now. This is urgent.' }
+    ],
     capabilities: [
       'Real-time order status lookup across all channels',
       'Automated returns and exchange initiation',
@@ -393,6 +409,11 @@ const ARCHETYPES = {
     subtitle: 'Points · Tiers · Redemption · Promotions',
     emoji: '⭐',
     gradient: 'from-amber-600 to-amber-900',
+    scenarios: [
+      { icon: '⭐', title: 'Points Discrepancy', desc: 'Member notices missing points from a recent purchase and wants them corrected', prompt: 'I made a purchase last week but my points didn\'t show up. Can you fix this?' },
+      { icon: '🎁', title: 'Reward Redemption', desc: 'Member wants to redeem points for a specific reward or discount', prompt: 'I want to redeem my points for a discount on my next order.' },
+      { icon: '🏆', title: 'Tier Upgrade Inquiry', desc: 'Member wants to know how to reach the next loyalty tier', prompt: 'How many more points do I need to reach Platinum tier?' }
+    ],
     capabilities: [
       'Real-time points balance and tier status lookup',
       'Reward redemption and voucher management',
@@ -418,6 +439,11 @@ const ARCHETYPES = {
     subtitle: 'Lead Qualification · Product Recommendations · Deals',
     emoji: '💰',
     gradient: 'from-emerald-600 to-emerald-900',
+    scenarios: [
+      { icon: '🔍', title: 'Lead Qualification', desc: 'New prospect wants to understand which product best fits their needs', prompt: 'I\'m looking for a solution for my mid-size retail business. What do you recommend?' },
+      { icon: '💡', title: 'Quote & Pricing', desc: 'Qualified lead requests pricing details and a custom quote', prompt: 'Can you give me pricing for the enterprise plan for 50 users?' },
+      { icon: '📞', title: 'Handoff to Sales Rep', desc: 'Prospect is ready for a deeper conversation with a specialist', prompt: 'I\'d like to schedule a demo with your sales team.' }
+    ],
     capabilities: [
       'Intelligent lead qualification and scoring',
       'Personalized product recommendations',
@@ -443,6 +469,11 @@ const ARCHETYPES = {
     subtitle: 'Inventory · Shifts · Internal Operations',
     emoji: '👥',
     gradient: 'from-violet-600 to-violet-900',
+    scenarios: [
+      { icon: '📦', title: 'Inventory Alert', desc: 'Store associate checks low-stock items and triggers a restock request', prompt: 'What items are running low in my store? Can you trigger a restock?' },
+      { icon: '📅', title: 'Shift Swap Request', desc: 'Employee needs to swap a shift with a colleague due to a conflict', prompt: 'I need to swap my Thursday shift. Who is available?' },
+      { icon: '📋', title: 'Policy Lookup', desc: 'New employee looks up company policy on returns or time off', prompt: 'What is the policy on employee time-off requests?' }
+    ],
     capabilities: [
       'Real-time inventory level alerts and restocking',
       'Shift scheduling and swap management',
@@ -468,6 +499,11 @@ const ARCHETYPES = {
     subtitle: 'Store Operations · Locator · Hours · Inventory',
     emoji: '🏪',
     gradient: 'from-teal-600 to-teal-900',
+    scenarios: [
+      { icon: '📍', title: 'Store Finder', desc: 'Customer looks for the nearest store with a specific product in stock', prompt: 'Is there a store near me that has the new collection in stock?' },
+      { icon: '📊', title: 'Store Performance', desc: 'Manager reviews store metrics including traffic and conversion rates', prompt: 'Show me the performance metrics for the downtown store.' },
+      { icon: '🔄', title: 'Cross-Store Transfer', desc: 'Store needs to transfer inventory from another location to meet demand', prompt: 'Can we transfer size 10 running shoes from the outlet to downtown?' }
+    ],
     capabilities: [
       'Store location finder with real-time hours',
       'In-store inventory availability by location',
@@ -493,6 +529,11 @@ const ARCHETYPES = {
     subtitle: 'Order Tracking · Returns · Exchanges',
     emoji: '📦',
     gradient: 'from-red-700 to-red-900',
+    scenarios: [
+      { icon: '📦', title: 'Order Status Check', desc: 'Customer wants to track a recent order and get estimated delivery', prompt: 'Where is my order? I placed it 3 days ago and haven\'t received tracking info.' },
+      { icon: '↩️', title: 'Return & Refund', desc: 'Customer wants to initiate a return for a damaged or incorrect item', prompt: 'I received a damaged item and want to return it for a full refund.' },
+      { icon: '🔁', title: 'Exchange Request', desc: 'Customer wants to exchange an item for a different size or color', prompt: 'I need to exchange my shoes for a different size. How do I do that?' }
+    ],
     capabilities: [
       'Real-time order status lookup across all channels',
       'Automated returns and exchange initiation',
@@ -575,6 +616,137 @@ function renderDemoChat(config, customerName) {
   chat.innerHTML = html;
 }
 
+// ─── Multi-Agent Tab Support ───
+const AGENT_TABS = {
+  'sales-agent': [
+    { key: 'sales-agent', label: '💰 Sales Agent', active: true },
+    { key: 'store-locator', label: '🏪 Store Ops Agent' },
+    { key: 'employee-ops', label: '👥 Employee Ops Agent' }
+  ],
+  'store-locator': [
+    { key: 'sales-agent', label: '💰 Sales Agent' },
+    { key: 'store-locator', label: '🏪 Store Ops Agent', active: true },
+    { key: 'employee-ops', label: '👥 Employee Ops Agent' }
+  ],
+  'employee-ops': [
+    { key: 'sales-agent', label: '💰 Sales Agent' },
+    { key: 'store-locator', label: '🏪 Store Ops Agent' },
+    { key: 'employee-ops', label: '👥 Employee Ops Agent', active: true }
+  ]
+};
+
+function switchAgentTab(archetypeKey) {
+  const config = ARCHETYPES[archetypeKey];
+  if (!config) return;
+
+  currentPOVConfig = config;
+
+  // Update demo header
+  document.getElementById('demo-brand').textContent = currentPOVName;
+  document.getElementById('demo-subtitle').textContent = config.subtitle;
+  document.getElementById('demo-icon').textContent = config.emoji;
+  document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-6 flex items-center justify-between`;
+
+  // Re-render chat
+  renderDemoChat(config, currentPOVName);
+  // Show fallback chat immediately
+  const loadingEl = document.getElementById('agent-loading');
+  const fallbackEl = document.getElementById('demo-chat-fallback');
+  if (loadingEl) loadingEl.classList.add('hidden');
+  if (fallbackEl) fallbackEl.classList.remove('hidden');
+
+  // Re-render scenarios
+  const scenariosContainer = document.getElementById('demo-scenarios');
+  if (scenariosContainer && config.scenarios) {
+    scenariosContainer.innerHTML = config.scenarios.map(s => `
+      <div onclick="triggerScenario('${s.prompt.replace(/'/g, "\\'")}')" class="bg-gray-50 rounded-xl p-5 border-2 border-gray-100 hover:border-sf-accent hover:shadow-md transition-all cursor-pointer group">
+        <div class="text-2xl mb-2">${s.icon}</div>
+        <div class="font-semibold text-sf-blue text-sm mb-1 group-hover:text-sf-accent transition">${s.title}</div>
+        <div class="text-xs text-sf-muted leading-relaxed">${s.desc}</div>
+      </div>
+    `).join('');
+  }
+
+  // Re-render quick prompts
+  const promptsContainer = document.getElementById('demo-prompts');
+  if (promptsContainer && config.demoCapabilities) {
+    promptsContainer.innerHTML = config.demoCapabilities
+      .map(p => `<div onclick="triggerScenario('${p.replace(/['"]/g, '')}')" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
+      .join('');
+  }
+
+  // Update tab active states
+  const tabs = AGENT_TABS[archetypeKey] || AGENT_TABS[Object.keys(AGENT_TABS).find(k => AGENT_TABS[k].some(t => t.key === archetypeKey))];
+  if (tabs) {
+    const tabBar = document.getElementById('agent-tabs-bar');
+    tabBar.innerHTML = tabs.map(t => `
+      <button onclick="switchAgentTab('${t.key}')" class="px-4 py-2.5 rounded-lg text-sm font-semibold transition cursor-pointer ${t.key === archetypeKey ? 'bg-sf-accent text-white shadow-md' : 'text-sf-muted hover:bg-gray-100'}">
+        ${t.label}
+      </button>
+    `).join('');
+  }
+}
+
+// ─── Trigger Scenario from card/chip click ───
+function triggerScenario(prompt) {
+  // Switch to demo tab if not already there
+  switchTab('demo');
+  // Feed the prompt into the chat input and send
+  const input = document.getElementById('demo-input');
+  if (input) {
+    input.value = prompt;
+    sendDemoMessage();
+  }
+}
+
+// ─── Scenario-aware response generator ───
+let currentPOVConfig = null;
+let currentPOVName = '';
+
+function getScenarioResponse(userText, name) {
+  const lower = userText.toLowerCase();
+  const config = currentPOVConfig;
+  if (!config) return null;
+
+  // Match against scenario prompts
+  if (config.scenarios) {
+    for (const s of config.scenarios) {
+      const keywords = s.title.toLowerCase().split(/[\s·→&]+/).filter(w => w.length > 2);
+      const promptWords = s.prompt.toLowerCase();
+      if (keywords.some(k => lower.includes(k)) || lower.includes(promptWords.substring(0, 20))) {
+        return {
+          text: `I understand you need help with ${s.title.toLowerCase()}. Let me look into this right away.`,
+          card: {
+            title: `${s.icon} ${s.title}`,
+            status: 'Processing',
+            details: [
+              `📋 Scenario: ${s.desc}`,
+              `🔍 Checking ${name}'s Salesforce data...`,
+              `✅ In a live deployment, I would resolve this using your connected Salesforce org data`,
+              `📞 Shall I connect you with the team for a live walkthrough?`
+            ]
+          }
+        };
+      }
+    }
+  }
+
+  // Generic intelligent response
+  const topics = config.demoCapabilities || [];
+  return {
+    text: `Great question! Here's what I can help you with at ${name}:`,
+    card: {
+      title: `${config.emoji} ${config.label}`,
+      status: 'Ready',
+      details: [
+        ...topics.slice(0, 3),
+        `💬 In a live deployment, I'd use real ${name} data from Salesforce to answer this.`,
+        `📞 Want to see a full demo? Contact Vandana Nayak for a deep-dive.`
+      ]
+    }
+  };
+}
+
 // ─── Send Demo Message (interactive) ───
 function sendDemoMessage() {
   const input = document.getElementById('demo-input');
@@ -600,19 +772,36 @@ function sendDemoMessage() {
   </div>`;
   chat.scrollTop = chat.scrollHeight;
 
-  // Simulate response after delay
+  // Generate scenario-aware response
+  const resp = getScenarioResponse(text, currentPOVName || 'Customer');
+
   setTimeout(() => {
     const typing = document.getElementById('typing');
     if (typing) typing.remove();
-    chat.innerHTML += `<div class="flex gap-3 fade-in">
+
+    let responseHtml = `<div class="flex gap-3 fade-in">
       <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
       <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
-        <p class="text-sm text-gray-800">Thanks for your question! In a full deployment, I'd be connected to your Salesforce data to give you real-time answers. Let me connect you with the team to set this up for your org.</p>
-        <p class="text-sm text-gray-800 mt-2">Would you like to <strong>schedule a deep-dive</strong> with our team?</p>
+        <p class="text-sm text-gray-800">${resp.text}</p>`;
+    if (resp.card) {
+      const statusColor = resp.card.status === 'Ready' ? 'text-green-600' : 'text-sf-accent';
+      responseHtml += `<div class="mt-3 bg-white rounded-lg p-3 border">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="font-medium">${resp.card.title}</span>
+            <span class="${statusColor} font-medium">${resp.card.status}</span>
+          </div>
+          <div class="text-xs text-gray-500 space-y-1">
+            ${resp.card.details.map(d => `<div>${d}</div>`).join('')}
+          </div>
+        </div>`;
+    }
+    responseHtml += `<p class="text-sm text-gray-800 mt-2">Is there anything else I can help you with?</p>
       </div>
     </div>`;
+
+    chat.innerHTML += responseHtml;
     chat.scrollTop = chat.scrollHeight;
-  }, 1500);
+  }, 1200);
 }
 
 // ─── Live Agentforce Widget ───
@@ -676,13 +865,13 @@ function initAgentforceWidget() {
         document.head.appendChild(style);
       });
 
-      // Fallback: if widget doesn't load within 10 seconds, show simulated chat
+      // Fallback: if widget doesn't load within 5 seconds, show simulated chat
       setTimeout(function() {
         if (loadingEl && !loadingEl.classList.contains('hidden')) {
           loadingEl.classList.add('hidden');
           if (fallbackEl) fallbackEl.classList.remove('hidden');
         }
-      }, 10000);
+      }, 5000);
 
     } catch (err) {
       console.error('Agentforce widget init error:', err);
@@ -735,6 +924,10 @@ function renderPOV(pov) {
   const config = ARCHETYPES[pov.archetypeKey] || ARCHETYPES['order-returns'];
   const name = pov.customer || 'Customer';
 
+  // Store for scenario-aware responses
+  currentPOVConfig = config;
+  currentPOVName = name;
+
   // Update page title
   document.title = `${name} — Agentforce POV`;
 
@@ -770,12 +963,37 @@ function renderPOV(pov) {
   document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-6 flex items-center justify-between`;
   renderDemoChat(config, name);
 
-  // Populate suggested prompts per archetype
+  // Populate scenario cards
+  const scenariosContainer = document.getElementById('demo-scenarios');
+  if (scenariosContainer && config.scenarios) {
+    scenariosContainer.innerHTML = config.scenarios.map(s => `
+      <div onclick="triggerScenario('${s.prompt.replace(/'/g, "\\'")}')" class="bg-gray-50 rounded-xl p-5 border-2 border-gray-100 hover:border-sf-accent hover:shadow-md transition-all cursor-pointer group">
+        <div class="text-2xl mb-2">${s.icon}</div>
+        <div class="font-semibold text-sf-blue text-sm mb-1 group-hover:text-sf-accent transition">${s.title}</div>
+        <div class="text-xs text-sf-muted leading-relaxed">${s.desc}</div>
+      </div>
+    `).join('');
+  }
+
+  // Populate quick prompt chips
   const promptsContainer = document.getElementById('demo-prompts');
   if (promptsContainer && config.demoCapabilities) {
     promptsContainer.innerHTML = config.demoCapabilities
-      .map(p => `<div class="bg-blue-50 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
+      .map(p => `<div onclick="triggerScenario('${p.replace(/['"]/g, '')}')" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
       .join('');
+  }
+
+  // Show agent tabs if multi-agent experience is supported
+  const tabs = AGENT_TABS[pov.archetypeKey];
+  const agentTabsEl = document.getElementById('agent-tabs');
+  if (tabs && agentTabsEl) {
+    agentTabsEl.classList.remove('hidden');
+    const tabBar = document.getElementById('agent-tabs-bar');
+    tabBar.innerHTML = tabs.map(t => `
+      <button onclick="switchAgentTab('${t.key}')" class="px-4 py-2.5 rounded-lg text-sm font-semibold transition cursor-pointer ${t.active ? 'bg-sf-accent text-white shadow-md' : 'text-sf-muted hover:bg-gray-100'}">
+        ${t.label}
+      </button>
+    `).join('');
   }
 
   // Initialize live Agentforce widget
