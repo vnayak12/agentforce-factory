@@ -81,7 +81,10 @@
           <h1 class="text-4xl font-black mb-3" id="pov-customer-name">Customer</h1>
           <p class="text-xl opacity-80" id="pov-archetype-label">Agent · Powered by Headless 360</p>
         </div>
-        <div class="text-6xl opacity-30" id="pov-emoji">🤖</div>
+        <div id="pov-logo-area">
+          <img id="pov-brand-logo" src="" alt="" class="h-16 object-contain opacity-80" onerror="this.style.display='none';document.getElementById('pov-emoji').style.display='block';">
+          <div class="text-6xl opacity-30" id="pov-emoji" style="display:none;">🤖</div>
+        </div>
       </div>
     </div>
 
@@ -308,7 +311,10 @@
     <div id="demo-container" class="rounded-2xl overflow-hidden shadow-xl">
       <div id="demo-header" class="bg-gradient-to-r from-sf-accent to-sf-blue p-5 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-xl" id="demo-icon">🤖</div>
+          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden" id="demo-icon-wrap">
+            <img id="demo-logo-img" src="" alt="" class="w-8 h-8 object-contain" onerror="this.style.display='none';document.getElementById('demo-icon-fallback').style.display='flex';">
+            <div id="demo-icon-fallback" class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-xl" style="display:none;">🤖</div>
+          </div>
           <div>
             <div class="text-white font-bold text-lg" id="demo-brand">Customer</div>
             <div class="text-blue-200 text-sm" id="demo-subtitle">Agent Assistant</div>
@@ -565,6 +571,14 @@ let pendingBotMessage = '';
 let typingIndicatorActive = false;
 let sessionInitialized = false;
 let initPromise = null;
+
+// ─── Get brand logo URL from website domain ───
+function getBrandLogoUrl(websiteOrName) {
+  const input = (websiteOrName || '').toLowerCase().trim();
+  let domain = input.replace(/https?:\/\/(www\.)?/, '').replace(/\/.*$/, '');
+  if (!domain.includes('.')) domain = domain.replace(/\s+/g, '') + '.com';
+  return `https://logo.clearbit.com/${domain}`;
+}
 
 // ─── Render scenario cards ───
 function renderScenarios(config) {
@@ -1063,6 +1077,10 @@ function renderPOV(pov) {
   // POV Hero — use brand color if available, else archetype gradient
   document.getElementById('pov-customer-name').textContent = name;
   document.getElementById('pov-archetype-label').textContent = `${config.label} · Powered by Headless 360`;
+  // Set hero brand logo
+  const heroLogoUrl = pov.logoUrl || getBrandLogoUrl(pov.website || pov.customer);
+  const heroLogo = document.getElementById('pov-brand-logo');
+  if (heroLogo) { heroLogo.src = heroLogoUrl; heroLogo.alt = name; }
   document.getElementById('pov-emoji').textContent = config.emoji;
   const heroEl = document.getElementById('pov-hero');
   if (pov.brandColor) {
@@ -1088,10 +1106,16 @@ function renderPOV(pov) {
       <div class="text-xs text-sf-muted">${i.label}</div>
     </div>`).join('');
 
-  // Demo tab — use brand color if available
+  // Demo tab — use brand logo and brand color
   document.getElementById('demo-brand').textContent = name;
   document.getElementById('demo-subtitle').textContent = config.subtitle;
-  document.getElementById('demo-icon').textContent = config.emoji;
+  // Set brand logo from web (Clearbit) instead of agent emoji
+  const brandLogoUrl = pov.logoUrl || getBrandLogoUrl(pov.website || pov.customer);
+  const logoImg = document.getElementById('demo-logo-img');
+  if (logoImg) {
+    logoImg.src = brandLogoUrl;
+    logoImg.alt = name;
+  }
   document.getElementById('demo-container').className = `rounded-2xl overflow-hidden shadow-xl`;
   const demoHeaderEl = document.getElementById('demo-header');
   if (pov.brandColor) {
