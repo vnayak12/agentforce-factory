@@ -389,6 +389,12 @@ const ARCHETYPES = {
     ],
     demoGreeting: (name) => `Hi there! 👋 I'm your ${name} Customer Service Assistant. I can help you with:`,
     demoCapabilities: ['📦 Track your order status', '↩️ Start a return or exchange', '🏪 Find a store near you', '❓ Answer product questions'],
+    quickPrompts: [
+      { label: '📦 Track your order status', prompt: 'I need to check the status of my recent order. Can you look it up?' },
+      { label: '↩️ Start a return or exchange', prompt: 'I need to return an item I purchased recently. How do I start the return process?' },
+      { label: '🏪 Find a store near you', prompt: 'Can you help me find the nearest store location and their hours?' },
+      { label: '❓ Answer product questions', prompt: 'I have a question about a product I\'m interested in. Can you help?' }
+    ],
     demoConversation: (name) => [
       { role: 'user', text: `Where's my order #${name.substring(0,3).toUpperCase()}-48291?` },
       { role: 'bot', text: `I found your order! Here's the status:`, card: { title: `Order #${name.substring(0,3).toUpperCase()}-48291`, status: 'In Transit', details: ['📍 Currently at: Memphis, TN Distribution Center', '📅 Estimated delivery: June 9, 2026', '📦 2 items in this shipment'] } },
@@ -419,6 +425,12 @@ const ARCHETYPES = {
     ],
     demoGreeting: (name) => `Welcome! ⭐ I'm your ${name} Rewards Assistant. I can help you with:`,
     demoCapabilities: ['⭐ Check your points balance', '🎁 Redeem rewards', '📊 View your tier status', '🎯 Personalized offers'],
+    quickPrompts: [
+      { label: '⭐ Check your points balance', prompt: 'How many loyalty points do I have? What\'s my current balance?' },
+      { label: '🎁 Redeem rewards', prompt: 'I want to redeem my loyalty points for a reward. What options do I have?' },
+      { label: '📊 View your tier status', prompt: 'What is my current loyalty tier? How close am I to the next level?' },
+      { label: '🎯 Personalized offers', prompt: 'Do you have any special offers or promotions available for me right now?' }
+    ],
     demoConversation: (name) => [
       { role: 'user', text: 'How many points do I have?' },
       { role: 'bot', text: 'Here\'s your rewards summary:', card: { title: 'Rewards Account', status: 'Gold Member', details: ['⭐ Points Balance: 12,450 pts', '🏆 Current Tier: Gold (next: Platinum at 15,000)', '🎁 Available Rewards: 3 active offers'] } },
@@ -449,6 +461,12 @@ const ARCHETYPES = {
     ],
     demoGreeting: (name) => `Good morning! 💰 I'm your ${name} Sales Assistant. I can help you with:`,
     demoCapabilities: ['📊 Get your daily brief', '🏢 Review top accounts & pipeline', '📅 Plan field visits with prep notes', '🎯 Deal strategy & next steps'],
+    quickPrompts: [
+      { label: '📊 Get your daily brief', prompt: 'Give me my daily brief. What meetings do I have today and what should I prioritize?' },
+      { label: '🏢 Review top accounts', prompt: 'Show me my top accounts and their current pipeline status. Any deals at risk?' },
+      { label: '📅 Plan a field visit', prompt: 'Help me plan my visit to my top account this week. What should I prepare?' },
+      { label: '🎯 Deal strategy', prompt: 'What are the next steps on my biggest deals? Any recommendations to move them forward?' }
+    ],
     demoConversation: (name) => [
       { role: 'user', text: 'Give me my daily brief.' },
       { role: 'bot', text: 'Here\'s your morning brief:', card: { title: 'Daily Brief', status: 'Today', details: ['📅 3 meetings scheduled (9am, 11am, 2pm)', '🏢 2 accounts need follow-up', '💰 Pipeline: $1.2M in deals closing this month', '⚠️ 1 deal at risk — needs attention'] } },
@@ -479,6 +497,12 @@ const ARCHETYPES = {
     ],
     demoGreeting: (name) => `Hi team! 👥 I'm your ${name} Employee Assistant. I can help with:`,
     demoCapabilities: ['📦 Check inventory levels', '📅 View/swap shifts', '📋 Look up policies', '🔧 Submit maintenance requests'],
+    quickPrompts: [
+      { label: '📦 Check inventory levels', prompt: 'What items are running low in my store? Do we need to restock anything?' },
+      { label: '📅 View/swap shifts', prompt: 'Can you show me my schedule for this week? I need to swap my Thursday shift.' },
+      { label: '📋 Look up policies', prompt: 'What is the company policy on employee time-off requests?' },
+      { label: '🔧 Submit maintenance request', prompt: 'I need to submit a maintenance request. The POS terminal at register 3 isn\'t working.' }
+    ],
     demoConversation: (name) => [
       { role: 'user', text: 'What\'s the inventory status for running shoes?' },
       { role: 'bot', text: 'Here\'s the current inventory snapshot:', card: { title: 'Inventory Alert', status: 'Low Stock', details: ['👟 Running Shoes — Size 10: 3 units (reorder triggered)', '👟 Running Shoes — Size 11: 12 units (OK)', '📦 Next shipment arriving: June 10, 2026'] } },
@@ -509,6 +533,12 @@ const ARCHETYPES = {
     ],
     demoGreeting: (name) => `Hello! 🏪 I'm your ${name} Store Operations Assistant. I can help with:`,
     demoCapabilities: ['📍 Find nearest store', '🕐 Check store hours', '📦 Check in-store availability', '📊 View store metrics'],
+    quickPrompts: [
+      { label: '📍 Find nearest store', prompt: 'Can you help me find the nearest store location? I\'m looking for one close to downtown.' },
+      { label: '🕐 Check store hours', prompt: 'What are the store hours for the closest location? Are they open on weekends?' },
+      { label: '📦 Check in-store availability', prompt: 'Is the new collection in stock at my nearest store? I want to try it on before buying.' },
+      { label: '📊 View store metrics', prompt: 'Show me the performance metrics for our downtown store — traffic, conversion, and revenue.' }
+    ],
     demoConversation: (name) => [
       { role: 'user', text: 'Is there a store near me with the new collection in stock?' },
       { role: 'bot', text: 'I found 3 stores near you:', card: { title: 'Nearest Stores', status: 'In Stock', details: ['📍 Downtown — 0.8 mi · Open until 9 PM · ✅ In stock', '📍 Mall Location — 2.1 mi · Open until 10 PM · ✅ In stock', '📍 Outlet — 5.3 mi · Open until 8 PM · ⚠️ Limited sizes'] } },
@@ -539,6 +569,12 @@ const ARCHETYPES = {
     ],
     demoGreeting: (name) => `Hi there! 👋 I'm your ${name} Order Assistant. I can help you with:`,
     demoCapabilities: ['📦 Track your order status', '↩️ Start a return or exchange', '🚚 Check shipping updates', '❓ Answer product questions'],
+    quickPrompts: [
+      { label: '📦 Track your order', prompt: 'Where is my order? I placed it 3 days ago and haven\'t received any tracking information yet.' },
+      { label: '↩️ Start a return', prompt: 'I received a damaged item and need to return it for a full refund. How do I start?' },
+      { label: '🚚 Shipping updates', prompt: 'Can you check if there are any shipping delays on my recent order?' },
+      { label: '🔁 Exchange an item', prompt: 'I need to exchange my shoes for a different size. How do I do that?' }
+    ],
     demoConversation: (name) => [
       { role: 'user', text: `Where is my order #${name.substring(0,3).toUpperCase()}-48291?` },
       { role: 'bot', text: 'I found your order! Here\'s the status:', card: { title: `Order #${name.substring(0,3).toUpperCase()}-48291`, status: 'In Transit', details: ['📍 Currently at: Memphis, TN Distribution Center', '📅 Estimated delivery: June 9, 2026', '📦 2 items in this shipment'] } },
@@ -597,10 +633,17 @@ function renderScenarios(config) {
 // ─── Render quick prompt chips ───
 function renderQuickPrompts(config) {
   const el = document.getElementById('demo-prompts');
-  if (!el || !config.demoCapabilities) return;
-  el.innerHTML = config.demoCapabilities
-    .map(p => `<div onclick="triggerScenario(\`${p.replace(/`/g, '\\`')}\`)" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
-    .join('');
+  if (!el) return;
+  // Use quickPrompts (label → real prompt) if available, else fall back to demoCapabilities
+  if (config.quickPrompts && config.quickPrompts.length) {
+    el.innerHTML = config.quickPrompts
+      .map(qp => `<div onclick="triggerScenario(\`${qp.prompt.replace(/`/g, '\\`').replace(/\\/g, '\\\\')}\`)" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${qp.label}</div>`)
+      .join('');
+  } else if (config.demoCapabilities) {
+    el.innerHTML = config.demoCapabilities
+      .map(p => `<div onclick="triggerScenario(\`${p.replace(/`/g, '\\`')}\`)" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
+      .join('');
+  }
 }
 
 // ─── Trigger Scenario from card/chip click ───
