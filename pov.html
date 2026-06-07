@@ -591,10 +591,23 @@ function switchTab(tab) {
   window.scrollTo(0, 0);
 }
 
-// ─── SCRT2 Live Agent Config (same pattern as working Wingstop demo) ───
+// ─── SCRT2 Live Agent Config ───
 const SCRT2_BASE = 'https://trailsignup-d7fd90d7f30b8a.my.salesforce-scrt.com';
 const ORG_ID = '00Dbm00000jtzs9';
-const ES_DEV_NAME = 'Sales_Assistant_Teams_API';
+
+// Map each archetype to its correct Embedded Service deployment
+const ARCHETYPE_ES_MAP = {
+  'product-advisor': 'Retail_Agent_Web_Chat',
+  'order-returns':   'Retail_Agent_Web_Chat',
+  'loyalty':         'Retail_Agent_Web_Chat',
+  'store-locator':   'Retail_Agent_Web_Chat',
+  'employee-ops':    'Retail_Agent_Web_Chat',
+  'sales-agent':     'Sales_Assistant_Teams_API'
+};
+const DEFAULT_ES_DEV_NAME = 'Retail_Agent_Web_Chat';
+
+// Active ES_DEV_NAME — set dynamically when POV loads
+let activeEsDevName = DEFAULT_ES_DEV_NAME;
 
 let isLiveAgent = false;
 let accessToken = null;
@@ -750,7 +763,7 @@ async function getAccessToken() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       orgId: ORG_ID,
-      esDeveloperName: ES_DEV_NAME,
+      esDeveloperName: activeEsDevName,
       capabilitiesVersion: '1',
       platform: 'Web'
     })
@@ -772,7 +785,7 @@ async function createConversation(token) {
     },
     body: JSON.stringify({
       conversationId: convId,
-      esDeveloperName: ES_DEV_NAME
+      esDeveloperName: activeEsDevName
     })
   });
   if (!resp.ok) throw new Error(`Create conversation failed: ${resp.status}`);
@@ -912,7 +925,7 @@ async function sendMessageToAgent(text) {
       messageType: 'StaticContentMessage',
       staticContent: { formatType: 'Text', text: text }
     },
-    esDeveloperName: ES_DEV_NAME,
+    esDeveloperName: activeEsDevName,
     isNewMessagingSession: isFirstMessage,
     routingAttributes: {},
     language: 'en'
@@ -1133,6 +1146,11 @@ function renderPOV(pov) {
   // Store for scenario-aware responses
   currentPOVConfig = config;
   currentPOVName = name;
+
+  // Set the correct Embedded Service deployment for this archetype
+  // POV JSON can override with esDeveloperName field; otherwise use archetype map
+  activeEsDevName = pov.esDeveloperName || ARCHETYPE_ES_MAP[pov.archetypeKey] || DEFAULT_ES_DEV_NAME;
+  console.log('Agent deployment:', activeEsDevName, 'for archetype:', pov.archetypeKey);
 
   // Update page title
   document.title = `${name} — Agentforce Demo`;
