@@ -329,18 +329,7 @@
         </div>
       </div>
 
-      <!-- Live Agent Launch Area (shown when MIAW is loaded) -->
-      <div id="demo-live-area" class="hidden bg-white p-8 text-center" style="min-height: 450px; display: none; flex-direction: column; justify-content: center; align-items: center;">
-        <div class="text-6xl mb-4">💬</div>
-        <h3 class="text-xl font-bold text-sf-blue mb-2">Live Agentforce Agent Ready</h3>
-        <p class="text-sf-muted mb-6 max-w-md">Chat with a real Agentforce-powered agent. The agent is connected to live Salesforce data and can answer questions, look up orders, and help resolve issues.</p>
-        <button onclick="openLiveChat()" class="bg-sf-accent text-white px-8 py-3.5 rounded-full text-lg font-semibold hover:bg-blue-700 transition cursor-pointer shadow-lg hover:shadow-xl transform hover:scale-105">
-          Start Agent Conversation →
-        </button>
-        <p class="text-xs text-sf-muted mt-4">Powered by Salesforce Agentforce · Embedded Messaging</p>
-      </div>
-
-      <!-- Simulated Chat area (fallback when MIAW fails) -->
+      <!-- Chat area (SCRT2 live agent or simulated fallback) -->
       <div id="demo-sim-area" class="bg-white" style="min-height: 450px; max-height: 550px; display: flex; flex-direction: column;">
         <div id="demo-chat" class="flex-1 p-5 space-y-4 overflow-y-auto" style="min-height: 380px;"></div>
         <div class="border-t p-4 flex gap-3">
@@ -567,21 +556,22 @@ function switchTab(tab) {
   window.scrollTo(0, 0);
 }
 
-// ─── MIAW Embedded Messaging Config ───
-const MIAW_CONFIG = {
-  orgId: '00Dbm00000jtzs9',
-  deploymentName: 'Retail_Agent_Web_Chat',
-  siteURL: 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWRetailAgentWebChat1780786812852',
-  scrt2URL: 'https://trailsignup-d7fd90d7f30b8a.my.salesforce-scrt.com',
-  bootstrapJS: 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWRetailAgentWebChat1780786812852/assets/js/bootstrap.min.js'
-};
+// ─── SCRT2 Live Agent Config (same pattern as working Wingstop demo) ───
+const SCRT2_BASE = 'https://trailsignup-d7fd90d7f30b8a.my.salesforce-scrt.com';
+const ORG_ID = '00Dbm00000jtzs9';
+const ES_DEV_NAME = 'Sales_Assistant_Teams_API';
 
 let isLiveAgent = false;
-let miawLoaded = false;
+let accessToken = null;
+let conversationId = null;
+let isFirstMessage = true;
+let sseReader = null;
 let currentPOVConfig = null;
 let currentPOVName = '';
 let pendingBotMessage = '';
 let typingIndicatorActive = false;
+let sessionInitialized = false;
+let initPromise = null;
 
 // ─── Multi-Agent Tab Support (Teams) ───
 // Two teams: customer-facing agents and internal ops agents
@@ -650,14 +640,10 @@ function renderQuickPrompts(config) {
 // ─── Trigger Scenario from card/chip click ───
 function triggerScenario(prompt) {
   switchTab('demo');
-  if (isLiveAgent) {
-    // Open MIAW widget and let user paste the scenario prompt
-    try {
-      embeddedservice_bootstrap.utilAPI.launchChat();
-      setTimeout(() => {
-        try { embeddedservice_bootstrap.sendMessage(prompt); } catch(e) { console.log('Auto-send not supported'); }
-      }, 1500);
-    } catch(e) { console.log('Widget not ready'); }
+  if (isLiveAgent && sessionInitialized) {
+    // Send directly to live Agentforce agent via SCRT2
+    appendMessage('user', prompt);
+    sendMessageToAgent(prompt);
   } else {
     const input = document.getElementById('demo-input');
     if (input) {
@@ -740,67 +726,241 @@ function removeTypingIndicator() {
   if (el) el.remove();
 }
 
-// ─── Load MIAW Embedded Messaging Widget ───
-function loadMIAWWidget() {
-  if (miawLoaded) return;
-  miawLoaded = true;
+// ─── UUID Generator ───
+function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
 
-  // Load the bootstrap script
-  const script = document.createElement('script');
-  script.src = MIAW_CONFIG.bootstrapJS;
-  script.onload = () => {
+// ─── SCRT2: Get Access Token ───
+async function getAccessToken() {
+  const resp = await fetch(`${SCRT2_BASE}/iamessage/api/v2/authorization/unauthenticated/access-token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      orgId: ORG_ID,
+      esDeveloperName: ES_DEV_NAME,
+      capabilitiesVersion: '1',
+      platform: 'Web'
+    })
+  });
+  if (!resp.ok) throw new Error(`Token request failed: ${resp.status}`);
+  const data = await resp.json();
+  return data.accessToken;
+}
+
+// ─── SCRT2: Create Conversation ───
+async function createConversation(token) {
+  const convId = uuid();
+  const resp = await fetch(`${SCRT2_BASE}/iamessage/api/v2/conversation`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'X-Org-Id': ORG_ID
+    },
+    body: JSON.stringify({
+      conversationId: convId,
+      esDeveloperName: ES_DEV_NAME
+    })
+  });
+  if (!resp.ok) throw new Error(`Create conversation failed: ${resp.status}`);
+  return convId;
+}
+
+// ─── SCRT2: Connect SSE Stream ───
+async function connectSSE(token) {
+  try {
+    const resp = await fetch(`${SCRT2_BASE}/eventrouter/v1/sse`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'X-Org-Id': ORG_ID,
+        'Accept': 'text/event-stream'
+      }
+    });
+    if (!resp.ok) throw new Error(`SSE connect failed: ${resp.status}`);
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    sseReader = reader;
+    let buffer = '';
+
+    (async function readLoop() {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+        for (const line of lines) {
+          if (line.startsWith('data:')) {
+            try {
+              const payload = JSON.parse(line.slice(5).trim());
+              handleSSEEvent(payload);
+            } catch (e) { /* ignore parse errors */ }
+          }
+        }
+      }
+    })();
+  } catch (err) {
+    console.error('SSE connection failed:', err);
+  }
+}
+
+// ─── SCRT2: Handle SSE Events ───
+function handleSSEEvent(event) {
+  const type = event.type || event.eventType || '';
+
+  if (type === 'CONVERSATION_MESSAGE' || type === 'conversationMessage') {
+    const payload = event.payload || event;
+    const abstractMsg = payload.abstractMessage || payload;
+    const msgType = abstractMsg.messageType;
+
+    // Only process agent messages
+    const sender = payload.senderRole || abstractMsg.senderRole || payload.sender?.role || '';
+    if (sender === 'EndUser' || sender === 'endUser') return;
+
+    if (msgType === 'StaticContentMessage') {
+      const content = abstractMsg.staticContent || {};
+      const text = content.text || '';
+      if (text) {
+        removeTypingIndicator();
+        appendMessage('bot', escapeHtml(text));
+      }
+    } else if (msgType === 'RichContentMessage' || msgType === 'ChoicesMessage') {
+      // Handle rich messages with choices/buttons
+      const entries = abstractMsg.content?.entries || abstractMsg.choices || [];
+      let text = abstractMsg.text || abstractMsg.content?.text || '';
+      const choices = [];
+      for (const entry of entries) {
+        if (entry.entryType === 'Text' || entry.type === 'Text') {
+          text += (text ? '\n' : '') + (entry.text || '');
+        } else if (entry.entryType === 'Choices' || entry.type === 'Choices') {
+          for (const choice of (entry.choices || [])) {
+            choices.push(choice.title || choice.text || '');
+          }
+        } else if (entry.title || entry.text) {
+          choices.push(entry.title || entry.text);
+        }
+      }
+      removeTypingIndicator();
+      if (text) appendMessage('bot', escapeHtml(text));
+      if (choices.length > 0) {
+        const choiceHtml = `<div class="flex gap-3 fade-in">
+          <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+          <div class="flex flex-wrap gap-2 max-w-md">
+            ${choices.map(c => `<button onclick="sendQuickReply('${c.replace(/'/g, "\\'")}')" class="bg-blue-50 text-sf-accent border border-sf-accent/30 rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-sf-accent hover:text-white transition">${escapeHtml(c)}</button>`).join('')}
+          </div>
+        </div>`;
+        const chat = document.getElementById('demo-chat');
+        if (chat) { chat.innerHTML += choiceHtml; chat.scrollTop = chat.scrollHeight; }
+      }
+    }
+  } else if (type === 'CONVERSATION_TYPING_STARTED_INDICATOR' || type === 'typingStartedIndicator') {
+    showTypingIndicator();
+  } else if (type === 'CONVERSATION_TYPING_STOPPED_INDICATOR' || type === 'typingStoppedIndicator') {
+    removeTypingIndicator();
+  } else if (type === 'CONVERSATION_ROUTING_RESULT' || type === 'routingResult') {
+    const result = (event.payload || event).routingType || (event.payload || event).result || '';
+    if (result === 'Initial' || result === 'Transfer') {
+      console.log('Routing result:', result);
+    }
+  } else if (type === 'CONVERSATION_PARTICIPANT_CHANGED' || type === 'participantChanged') {
+    const entries = (event.payload || event).entries || (event.payload || event).participants || [];
+    for (const p of entries) {
+      if (p.role === 'Agent' || p.role === 'Chatbot') {
+        const agentName = p.displayName || p.name || 'Agent';
+        const subEl = document.getElementById('demo-subtitle');
+        if (subEl) subEl.textContent = agentName;
+      }
+    }
+  }
+}
+
+// ─── SCRT2: Send Message ───
+async function sendMessageToAgent(text) {
+  if (!accessToken || !conversationId) return;
+  const msgPayload = {
+    message: {
+      id: uuid(),
+      messageType: 'StaticContentMessage',
+      staticContent: { formatType: 'Text', text: text }
+    },
+    esDeveloperName: ES_DEV_NAME,
+    isNewMessagingSession: isFirstMessage,
+    routingAttributes: {},
+    language: 'en'
+  };
+
+  try {
+    const resp = await fetch(
+      `${SCRT2_BASE}/iamessage/api/v2/conversation/${conversationId}/message`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+          'X-Org-Id': ORG_ID
+        },
+        body: JSON.stringify(msgPayload)
+      }
+    );
+    if (!resp.ok) throw new Error(`Send failed: ${resp.status}`);
+    isFirstMessage = false;
+    showTypingIndicator();
+  } catch (err) {
+    console.error('Send message failed:', err);
+    appendMessage('bot', '⚠️ Unable to send message. Please try again.');
+  }
+}
+
+// ─── Quick Reply (from choice buttons) ───
+function sendQuickReply(text) {
+  appendMessage('user', text);
+  sendMessageToAgent(text);
+}
+
+// ─── Initialize SCRT2 Live Agent Session ───
+async function initLiveAgent() {
+  setAgentStatus('connecting');
+
+  // Start session init in background
+  initPromise = (async () => {
     try {
-      embeddedservice_bootstrap.settings.language = 'en_US';
-      // Hide the default floating chat button — we embed inline
-      embeddedservice_bootstrap.settings.hideChatButton = true;
-
-      embeddedservice_bootstrap.init(
-        MIAW_CONFIG.orgId,
-        MIAW_CONFIG.deploymentName,
-        MIAW_CONFIG.siteURL,
-        { scrt2URL: MIAW_CONFIG.scrt2URL }
-      );
-
+      accessToken = await getAccessToken();
+      await connectSSE(accessToken);
+      conversationId = await createConversation(accessToken);
       isLiveAgent = true;
+      sessionInitialized = true;
       setAgentStatus('connected');
-      console.log('MIAW widget initialized successfully');
+      console.log('SCRT2 session initialized, conversationId:', conversationId);
 
-      // Show the live agent launch area, hide simulated chat
+      // Show the inline chat area (sim area) and hide the "launch" area
       const liveArea = document.getElementById('demo-live-area');
       const simArea = document.getElementById('demo-sim-area');
-      if (liveArea) { liveArea.style.display = 'flex'; liveArea.classList.remove('hidden'); }
-      if (simArea) { simArea.style.display = 'none'; }
+      if (liveArea) { liveArea.style.display = 'none'; }
+      if (simArea) { simArea.style.display = 'flex'; }
+
+      // Show a welcome message in the chat
+      const chat = document.getElementById('demo-chat');
+      if (chat) {
+        const name = currentPOVName || 'Customer';
+        chat.innerHTML = `<div class="flex gap-3 fade-in">
+          <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+          <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
+            <p class="text-sm text-gray-800">👋 Live agent connected! I'm your ${name} assistant powered by Agentforce.</p>
+            <p class="text-sm text-gray-800 mt-2">Type a message or click a scenario above to get started.</p>
+          </div>
+        </div>`;
+      }
     } catch (err) {
-      console.error('MIAW init failed:', err);
+      console.error('SCRT2 init failed:', err);
       isLiveAgent = false;
       setAgentStatus('simulated');
       showGreeting();
     }
-  };
-  script.onerror = () => {
-    console.warn('MIAW bootstrap script failed to load, using simulated mode');
-    isLiveAgent = false;
-    setAgentStatus('simulated');
-    showGreeting();
-  };
-  document.head.appendChild(script);
-}
-
-// ─── Open the live MIAW chat widget ───
-function openLiveChat() {
-  try {
-    if (typeof embeddedservice_bootstrap !== 'undefined') {
-      embeddedservice_bootstrap.utilAPI.launchChat();
-    }
-  } catch (err) {
-    console.warn('Could not launch chat:', err);
-  }
-}
-
-// ─── Initialize Live Agent Connection ───
-async function initLiveAgent() {
-  setAgentStatus('connecting');
-  loadMIAWWidget();
+  })();
 }
 
 // ─── Show initial greeting in simulated mode ───
@@ -866,40 +1026,44 @@ async function sendMessage() {
   // Show user message
   appendMessage('user', text);
 
-  if (isLiveAgent) {
-    // When MIAW is active, open the chat widget and pass the message
-    try {
-      embeddedservice_bootstrap.utilAPI.launchChat();
-      // Use sendMessage API if available
-      setTimeout(() => {
-        try { embeddedservice_bootstrap.sendMessage(text); } catch(e) { console.log('Auto-send not supported, user can type in widget'); }
-      }, 1500);
-    } catch (err) {
-      appendMessage('bot', 'Please click "Start Agent Conversation" to chat with the live agent.');
+  if (isLiveAgent && sessionInitialized) {
+    // Send via SCRT2 API to live Agentforce agent
+    sendMessageToAgent(text);
+  } else if (initPromise && !sessionInitialized) {
+    // Session still initializing — wait then send
+    appendMessage('bot', '⏳ Connecting to agent... one moment.');
+    await initPromise;
+    if (isLiveAgent && sessionInitialized) {
+      sendMessageToAgent(text);
+    } else {
+      fallbackSimulatedResponse(text);
     }
-    return;
   } else {
     // Simulated fallback
-    showTypingIndicator();
-    const resp = getScenarioResponse(text, currentPOVName || 'Customer');
-    setTimeout(() => {
-      removeTypingIndicator();
-      let responseHtml = resp.text;
-      if (resp.card) {
-        const statusColor = resp.card.status === 'Ready' ? 'text-green-600' : 'text-sf-accent';
-        responseHtml += `<div class="mt-3 bg-white rounded-lg p-3 border">
-          <div class="flex justify-between text-sm mb-1">
-            <span class="font-medium">${resp.card.title}</span>
-            <span class="${statusColor} font-medium">${resp.card.status}</span>
-          </div>
-          <div class="text-xs text-gray-500 space-y-1">
-            ${resp.card.details.map(d => `<div>${d}</div>`).join('')}
-          </div>
-        </div>`;
-      }
-      appendMessage('bot', responseHtml);
-    }, 1200);
+    fallbackSimulatedResponse(text);
   }
+}
+
+function fallbackSimulatedResponse(text) {
+  showTypingIndicator();
+  const resp = getScenarioResponse(text, currentPOVName || 'Customer');
+  setTimeout(() => {
+    removeTypingIndicator();
+    let responseHtml = resp.text;
+    if (resp.card) {
+      const statusColor = resp.card.status === 'Ready' ? 'text-green-600' : 'text-sf-accent';
+      responseHtml += `<div class="mt-3 bg-white rounded-lg p-3 border">
+        <div class="flex justify-between text-sm mb-1">
+          <span class="font-medium">${resp.card.title}</span>
+          <span class="${statusColor} font-medium">${resp.card.status}</span>
+        </div>
+        <div class="text-xs text-gray-500 space-y-1">
+          ${resp.card.details.map(d => `<div>${d}</div>`).join('')}
+        </div>
+      </div>`;
+    }
+    appendMessage('bot', responseHtml);
+  }, 1200);
 }
 
 // ─── Load POV ───
