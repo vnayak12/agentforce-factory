@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agentforce POV</title>
+<title>Agentforce Showcase</title>
 <script src="https://assets.meshmesh.io/system/tailwindcss-browser-4.js"></script>
 <style type="text/tailwindcss">
 @theme {
@@ -33,7 +33,7 @@
 <div id="loading" class="flex items-center justify-center min-h-screen">
   <div class="text-center">
     <div class="w-16 h-16 border-4 border-sf-accent border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-    <p class="text-sf-muted text-lg">Loading POV...</p>
+    <p class="text-sf-muted text-lg">Loading Showcase...</p>
   </div>
 </div>
 
@@ -41,9 +41,9 @@
 <div id="error" class="hidden flex items-center justify-center min-h-screen">
   <div class="text-center max-w-md">
     <div class="text-6xl mb-4">🔍</div>
-    <h1 class="text-2xl font-bold text-sf-blue mb-2">POV Not Found</h1>
-    <p class="text-sf-muted mb-6">This POV may have been removed or the link is incorrect.</p>
-    <a href="index.html" class="inline-block bg-sf-accent text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition">← Back to POV Studio</a>
+    <h1 class="text-2xl font-bold text-sf-blue mb-2">Showcase Not Found</h1>
+    <p class="text-sf-muted mb-6">This Showcase may have been removed or the link is incorrect.</p>
+    <a href="index.html" class="inline-block bg-sf-accent text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition">← Back to Showcase Studio</a>
   </div>
 </div>
 
@@ -54,7 +54,7 @@
   <div class="bg-sf-blue text-white">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="text-white/60 hover:text-white text-sm transition">← POV Studio</a>
+        <a href="index.html" class="text-white/60 hover:text-white text-sm transition">← Showcase Studio</a>
         <span class="text-white/30">|</span>
         <span class="text-sm font-medium" id="header-label">Loading...</span>
       </div>
@@ -65,7 +65,7 @@
   <!-- Tabs -->
   <div class="bg-white border-b sticky top-0 z-10">
     <div class="max-w-7xl mx-auto px-6 flex gap-8">
-      <button onclick="switchTab('pov')" id="tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">POV</button>
+      <button onclick="switchTab('pov')" id="tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">Showcase</button>
       <button onclick="switchTab('demo')" id="tab-demo" class="py-4 px-2 text-sm tab-inactive cursor-pointer">Live Demo</button>
     </div>
   </div>
@@ -77,7 +77,7 @@
     <div id="pov-hero" class="bg-gradient-to-r from-red-700 to-red-900 rounded-2xl p-10 text-white mb-8">
       <div class="flex justify-between items-start">
         <div>
-          <div class="text-sm font-medium opacity-80 mb-2">AGENTFORCE POV</div>
+          <div class="text-sm font-medium opacity-80 mb-2">AGENTFORCE SHOWCASE</div>
           <h1 class="text-4xl font-black mb-3" id="pov-customer-name">Customer</h1>
           <p class="text-xl opacity-80" id="pov-archetype-label">Agent · Powered by Headless 360</p>
         </div>
@@ -307,49 +307,45 @@
       </div>
     </div>
 
-    <!-- Live Agent Header -->
-    <div id="demo-container" class="rounded-2xl overflow-hidden shadow-xl">
-      <div id="demo-header" class="bg-gradient-to-r from-sf-accent to-sf-blue p-6 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl" id="demo-icon">🤖</div>
-          <div>
-            <div class="text-white font-bold text-lg" id="demo-brand">Customer</div>
-            <div class="text-blue-200 text-sm" id="demo-subtitle">Agent Assistant</div>
-          </div>
-        </div>
-        <div class="text-blue-200 text-sm">Powered by Agentforce</div>
-      </div>
-
-      <!-- Live Agentforce Chat Widget Container -->
-      <div class="bg-white relative" style="min-height: 520px;">
-        <!-- Loading state while widget initializes -->
-        <div id="agent-loading" class="flex flex-col items-center justify-center py-16 gap-4">
-          <div class="w-12 h-12 border-4 border-sf-accent border-t-transparent rounded-full animate-spin"></div>
-          <p class="text-sf-muted text-sm">Connecting to live Agentforce agent...</p>
-        </div>
-
-        <!-- Fallback: simulated chat if widget fails -->
-        <div id="demo-chat-fallback" class="hidden">
-          <div id="demo-chat" class="p-6 space-y-4 min-h-[400px]"></div>
-          <div class="border-t p-4 flex gap-3">
-            <input type="text" id="demo-input" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2 text-sm focus:border-sf-accent focus:ring-1 focus:ring-sf-accent outline-none" onkeydown="if(event.key==='Enter')sendDemoMessage()">
-            <button onclick="sendDemoMessage()" class="bg-sf-accent text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-700 transition cursor-pointer">Send</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Try a Scenario -->
-    <div class="bg-white rounded-xl shadow-md p-6 mt-6">
+    <!-- Try a Scenario (ABOVE the chat, like Wingstop) -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
       <h3 class="text-lg font-bold text-sf-blue mb-1">Try a Scenario</h3>
-      <p class="text-sm text-sf-muted mb-4">Click a scenario to see how the agent handles common use cases</p>
+      <p class="text-sm text-sf-muted mb-4">Click a scenario to start a conversation with the live agent</p>
       <div id="demo-scenarios" class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <!-- Populated dynamically per archetype -->
       </div>
     </div>
 
+    <!-- Live Agent Chat -->
+    <div id="demo-container" class="rounded-2xl overflow-hidden shadow-xl">
+      <div id="demo-header" class="bg-gradient-to-r from-sf-accent to-sf-blue p-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-xl" id="demo-icon">🤖</div>
+          <div>
+            <div class="text-white font-bold text-lg" id="demo-brand">Customer</div>
+            <div class="text-blue-200 text-sm" id="demo-subtitle">Agent Assistant</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <div id="agent-status" class="flex items-center gap-1.5">
+            <div class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" id="status-dot"></div>
+            <span class="text-blue-200 text-xs" id="status-text">Connecting...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat area -->
+      <div class="bg-white" style="min-height: 450px; max-height: 550px; display: flex; flex-direction: column;">
+        <div id="demo-chat" class="flex-1 p-5 space-y-4 overflow-y-auto" style="min-height: 380px;"></div>
+        <div class="border-t p-4 flex gap-3">
+          <input type="text" id="demo-input" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2.5 text-sm focus:border-sf-accent focus:ring-1 focus:ring-sf-accent outline-none" onkeydown="if(event.key==='Enter')sendMessage()">
+          <button onclick="sendMessage()" class="bg-sf-accent text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-blue-700 transition cursor-pointer">Send</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Quick Prompts -->
-    <div class="bg-white rounded-xl shadow-md p-6 mt-4">
+    <div class="bg-white rounded-xl shadow-md p-5 mt-4">
       <h3 class="text-sm font-semibold text-sf-blue mb-3">💡 Or try your own prompt:</h3>
       <div id="demo-prompts" class="flex flex-wrap gap-2">
         <!-- Populated dynamically per archetype -->
@@ -358,7 +354,7 @@
 
     <!-- Powered by notice -->
     <div class="text-center mt-6 text-sm text-sf-muted">
-      This is a live demo powered by Agentforce on Salesforce. <a href="index.html" class="text-sf-accent hover:underline">Build your own →</a>
+      This is a live demo powered by Agentforce on Salesforce. <a href="index.html" class="text-sf-accent hover:underline">Build your own Showcase →</a>
     </div>
   </div>
 
@@ -565,56 +561,21 @@ function switchTab(tab) {
   window.scrollTo(0, 0);
 }
 
-// ─── Render Demo Chat ───
-function renderDemoChat(config, customerName) {
-  const chat = document.getElementById('demo-chat');
-  let html = '';
+// ─── SCRT2 Live Agent Connection (same pattern as Wingstop) ───
+const SCRT2_CONFIG = {
+  orgId: '00Dbm00000jtzs9',
+  developerName: 'Sales_Assistant_Teams_API',
+  baseURL: 'https://trailsignup-d7fd90d7f30b8a.my.salesforce-scrt.com'
+};
 
-  // Bot greeting
-  html += `<div class="flex gap-3">
-    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
-    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
-      <p class="text-sm text-gray-800">${config.demoGreeting(customerName)}</p>
-      <div class="mt-2 space-y-1 text-sm text-gray-600">
-        ${config.demoCapabilities.map(c => `<div>${c}</div>`).join('')}
-      </div>
-      <p class="text-sm text-gray-800 mt-2">How can I help you today?</p>
-    </div>
-  </div>`;
-
-  // Conversation
-  config.demoConversation(customerName).forEach(msg => {
-    if (msg.role === 'user') {
-      html += `<div class="flex gap-3 justify-end">
-        <div class="bg-sf-accent text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-md">
-          <p class="text-sm">${msg.text}</p>
-        </div>
-      </div>`;
-    } else {
-      html += `<div class="flex gap-3">
-        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
-        <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
-          <p class="text-sm text-gray-800">${msg.text}</p>`;
-      if (msg.card) {
-        const statusColor = msg.card.status === 'In Transit' || msg.card.status === 'In Stock' ? 'text-green-600' : msg.card.status === 'Low Stock' ? 'text-amber-600' : 'text-sf-accent';
-        html += `<div class="mt-3 bg-white rounded-lg p-3 border">
-            <div class="flex justify-between text-sm mb-1">
-              <span class="font-medium">${msg.card.title}</span>
-              <span class="${statusColor} font-medium">${msg.card.status}</span>
-            </div>
-            <div class="text-xs text-gray-500 space-y-1">
-              ${msg.card.details.map(d => `<div>${d}</div>`).join('')}
-            </div>
-          </div>`;
-      }
-      html += `<p class="text-sm text-gray-800 mt-2">Is there anything else I can help you with?</p>
-        </div>
-      </div>`;
-    }
-  });
-
-  chat.innerHTML = html;
-}
+let scrt2Token = null;
+let conversationId = null;
+let sseConnection = null;
+let isLiveAgent = false;
+let currentPOVConfig = null;
+let currentPOVName = '';
+let pendingBotMessage = '';
+let typingIndicatorActive = false;
 
 // ─── Multi-Agent Tab Support ───
 const AGENT_TABS = {
@@ -638,44 +599,13 @@ const AGENT_TABS = {
 function switchAgentTab(archetypeKey) {
   const config = ARCHETYPES[archetypeKey];
   if (!config) return;
-
   currentPOVConfig = config;
-
-  // Update demo header
   document.getElementById('demo-brand').textContent = currentPOVName;
   document.getElementById('demo-subtitle').textContent = config.subtitle;
   document.getElementById('demo-icon').textContent = config.emoji;
-  document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-6 flex items-center justify-between`;
-
-  // Re-render chat
-  renderDemoChat(config, currentPOVName);
-  // Show fallback chat immediately
-  const loadingEl = document.getElementById('agent-loading');
-  const fallbackEl = document.getElementById('demo-chat-fallback');
-  if (loadingEl) loadingEl.classList.add('hidden');
-  if (fallbackEl) fallbackEl.classList.remove('hidden');
-
-  // Re-render scenarios
-  const scenariosContainer = document.getElementById('demo-scenarios');
-  if (scenariosContainer && config.scenarios) {
-    scenariosContainer.innerHTML = config.scenarios.map(s => `
-      <div onclick="triggerScenario('${s.prompt.replace(/'/g, "\\'")}')" class="bg-gray-50 rounded-xl p-5 border-2 border-gray-100 hover:border-sf-accent hover:shadow-md transition-all cursor-pointer group">
-        <div class="text-2xl mb-2">${s.icon}</div>
-        <div class="font-semibold text-sf-blue text-sm mb-1 group-hover:text-sf-accent transition">${s.title}</div>
-        <div class="text-xs text-sf-muted leading-relaxed">${s.desc}</div>
-      </div>
-    `).join('');
-  }
-
-  // Re-render quick prompts
-  const promptsContainer = document.getElementById('demo-prompts');
-  if (promptsContainer && config.demoCapabilities) {
-    promptsContainer.innerHTML = config.demoCapabilities
-      .map(p => `<div onclick="triggerScenario('${p.replace(/['"]/g, '')}')" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
-      .join('');
-  }
-
-  // Update tab active states
+  document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-5 flex items-center justify-between`;
+  renderScenarios(config);
+  renderQuickPrompts(config);
   const tabs = AGENT_TABS[archetypeKey] || AGENT_TABS[Object.keys(AGENT_TABS).find(k => AGENT_TABS[k].some(t => t.key === archetypeKey))];
   if (tabs) {
     const tabBar = document.getElementById('agent-tabs-bar');
@@ -687,28 +617,330 @@ function switchAgentTab(archetypeKey) {
   }
 }
 
+// ─── Render scenario cards ───
+function renderScenarios(config) {
+  const el = document.getElementById('demo-scenarios');
+  if (!el || !config.scenarios) return;
+  el.innerHTML = config.scenarios.map(s => `
+    <div onclick="triggerScenario(\`${s.prompt.replace(/`/g, '\\`')}\`)" class="bg-gray-50 rounded-xl p-5 border-2 border-gray-100 hover:border-sf-accent hover:shadow-md transition-all cursor-pointer group">
+      <div class="text-2xl mb-2">${s.icon}</div>
+      <div class="font-semibold text-sf-blue text-sm mb-1 group-hover:text-sf-accent transition">${s.title}</div>
+      <div class="text-xs text-sf-muted leading-relaxed">${s.desc}</div>
+    </div>
+  `).join('');
+}
+
+// ─── Render quick prompt chips ───
+function renderQuickPrompts(config) {
+  const el = document.getElementById('demo-prompts');
+  if (!el || !config.demoCapabilities) return;
+  el.innerHTML = config.demoCapabilities
+    .map(p => `<div onclick="triggerScenario(\`${p.replace(/`/g, '\\`')}\`)" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
+    .join('');
+}
+
 // ─── Trigger Scenario from card/chip click ───
 function triggerScenario(prompt) {
-  // Switch to demo tab if not already there
   switchTab('demo');
-  // Feed the prompt into the chat input and send
   const input = document.getElementById('demo-input');
   if (input) {
     input.value = prompt;
-    sendDemoMessage();
+    sendMessage();
   }
 }
 
-// ─── Scenario-aware response generator ───
-let currentPOVConfig = null;
-let currentPOVName = '';
+// ─── Update connection status indicator ───
+function setAgentStatus(status) {
+  const dot = document.getElementById('status-dot');
+  const text = document.getElementById('status-text');
+  if (!dot || !text) return;
+  if (status === 'connected') {
+    dot.className = 'w-2 h-2 rounded-full bg-green-400';
+    text.textContent = 'Live Agent Connected';
+    text.className = 'text-green-200 text-xs';
+  } else if (status === 'connecting') {
+    dot.className = 'w-2 h-2 rounded-full bg-yellow-400 animate-pulse';
+    text.textContent = 'Connecting...';
+    text.className = 'text-blue-200 text-xs';
+  } else if (status === 'simulated') {
+    dot.className = 'w-2 h-2 rounded-full bg-blue-400';
+    text.textContent = 'Demo Mode';
+    text.className = 'text-blue-200 text-xs';
+  } else {
+    dot.className = 'w-2 h-2 rounded-full bg-red-400';
+    text.textContent = 'Disconnected';
+    text.className = 'text-red-200 text-xs';
+  }
+}
 
+// ─── Append a message bubble to the chat ───
+function appendMessage(role, text) {
+  const chat = document.getElementById('demo-chat');
+  if (!chat) return;
+  removeTypingIndicator();
+  if (role === 'user') {
+    chat.innerHTML += `<div class="flex gap-3 justify-end fade-in">
+      <div class="bg-sf-accent text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-md">
+        <p class="text-sm">${escapeHtml(text)}</p>
+      </div>
+    </div>`;
+  } else {
+    chat.innerHTML += `<div class="flex gap-3 fade-in">
+      <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+      <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
+        <p class="text-sm text-gray-800">${text}</p>
+      </div>
+    </div>`;
+  }
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ─── Typing indicator ───
+function showTypingIndicator() {
+  if (typingIndicatorActive) return;
+  typingIndicatorActive = true;
+  const chat = document.getElementById('demo-chat');
+  if (!chat) return;
+  chat.innerHTML += `<div id="typing-indicator" class="flex gap-3 fade-in">
+    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
+      <div class="flex gap-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.1s"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.2s"></div></div>
+    </div>
+  </div>`;
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  typingIndicatorActive = false;
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+// ─── SCRT2: Get Access Token ───
+async function getAccessToken() {
+  const url = `${SCRT2_CONFIG.baseURL}/iamessage/api/v2/authorization/unauthenticated/access-token`;
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      orgId: SCRT2_CONFIG.orgId,
+      esDeveloperName: SCRT2_CONFIG.developerName,
+      capabilitiesVersion: '1',
+      platform: 'Web'
+    })
+  });
+  if (!resp.ok) throw new Error(`Token request failed: ${resp.status}`);
+  const data = await resp.json();
+  return data.accessToken;
+}
+
+// ─── SCRT2: Create Conversation ───
+async function createConversation(token) {
+  const url = `${SCRT2_CONFIG.baseURL}/iamessage/api/v2/conversation`;
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      conversationId: crypto.randomUUID(),
+      esDeveloperName: SCRT2_CONFIG.developerName
+    })
+  });
+  if (!resp.ok) throw new Error(`Conversation creation failed: ${resp.status}`);
+  const data = await resp.json();
+  return data;
+}
+
+// ─── SCRT2: Connect SSE Stream ───
+function connectSSE(token) {
+  if (sseConnection) { sseConnection.close(); sseConnection = null; }
+  const url = `${SCRT2_CONFIG.baseURL}/eventrouter/v1/sse?_ts=${Date.now()}`;
+  const es = new EventSource(url + `&Authorization=Bearer ${encodeURIComponent(token)}`);
+
+  // Fallback: if EventSource doesn't support auth header, use fetch-based SSE
+  es.onerror = () => {
+    es.close();
+    connectSSEFetch(token);
+  };
+
+  es.addEventListener('CONVERSATION_MESSAGE', (e) => handleSSEEvent('CONVERSATION_MESSAGE', e.data));
+  es.addEventListener('CONVERSATION_TYPING_STARTED_INDICATOR', () => showTypingIndicator());
+  es.addEventListener('CONVERSATION_TYPING_STOPPED_INDICATOR', () => removeTypingIndicator());
+  es.addEventListener('CONVERSATION_ROUTING_RESULT', (e) => handleSSEEvent('CONVERSATION_ROUTING_RESULT', e.data));
+
+  sseConnection = es;
+}
+
+// ─── SCRT2: Fetch-based SSE (fallback) ───
+async function connectSSEFetch(token) {
+  try {
+    const url = `${SCRT2_CONFIG.baseURL}/eventrouter/v1/sse`;
+    const resp = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'text/event-stream' }
+    });
+    if (!resp.ok) throw new Error(`SSE fetch failed: ${resp.status}`);
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    function processBuffer() {
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+      let currentEvent = '';
+      for (const line of lines) {
+        if (line.startsWith('event:')) {
+          currentEvent = line.substring(6).trim();
+        } else if (line.startsWith('data:') && currentEvent) {
+          const data = line.substring(5).trim();
+          if (currentEvent === 'CONVERSATION_MESSAGE') handleSSEEvent('CONVERSATION_MESSAGE', data);
+          else if (currentEvent === 'CONVERSATION_TYPING_STARTED_INDICATOR') showTypingIndicator();
+          else if (currentEvent === 'CONVERSATION_TYPING_STOPPED_INDICATOR') removeTypingIndicator();
+          else if (currentEvent === 'CONVERSATION_ROUTING_RESULT') handleSSEEvent('CONVERSATION_ROUTING_RESULT', data);
+          currentEvent = '';
+        }
+      }
+    }
+
+    async function read() {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        processBuffer();
+      }
+    }
+    read().catch(err => console.warn('SSE stream ended:', err));
+  } catch (err) {
+    console.warn('Fetch SSE failed, using simulated mode:', err);
+  }
+}
+
+// ─── Handle SSE Events ───
+function handleSSEEvent(eventType, data) {
+  try {
+    const parsed = JSON.parse(data);
+    if (eventType === 'CONVERSATION_MESSAGE') {
+      const content = parsed.conversationEntry?.entryPayload;
+      if (!content) return;
+      let payload;
+      try { payload = typeof content === 'string' ? JSON.parse(content) : content; } catch { payload = content; }
+      // Extract text from various message formats
+      let text = '';
+      if (payload.abstractMessage?.messageType === 'StaticContentMessage') {
+        text = payload.abstractMessage.staticContent?.formatType === 'RichLink'
+          ? payload.abstractMessage.staticContent?.text || ''
+          : payload.abstractMessage.text || '';
+      } else if (payload.abstractMessage?.text) {
+        text = payload.abstractMessage.text;
+      } else if (payload.text) {
+        text = payload.text;
+      } else if (typeof payload === 'string') {
+        text = payload;
+      }
+      // Only show messages from the agent (not echo of user messages)
+      const role = parsed.conversationEntry?.sender?.role;
+      if (text && role !== 'EndUser') {
+        removeTypingIndicator();
+        appendMessage('bot', text);
+      }
+    } else if (eventType === 'CONVERSATION_ROUTING_RESULT') {
+      const result = parsed.conversationEntry?.entryPayload;
+      if (result) {
+        let payload;
+        try { payload = typeof result === 'string' ? JSON.parse(result) : result; } catch { payload = result; }
+        if (payload.routingType === 'Initial' || payload.failureType) {
+          console.log('Routing result:', payload);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('SSE parse error:', err);
+  }
+}
+
+// ─── SCRT2: Send Message ───
+async function sendMessageToAgent(text) {
+  if (!scrt2Token || !conversationId) return false;
+  const url = `${SCRT2_CONFIG.baseURL}/iamessage/api/v2/conversation/${conversationId}/message`;
+  try {
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${scrt2Token}`
+      },
+      body: JSON.stringify({
+        message: {
+          id: crypto.randomUUID(),
+          messageType: 'StaticContentMessage',
+          staticContent: {
+            formatType: 'Text',
+            text: text
+          }
+        },
+        esDeveloperName: SCRT2_CONFIG.developerName,
+        isNewMessagingSession: false
+      })
+    });
+    return resp.ok;
+  } catch (err) {
+    console.warn('Send message failed:', err);
+    return false;
+  }
+}
+
+// ─── Initialize Live Agent Connection ───
+async function initLiveAgent() {
+  setAgentStatus('connecting');
+  try {
+    scrt2Token = await getAccessToken();
+    const conv = await createConversation(scrt2Token);
+    conversationId = conv.conversationId || conv.id;
+    connectSSE(scrt2Token);
+    isLiveAgent = true;
+    setAgentStatus('connected');
+    console.log('Live agent connected, conversation:', conversationId);
+  } catch (err) {
+    console.warn('Live agent connection failed, using simulated mode:', err);
+    isLiveAgent = false;
+    setAgentStatus('simulated');
+    showGreeting();
+  }
+}
+
+// ─── Show initial greeting in simulated mode ───
+function showGreeting() {
+  const config = currentPOVConfig;
+  const name = currentPOVName || 'Customer';
+  if (!config) return;
+  const chat = document.getElementById('demo-chat');
+  if (!chat) return;
+  let html = `<div class="flex gap-3 fade-in">
+    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
+    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
+      <p class="text-sm text-gray-800">${config.demoGreeting(name)}</p>
+      <div class="mt-2 space-y-1 text-sm text-gray-600">
+        ${config.demoCapabilities.map(c => `<div>${c}</div>`).join('')}
+      </div>
+      <p class="text-sm text-gray-800 mt-2">How can I help you today?</p>
+    </div>
+  </div>`;
+  chat.innerHTML = html;
+}
+
+// ─── Simulated scenario-aware response (fallback) ───
 function getScenarioResponse(userText, name) {
   const lower = userText.toLowerCase();
   const config = currentPOVConfig;
-  if (!config) return null;
-
-  // Match against scenario prompts
+  if (!config) return { text: `I can help you with that! In a live deployment, I'd use ${name}'s Salesforce data to assist.`, card: null };
   if (config.scenarios) {
     for (const s of config.scenarios) {
       const keywords = s.title.toLowerCase().split(/[\s·→&]+/).filter(w => w.length > 2);
@@ -716,76 +948,56 @@ function getScenarioResponse(userText, name) {
       if (keywords.some(k => lower.includes(k)) || lower.includes(promptWords.substring(0, 20))) {
         return {
           text: `I understand you need help with ${s.title.toLowerCase()}. Let me look into this right away.`,
-          card: {
-            title: `${s.icon} ${s.title}`,
-            status: 'Processing',
-            details: [
-              `📋 Scenario: ${s.desc}`,
-              `🔍 Checking ${name}'s Salesforce data...`,
-              `✅ In a live deployment, I would resolve this using your connected Salesforce org data`,
-              `📞 Shall I connect you with the team for a live walkthrough?`
-            ]
-          }
+          card: { title: `${s.icon} ${s.title}`, status: 'Processing', details: [
+            `📋 Scenario: ${s.desc}`,
+            `🔍 Checking ${name}'s Salesforce data...`,
+            `✅ In a live deployment, I would resolve this using your connected Salesforce org data`,
+            `📞 Shall I connect you with the team for a live walkthrough?`
+          ]}
         };
       }
     }
   }
-
-  // Generic intelligent response
   const topics = config.demoCapabilities || [];
   return {
     text: `Great question! Here's what I can help you with at ${name}:`,
-    card: {
-      title: `${config.emoji} ${config.label}`,
-      status: 'Ready',
-      details: [
-        ...topics.slice(0, 3),
-        `💬 In a live deployment, I'd use real ${name} data from Salesforce to answer this.`,
-        `📞 Want to see a full demo? Contact Vandana Nayak for a deep-dive.`
-      ]
-    }
+    card: { title: `${config.emoji} ${config.label}`, status: 'Ready', details: [
+      ...topics.slice(0, 3),
+      `💬 In a live deployment, I'd use real ${name} data from Salesforce to answer this.`,
+      `📞 Want to see a full demo? Contact Vandana Nayak for a deep-dive.`
+    ]}
   };
 }
 
-// ─── Send Demo Message (interactive) ───
-function sendDemoMessage() {
+// ─── Main Send Message (called from UI) ───
+async function sendMessage() {
   const input = document.getElementById('demo-input');
   const text = input.value.trim();
   if (!text) return;
   input.value = '';
 
-  const chat = document.getElementById('demo-chat');
+  // Show user message
+  appendMessage('user', text);
 
-  // Add user message
-  chat.innerHTML += `<div class="flex gap-3 justify-end fade-in">
-    <div class="bg-sf-accent text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-md">
-      <p class="text-sm">${text}</p>
-    </div>
-  </div>`;
-
-  // Typing indicator
-  chat.innerHTML += `<div id="typing" class="flex gap-3 fade-in">
-    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
-    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
-      <div class="flex gap-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.1s"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.2s"></div></div>
-    </div>
-  </div>`;
-  chat.scrollTop = chat.scrollHeight;
-
-  // Generate scenario-aware response
-  const resp = getScenarioResponse(text, currentPOVName || 'Customer');
-
-  setTimeout(() => {
-    const typing = document.getElementById('typing');
-    if (typing) typing.remove();
-
-    let responseHtml = `<div class="flex gap-3 fade-in">
-      <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
-      <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
-        <p class="text-sm text-gray-800">${resp.text}</p>`;
-    if (resp.card) {
-      const statusColor = resp.card.status === 'Ready' ? 'text-green-600' : 'text-sf-accent';
-      responseHtml += `<div class="mt-3 bg-white rounded-lg p-3 border">
+  if (isLiveAgent) {
+    // Send to live SCRT2 agent
+    showTypingIndicator();
+    const sent = await sendMessageToAgent(text);
+    if (!sent) {
+      removeTypingIndicator();
+      appendMessage('bot', 'Sorry, I had trouble sending that message. Please try again.');
+    }
+    // Response will come through SSE
+  } else {
+    // Simulated fallback
+    showTypingIndicator();
+    const resp = getScenarioResponse(text, currentPOVName || 'Customer');
+    setTimeout(() => {
+      removeTypingIndicator();
+      let responseHtml = resp.text;
+      if (resp.card) {
+        const statusColor = resp.card.status === 'Ready' ? 'text-green-600' : 'text-sf-accent';
+        responseHtml += `<div class="mt-3 bg-white rounded-lg p-3 border">
           <div class="flex justify-between text-sm mb-1">
             <span class="font-medium">${resp.card.title}</span>
             <span class="${statusColor} font-medium">${resp.card.status}</span>
@@ -794,99 +1006,10 @@ function sendDemoMessage() {
             ${resp.card.details.map(d => `<div>${d}</div>`).join('')}
           </div>
         </div>`;
-    }
-    responseHtml += `<p class="text-sm text-gray-800 mt-2">Is there anything else I can help you with?</p>
-      </div>
-    </div>`;
-
-    chat.innerHTML += responseHtml;
-    chat.scrollTop = chat.scrollHeight;
-  }, 1200);
-}
-
-// ─── Live Agentforce Widget ───
-let agentforceInitialized = false;
-
-function initAgentforceWidget() {
-  if (agentforceInitialized) return;
-
-  const ESD_CONFIG = {
-    orgId: '00Dbm00000jtzs9',
-    deploymentName: 'Retail_Agent_Web_Chat',
-    siteURL: 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWRetailAgentWebChat1780786812852',
-    scrt2URL: 'https://trailsignup-d7fd90d7f30b8a.my.salesforce-scrt.com',
-    bootstrapJS: 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWRetailAgentWebChat1780786812852/assets/js/bootstrap.min.js'
-  };
-
-  const loadingEl = document.getElementById('agent-loading');
-  const fallbackEl = document.getElementById('demo-chat-fallback');
-
-  // Dynamically load the bootstrap script
-  const script = document.createElement('script');
-  script.src = ESD_CONFIG.bootstrapJS;
-  script.type = 'text/javascript';
-
-  script.onload = function() {
-    try {
-      // MUST set hideChatButton BEFORE init() to prevent the floating button
-      embeddedservice_bootstrap.settings.language = 'en_US';
-
-      embeddedservice_bootstrap.init(
-        ESD_CONFIG.orgId,
-        ESD_CONFIG.deploymentName,
-        ESD_CONFIG.siteURL,
-        { scrt2URL: ESD_CONFIG.scrt2URL }
-      );
-
-      agentforceInitialized = true;
-
-      // Listen for the widget to be ready
-      window.addEventListener('onEmbeddedMessagingReady', function() {
-        if (loadingEl) loadingEl.classList.add('hidden');
-      });
-
-      // Hide the default floating button — we embed inline via the demo tab
-      window.addEventListener('onEmbeddedMessagingReady', function() {
-        // Hide the floating FAB so the chat renders only in our container
-        const style = document.createElement('style');
-        style.textContent = `
-          .embeddedMessagingFrame,
-          .embeddedMessagingConversationButton,
-          [class*="embeddedMessaging"] button[class*="fab"],
-          .embedded-messaging {
-            /* Let the widget remain but hide the launch button */
-          }
-          .embeddedMessagingConversationButtonWrapper {
-            position: static !important;
-            bottom: auto !important;
-            right: auto !important;
-          }
-        `;
-        document.head.appendChild(style);
-      });
-
-      // Fallback: if widget doesn't load within 5 seconds, show simulated chat
-      setTimeout(function() {
-        if (loadingEl && !loadingEl.classList.contains('hidden')) {
-          loadingEl.classList.add('hidden');
-          if (fallbackEl) fallbackEl.classList.remove('hidden');
-        }
-      }, 5000);
-
-    } catch (err) {
-      console.error('Agentforce widget init error:', err);
-      if (loadingEl) loadingEl.classList.add('hidden');
-      if (fallbackEl) fallbackEl.classList.remove('hidden');
-    }
-  };
-
-  script.onerror = function() {
-    console.warn('Could not load Agentforce bootstrap — falling back to demo chat');
-    if (loadingEl) loadingEl.classList.add('hidden');
-    if (fallbackEl) fallbackEl.classList.remove('hidden');
-  };
-
-  document.head.appendChild(script);
+      }
+      appendMessage('bot', responseHtml);
+    }, 1200);
+  }
 }
 
 // ─── Load POV ───
@@ -929,7 +1052,7 @@ function renderPOV(pov) {
   currentPOVName = name;
 
   // Update page title
-  document.title = `${name} — Agentforce POV`;
+  document.title = `${name} — Agentforce Showcase`;
 
   // Header bar
   document.getElementById('header-label').textContent = `${name} · ${config.label}`;
@@ -960,28 +1083,9 @@ function renderPOV(pov) {
   document.getElementById('demo-subtitle').textContent = config.subtitle;
   document.getElementById('demo-icon').textContent = config.emoji;
   document.getElementById('demo-container').className = `rounded-2xl overflow-hidden shadow-xl`;
-  document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-6 flex items-center justify-between`;
-  renderDemoChat(config, name);
-
-  // Populate scenario cards
-  const scenariosContainer = document.getElementById('demo-scenarios');
-  if (scenariosContainer && config.scenarios) {
-    scenariosContainer.innerHTML = config.scenarios.map(s => `
-      <div onclick="triggerScenario('${s.prompt.replace(/'/g, "\\'")}')" class="bg-gray-50 rounded-xl p-5 border-2 border-gray-100 hover:border-sf-accent hover:shadow-md transition-all cursor-pointer group">
-        <div class="text-2xl mb-2">${s.icon}</div>
-        <div class="font-semibold text-sf-blue text-sm mb-1 group-hover:text-sf-accent transition">${s.title}</div>
-        <div class="text-xs text-sf-muted leading-relaxed">${s.desc}</div>
-      </div>
-    `).join('');
-  }
-
-  // Populate quick prompt chips
-  const promptsContainer = document.getElementById('demo-prompts');
-  if (promptsContainer && config.demoCapabilities) {
-    promptsContainer.innerHTML = config.demoCapabilities
-      .map(p => `<div onclick="triggerScenario('${p.replace(/['"]/g, '')}')" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
-      .join('');
-  }
+  document.getElementById('demo-header').className = `bg-gradient-to-r ${config.gradient} p-5 flex items-center justify-between`;
+  renderScenarios(config);
+  renderQuickPrompts(config);
 
   // Show agent tabs if multi-agent experience is supported
   const tabs = AGENT_TABS[pov.archetypeKey];
@@ -996,8 +1100,8 @@ function renderPOV(pov) {
     `).join('');
   }
 
-  // Initialize live Agentforce widget
-  initAgentforceWidget();
+  // Initialize live SCRT2 agent connection (falls back to simulated mode)
+  initLiveAgent();
 
   // Show content
   document.getElementById('loading').classList.add('hidden');
