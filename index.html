@@ -1643,7 +1643,7 @@ function renderMyPOVs() {
     const typeBadge = pov.type === 'ae' ? '<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">AE</span>' :
                       pov.type === 'architect' ? '<span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full">ARCH</span>' :
                       '<span class="bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded-full">SE</span>';
-    const shareUrl = `${window.location.origin}${window.location.pathname}#pov=${pov.id}`;
+    const shareUrl = (pov.type === 'ae' || pov.type === 'architect') ? `${window.location.origin}/pov.html?id=${pov.id}` : `${window.location.origin}${window.location.pathname}#pov=${pov.id}`;
     return `
       <div class="group rounded-xl border-2 border-gray-100 hover:border-sf-accent hover:shadow-lg transition-all overflow-hidden cursor-pointer" onclick="loadSavedPOV('${pov.id}')">
         <div class="bg-gradient-to-r from-blue-800 to-indigo-900 px-5 py-4 text-white">
@@ -1677,26 +1677,14 @@ function loadSavedPOV(povId) {
   const pov = povs.find(p => p.id === povId);
   if (!pov) return;
 
-  if (pov.type === 'ae') {
-    document.getElementById('ae-output-title').textContent = `${pov.customer} · ${pov.archetype}`;
-    document.getElementById('pov-customer-name').textContent = pov.customer;
-    document.getElementById('pov-archetype-name').textContent = `${pov.archetype} · Powered by Headless 360`;
-    document.getElementById('pov-usecase-title').textContent = pov.archetype;
-    document.getElementById('pov-inline-name-1').textContent = pov.customer;
-    document.getElementById('pov-inline-name-2').textContent = pov.customer;
-    document.getElementById('demo-brand-name').textContent = pov.customer;
-    document.getElementById('demo-agent-label').textContent = pov.customer;
-    setViewMode('internal');
-    showScreen('screen-ae-output');
-  } else if (pov.type === 'architect') {
-    document.getElementById('arch-output-title').textContent = `${pov.customer} · Architecture Showcase`;
-    document.getElementById('arch-pov-customer').textContent = pov.customer;
-    document.getElementById('arch-mapped-customer').textContent = pov.customer;
-    document.getElementById('arch-demo-brand').textContent = pov.customer;
-    document.getElementById('arch-demo-label').textContent = pov.customer;
-    setViewMode('internal');
-    showScreen('screen-architect-output');
-  } else if (pov.type === 'se') {
+  // All AE and Architect POVs open in pov.html (full experience with teams, scenarios, live demo)
+  if (pov.type === 'ae' || pov.type === 'architect') {
+    window.location.href = `pov.html?id=${pov.id}`;
+    return;
+  }
+
+  // SE assessments still load inline
+  if (pov.type === 'se') {
     document.getElementById('se-output-title').textContent = `${pov.customer} · Agentforce Opportunity Assessment`;
     document.getElementById('se-customer-name').textContent = pov.customer;
     document.getElementById('se-recommended-agents').textContent = pov.agents || 'No agents selected';
@@ -1949,20 +1937,8 @@ function generateAEOutput() {
   // Create stable slug for shareable URL
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
 
-  // Show generating modal
+  // Show generating modal, save POV, then redirect to full pov.html experience
   showGeneratingModal(() => {
-    // Update output with customer details
-    document.getElementById('ae-output-title').textContent = `${account} · ${archetype}`;
-    document.getElementById('pov-customer-name').textContent = account;
-    document.getElementById('pov-archetype-name').textContent = `${archetype} · Powered by Headless 360`;
-    document.getElementById('pov-usecase-title').textContent = archetype;
-    document.getElementById('pov-inline-name-1').textContent = account;
-    document.getElementById('pov-inline-name-2').textContent = account;
-    document.getElementById('demo-brand-name').textContent = account;
-    document.getElementById('demo-agent-label').textContent = account;
-    setViewMode('internal');
-    showScreen('screen-ae-output');
-
     // Save POV with stable slug
     const pov = {
       id: slug,
@@ -1977,8 +1953,8 @@ function generateAEOutput() {
     };
     savePOV(pov);
 
-    // Show shareable link
-    showShareableLink(slug, account);
+    // Redirect to full pov.html (has teams, scenarios, live SCRT2 demo)
+    window.location.href = `pov.html?id=${slug}`;
   });
 }
 
