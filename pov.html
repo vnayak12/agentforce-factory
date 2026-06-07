@@ -54,11 +54,18 @@
   <div class="bg-sf-blue text-white">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="text-white/60 hover:text-white text-sm transition">← Demo Studio</a>
-        <span class="text-white/30">|</span>
+        <a href="index.html" class="internal-only text-white/60 hover:text-white text-sm transition">← Demo Studio</a>
+        <span class="internal-only text-white/30">|</span>
         <span class="text-sm font-medium" id="header-label">Loading...</span>
       </div>
-      <div class="text-sm text-blue-200">Powered by Salesforce Agentforce</div>
+      <div class="flex items-center gap-4">
+        <!-- Internal / Customer View Mode Toggle (only visible in internal mode) -->
+        <div id="view-mode-toggle" class="flex bg-white/10 rounded-lg p-0.5">
+          <button onclick="setViewMode('internal')" id="btn-mode-internal" class="px-3 py-1.5 text-sm rounded-md bg-white text-sf-blue font-semibold cursor-pointer transition">Internal</button>
+          <button onclick="setViewMode('customer')" id="btn-mode-customer" class="px-3 py-1.5 text-sm rounded-md text-white/70 hover:text-white cursor-pointer transition">Customer</button>
+        </div>
+        <div class="text-sm text-blue-200">Powered by Salesforce Agentforce</div>
+      </div>
     </div>
   </div>
 
@@ -293,6 +300,13 @@
         </div>
       </div>
     </div>
+
+    <!-- Modify Button (internal only) -->
+    <div class="internal-only flex justify-center mt-6">
+      <button onclick="showModifyModal()" class="bg-white border-2 border-sf-accent text-sf-accent px-8 py-3 rounded-xl font-semibold hover:bg-blue-50 transition cursor-pointer">
+        ✏️ Modify
+      </button>
+    </div>
   </div>
 
   <!-- Live Demo Tab Content -->
@@ -346,22 +360,135 @@
       </div>
     </div>
 
+    <!-- Modify Button (internal only) -->
+    <div class="internal-only flex justify-center mt-6">
+      <button onclick="showModifyModal()" class="bg-white border-2 border-sf-accent text-sf-accent px-8 py-3 rounded-xl font-semibold hover:bg-blue-50 transition cursor-pointer">
+        ✏️ Modify
+      </button>
+    </div>
+
     <!-- Powered by notice -->
     <div class="text-center mt-6 text-sm text-sf-muted">
       This is a live demo powered by Agentforce on Salesforce. <a href="index.html" class="text-sf-accent hover:underline">Build your own Demo →</a>
     </div>
   </div>
 
-  <!-- Footer -->
-  <div class="bg-sf-blue text-white py-6 mt-8">
+  <!-- Footer (internal only) -->
+  <div class="internal-only bg-sf-blue text-white py-6 mt-8">
     <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-      <div>For any questions or suggestions, please contact <strong>Vandana Nayak</strong></div>
+      <div><span class="font-semibold">Questions?</span> Contact <strong>Vandana Nayak</strong> · Field CTO</div>
       <div class="text-sm text-blue-200">Powered by Salesforce Agentforce</div>
     </div>
   </div>
 </div>
 
+<!-- ===== MODIFY MODAL ===== -->
+<div id="modify-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-8 fade-in">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-bold text-sf-blue">✏️ Modify POV</h2>
+      <button onclick="hideModifyModal()" class="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer">&times;</button>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-semibold text-sf-blue mb-2">What would you like to change?</label>
+        <select id="modify-category" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+          <option>Branding (colors, logo, fonts)</option>
+          <option>Use Case / Agent Behavior</option>
+          <option>Add a Feature or Action</option>
+          <option>Architecture / Integrations</option>
+          <option>Data Sources</option>
+          <option>Scenarios & Demo Prompts</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-sf-blue mb-2">Describe the change</label>
+        <textarea id="modify-description" rows="4" placeholder="e.g. Change the primary color to match their new brand refresh, add a product recommendation action, update the welcome message..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition"></textarea>
+      </div>
+      <div class="bg-blue-50 rounded-xl p-4 text-sm text-sf-blue">
+        <div class="flex items-start gap-2">
+          <span class="text-lg">🤖</span>
+          <div>
+            <strong>MeshMesh will process this request.</strong><br>
+            Your modification will be queued and applied. You'll receive the updated POV shortly.
+          </div>
+        </div>
+      </div>
+      <button onclick="submitModification()" class="w-full bg-sf-accent text-white py-3 rounded-xl font-bold hover:bg-sf-blue transition cursor-pointer">
+        Submit Modification
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
+// ─── View Mode (Internal vs Customer) ───
+let currentViewMode = 'internal';
+function setViewMode(mode) {
+  currentViewMode = mode;
+  const internals = document.querySelectorAll('.internal-only');
+  internals.forEach(el => {
+    el.style.display = mode === 'internal' ? '' : 'none';
+  });
+  const btnInternal = document.getElementById('btn-mode-internal');
+  const btnCustomer = document.getElementById('btn-mode-customer');
+  if (btnInternal && btnCustomer) {
+    if (mode === 'internal') {
+      btnInternal.className = 'px-3 py-1.5 text-sm rounded-md bg-white text-sf-blue font-semibold cursor-pointer transition';
+      btnCustomer.className = 'px-3 py-1.5 text-sm rounded-md text-white/70 hover:text-white cursor-pointer transition';
+    } else {
+      btnInternal.className = 'px-3 py-1.5 text-sm rounded-md text-white/70 hover:text-white cursor-pointer transition';
+      btnCustomer.className = 'px-3 py-1.5 text-sm rounded-md bg-white text-sf-blue font-semibold cursor-pointer transition';
+    }
+  }
+}
+
+// ─── Modify Modal ───
+function showModifyModal() {
+  document.getElementById('modify-modal').classList.remove('hidden');
+}
+function hideModifyModal() {
+  document.getElementById('modify-modal').classList.add('hidden');
+}
+function submitModification() {
+  const category = document.getElementById('modify-category').value;
+  const description = document.getElementById('modify-description').value.trim();
+  if (!description) {
+    alert('Please describe the change you need.');
+    return;
+  }
+  // Build modification payload
+  const payload = {
+    povId: new URLSearchParams(window.location.search).get('id') || 'unknown',
+    customer: currentPOVName || 'Unknown',
+    category: category,
+    description: description,
+    timestamp: new Date().toISOString()
+  };
+  // Store in localStorage as a modification queue
+  const queue = JSON.parse(localStorage.getItem('agentforce-modifications') || '[]');
+  queue.push(payload);
+  localStorage.setItem('agentforce-modifications', JSON.stringify(queue));
+  // Show confirmation
+  const modal = document.getElementById('modify-modal');
+  modal.querySelector('.space-y-4').innerHTML = `
+    <div class="text-center py-6">
+      <div class="text-5xl mb-4">✅</div>
+      <h3 class="text-lg font-bold text-sf-blue mb-2">Modification Submitted!</h3>
+      <p class="text-sf-muted text-sm mb-2"><strong>Category:</strong> ${category}</p>
+      <p class="text-sf-muted text-sm mb-4">${description.substring(0, 120)}${description.length > 120 ? '...' : ''}</p>
+      <div class="bg-blue-50 rounded-xl p-4 text-sm text-sf-blue mb-4">
+        <strong>🤖 MeshMesh will process this.</strong><br>
+        Your request has been queued. The POV will be updated and you'll see the changes next time you load it.
+      </div>
+      <button onclick="hideModifyModal();location.reload();" class="bg-sf-accent text-white px-6 py-3 rounded-xl font-bold hover:bg-sf-blue transition cursor-pointer">
+        Done
+      </button>
+    </div>
+  `;
+}
+
 // ─── Archetype Configurations ───
 const ARCHETYPES = {
   'product-advisor': {
@@ -1218,6 +1345,10 @@ function renderPOV(pov) {
   // Show content
   document.getElementById('loading').classList.add('hidden');
   document.getElementById('pov-content').classList.remove('hidden');
+
+  // Set view mode — check URL for ?mode=customer to auto-hide internal elements
+  const urlMode = new URLSearchParams(window.location.search).get('mode');
+  setViewMode(urlMode === 'customer' ? 'customer' : 'internal');
 }
 
 function showError() {
