@@ -193,14 +193,14 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <div class="text-sm text-sf-muted mt-1">3 agent archetypes</div>
         <div class="coming-soon-badge bg-gray-200 text-gray-600 text-xs font-bold px-2 py-1 rounded-full">COMING SOON</div>
       </div>
-      <button onclick="showScreen('screen-ae-form')" class="relative bg-white rounded-xl p-6 border-2 border-blue-200 shadow-sm hover:shadow-lg transition-all text-left cursor-pointer">
+      <button onclick="showScreen('screen-eu-form')" class="relative bg-white rounded-xl p-6 border-2 border-sf-accent shadow-md hover:shadow-lg transition-all text-left cursor-pointer">
         <div class="text-3xl mb-3">⚡</div>
-        <div class="font-bold text-sf-blue text-lg">Energy</div>
-        <div class="text-sm text-sf-muted mt-1">3 agent archetypes</div>
+        <div class="font-bold text-sf-blue text-lg">Energy & Utilities</div>
+        <div class="text-sm text-sf-muted mt-1">4 agent archetypes</div>
         <div class="flex items-center gap-1 mt-3">
           <img src="https://assets.meshmesh.io/tenants/org_01KDY098Y468ZK9Q6DFDZXJBG6/task-assets/1a9ded6b-99e5-44ce-8f49-41e96b107fb7/1d1b152d-3586-4e12-bf61-0f9bfd8a04ac.png" alt="Constellation" class="w-6 h-6 rounded-full object-contain bg-gray-100 border border-gray-200">
         </div>
-        <div class="mt-2 inline-block bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded-full">BETA</div>
+        <div class="mt-2 inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full">LIVE</div>
       </button>
     </div>
   </div>
@@ -407,10 +407,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <label class="block text-sm font-semibold text-sf-blue mb-2">Industry / Subindustry</label>
             <select class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
               <option>Retail</option>
+              <option>Energy & Utilities</option>
               <option disabled>Consumer Goods (Coming Soon)</option>
               <option disabled>Manufacturing (Coming Soon)</option>
               <option disabled>Auto (Coming Soon)</option>
-              <option disabled>Energy (Coming Soon)</option>
             </select>
           </div>
         </div>
@@ -1547,6 +1547,112 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
   </div>
 </div>
 
+<!-- ===== SCREEN: ENERGY & UTILITIES AE FORM ===== -->
+<div id="screen-eu-form" class="hidden fade-in">
+  <!-- Top Bar -->
+  <div class="bg-sf-blue text-white py-4">
+    <div class="max-w-4xl mx-auto px-6 flex items-center gap-4">
+      <button onclick="showScreen('screen-landing')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
+      <div class="flex items-center gap-2">
+        <span class="bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">AE</span>
+        <span class="font-bold text-lg">Create a Demo · Energy & Utilities</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-6 py-10">
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+      <h2 class="text-2xl font-bold text-sf-blue mb-2">Tell us about the customer</h2>
+      <p class="text-sf-muted mb-8">We'll auto-extract their brand colors and logo from their website.</p>
+
+      <div class="space-y-6">
+        <!-- Account Name -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Account Name *</label>
+          <input id="eu-account" type="text" placeholder="e.g. Baker Hughes, Waste Management, Duke Energy" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+        </div>
+
+        <!-- Website URL -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Customer Website URL *</label>
+          <div class="relative">
+            <input id="eu-website" type="text" placeholder="e.g. bakerhughes.com" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+            <div class="absolute right-3 top-3.5 text-sm text-sf-muted">🎨 Auto-extracts brand</div>
+          </div>
+        </div>
+
+        <!-- AE Name -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Your Name *</label>
+          <input id="eu-name" type="text" placeholder="e.g. Sarah Johnson" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+        </div>
+
+        <!-- Agent Archetype -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Agent Archetype *</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="eu-archetypes">
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="eu-archetype" value="eu-field-service" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🔧</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Field Service Agent</div>
+                  <div class="text-sm text-sf-muted">Work orders, crews, outages, meters, facilities</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="eu-archetype" value="eu-customer-service" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📞</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Customer Service Agent</div>
+                  <div class="text-sm text-sf-muted">Account lookup, billing, outage status, rate plans</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="eu-archetype" value="eu-regulatory" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📋</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Regulatory Compliance Agent</div>
+                  <div class="text-sm text-sf-muted">Inspections, permits, compliance dashboard</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="eu-archetype" value="eu-sales" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">💼</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Sales Agent</div>
+                  <div class="text-sm text-sf-muted">Pipeline, opportunities, account intelligence</div>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Optional Upload -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
+          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
+            <div class="text-3xl mb-2">📎</div>
+            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
+            <input type="file" class="hidden">
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button onclick="generateEUOutput()" class="w-full bg-sf-accent text-white py-4 rounded-xl font-bold text-lg hover:bg-sf-blue transition-all shadow-lg cursor-pointer">
+          ✨ Generate Demo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== MODIFY MODAL ===== -->
 <div id="modify-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
   <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-8 fade-in">
@@ -2082,6 +2188,42 @@ function generateArchOutput() {
       archetype: 'Architecture Demo',
       createdAt: new Date().toISOString()
     });
+  });
+}
+
+// Generate Energy & Utilities output
+function generateEUOutput() {
+  const account = document.getElementById('eu-account').value || 'Baker Hughes';
+  const website = document.getElementById('eu-website').value || '';
+  const aeName = document.getElementById('eu-name').value || '';
+  const euArchetypeLabels = {
+    'eu-field-service': 'Field Service Agent',
+    'eu-customer-service': 'Customer Service Agent',
+    'eu-regulatory': 'Regulatory Compliance Agent',
+    'eu-sales': 'Sales Agent'
+  };
+  const selected = document.querySelector('input[name="eu-archetype"]:checked');
+  const archetypeKey = selected ? selected.value : 'eu-field-service';
+  const archetype = euArchetypeLabels[archetypeKey];
+
+  const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
+  const brandColors = extractBrandColor(website || account);
+  showGeneratingModal(() => {
+    const pov = {
+      id: slug,
+      type: 'ae',
+      customer: account,
+      website: website,
+      aeName: aeName,
+      archetype: archetype,
+      archetypeKey: archetypeKey,
+      industry: 'Energy & Utilities',
+      brandColor: brandColors.primary,
+      brandColorEnd: brandColors.secondary,
+      createdAt: new Date().toISOString()
+    };
+    savePOV(pov);
+    window.location.href = `pov.html?id=${slug}`;
   });
 }
 
