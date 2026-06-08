@@ -175,24 +175,24 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         </div>
         <div class="mt-2 inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full">LIVE</div>
       </button>
-      <div class="relative bg-white rounded-xl p-6 border-2 border-gray-100 opacity-60 text-left">
+      <button onclick="showScreen('screen-cg-form')" class="relative bg-white rounded-xl p-6 border-2 border-sf-accent shadow-md hover:shadow-lg transition-all text-left cursor-pointer">
         <div class="text-3xl mb-3">📦</div>
         <div class="font-bold text-sf-blue text-lg">Consumer Goods</div>
-        <div class="text-sm text-sf-muted mt-1">3 agent archetypes</div>
-        <div class="coming-soon-badge bg-gray-200 text-gray-600 text-xs font-bold px-2 py-1 rounded-full">COMING SOON</div>
-      </div>
-      <div class="relative bg-white rounded-xl p-6 border-2 border-gray-100 opacity-60 text-left">
+        <div class="text-sm text-sf-muted mt-1">4 agent archetypes</div>
+        <div class="mt-2 inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full">LIVE</div>
+      </button>
+      <button onclick="showScreen('screen-mfg-form')" class="relative bg-white rounded-xl p-6 border-2 border-sf-accent shadow-md hover:shadow-lg transition-all text-left cursor-pointer">
         <div class="text-3xl mb-3">🏭</div>
         <div class="font-bold text-sf-blue text-lg">Manufacturing</div>
-        <div class="text-sm text-sf-muted mt-1">3 agent archetypes</div>
-        <div class="coming-soon-badge bg-gray-200 text-gray-600 text-xs font-bold px-2 py-1 rounded-full">COMING SOON</div>
-      </div>
-      <div class="relative bg-white rounded-xl p-6 border-2 border-gray-100 opacity-60 text-left">
+        <div class="text-sm text-sf-muted mt-1">4 agent archetypes</div>
+        <div class="mt-2 inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full">LIVE</div>
+      </button>
+      <button onclick="showScreen('screen-auto-form')" class="relative bg-white rounded-xl p-6 border-2 border-sf-accent shadow-md hover:shadow-lg transition-all text-left cursor-pointer">
         <div class="text-3xl mb-3">🚗</div>
         <div class="font-bold text-sf-blue text-lg">Auto</div>
-        <div class="text-sm text-sf-muted mt-1">3 agent archetypes</div>
-        <div class="coming-soon-badge bg-gray-200 text-gray-600 text-xs font-bold px-2 py-1 rounded-full">COMING SOON</div>
-      </div>
+        <div class="text-sm text-sf-muted mt-1">4 agent archetypes</div>
+        <div class="mt-2 inline-block bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full">LIVE</div>
+      </button>
       <button onclick="showScreen('screen-eu-form')" class="relative bg-white rounded-xl p-6 border-2 border-sf-accent shadow-md hover:shadow-lg transition-all text-left cursor-pointer">
         <div class="text-3xl mb-3">⚡</div>
         <div class="font-bold text-sf-blue text-lg">Energy & Utilities</div>
@@ -408,9 +408,9 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <select class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
               <option>Retail</option>
               <option>Energy & Utilities</option>
-              <option disabled>Consumer Goods (Coming Soon)</option>
-              <option disabled>Manufacturing (Coming Soon)</option>
-              <option disabled>Auto (Coming Soon)</option>
+              <option>Consumer Goods</option>
+              <option>Manufacturing</option>
+              <option>Auto</option>
             </select>
           </div>
         </div>
@@ -1653,6 +1653,324 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
   </div>
 </div>
 
+<!-- ===== SCREEN: CONSUMER GOODS FORM ===== -->
+<div id="screen-cg-form" class="hidden fade-in">
+  <!-- Top Bar -->
+  <div class="bg-sf-blue text-white py-4">
+    <div class="max-w-4xl mx-auto px-6 flex items-center gap-4">
+      <button onclick="showScreen('screen-landing')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
+      <div class="flex items-center gap-2">
+        <span class="bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">AE</span>
+        <span class="font-bold text-lg">Create a Demo · Consumer Goods</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-6 py-10">
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+      <h2 class="text-2xl font-bold text-sf-blue mb-2">Tell us about the customer</h2>
+      <p class="text-sf-muted mb-8">We'll auto-extract their brand colors and logo from their website.</p>
+
+      <div class="space-y-6">
+        <!-- Account Name -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Account Name *</label>
+          <input id="cg-account" type="text" placeholder="e.g. Procter & Gamble, Unilever, Nestlé" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+        </div>
+
+        <!-- Website URL -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Customer Website URL *</label>
+          <div class="relative">
+            <input id="cg-website" type="text" placeholder="e.g. pg.com" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+            <div class="absolute right-3 top-3.5 text-sm text-sf-muted">🎨 Auto-extracts brand</div>
+          </div>
+        </div>
+
+        <!-- AE Name -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Your Name *</label>
+          <input id="cg-name" type="text" placeholder="e.g. Sarah Johnson" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+        </div>
+
+        <!-- Agent Archetype -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Agent Archetype *</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="cg-archetypes">
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="cg-archetype" value="cg-retail-execution" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🏪</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Retail Execution Agent</div>
+                  <div class="text-sm text-sf-muted">Store audits, shelf compliance, planogram checks, visit scheduling</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="cg-archetype" value="cg-trade-promotion" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📊</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Trade Promotion Agent</div>
+                  <div class="text-sm text-sf-muted">Promo planning, spend analysis, ROI tracking, retailer deals</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="cg-archetype" value="cg-distributor-service" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📦</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Distributor Service Agent</div>
+                  <div class="text-sm text-sf-muted">Order management, inventory visibility, delivery tracking</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="cg-archetype" value="cg-demand-planning" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🔮</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Demand Planning Agent</div>
+                  <div class="text-sm text-sf-muted">Forecast analysis, demand signals, replenishment alerts</div>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Optional Upload -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
+          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
+            <div class="text-3xl mb-2">📎</div>
+            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
+            <input type="file" class="hidden">
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button onclick="generateCGOutput()" class="w-full bg-sf-accent text-white py-4 rounded-xl font-bold text-lg hover:bg-sf-blue transition-all shadow-lg cursor-pointer">
+          ✨ Generate Demo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN: MANUFACTURING FORM ===== -->
+<div id="screen-mfg-form" class="hidden fade-in">
+  <!-- Top Bar -->
+  <div class="bg-sf-blue text-white py-4">
+    <div class="max-w-4xl mx-auto px-6 flex items-center gap-4">
+      <button onclick="showScreen('screen-landing')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
+      <div class="flex items-center gap-2">
+        <span class="bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">AE</span>
+        <span class="font-bold text-lg">Create a Demo · Manufacturing</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-6 py-10">
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+      <h2 class="text-2xl font-bold text-sf-blue mb-2">Tell us about the customer</h2>
+      <p class="text-sf-muted mb-8">We'll auto-extract their brand colors and logo from their website.</p>
+
+      <div class="space-y-6">
+        <!-- Account Name -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Account Name *</label>
+          <input id="mfg-account" type="text" placeholder="e.g. Caterpillar, 3M, Honeywell" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+        </div>
+
+        <!-- Website URL -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Customer Website URL *</label>
+          <div class="relative">
+            <input id="mfg-website" type="text" placeholder="e.g. caterpillar.com" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+            <div class="absolute right-3 top-3.5 text-sm text-sf-muted">🎨 Auto-extracts brand</div>
+          </div>
+        </div>
+
+        <!-- AE Name -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Your Name *</label>
+          <input id="mfg-name" type="text" placeholder="e.g. Sarah Johnson" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+        </div>
+
+        <!-- Agent Archetype -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Agent Archetype *</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="mfg-archetypes">
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="mfg-archetype" value="mfg-equipment-service" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🔧</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Equipment Service Agent</div>
+                  <div class="text-sm text-sf-muted">Work orders, maintenance schedules, parts lookup, technician dispatch</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="mfg-archetype" value="mfg-quality-control" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📋</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Quality Control Agent</div>
+                  <div class="text-sm text-sf-muted">Inspections, non-conformance tracking, CAPA, audit trails</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="mfg-archetype" value="mfg-production-ops" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🏭</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Production Operations Agent</div>
+                  <div class="text-sm text-sf-muted">Line status, shift scheduling, output tracking, downtime alerts</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="mfg-archetype" value="mfg-supply-chain" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📦</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Supply Chain Agent</div>
+                  <div class="text-sm text-sf-muted">Supplier management, procurement, logistics, inventory optimization</div>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Optional Upload -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
+          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
+            <div class="text-3xl mb-2">📎</div>
+            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
+            <input type="file" class="hidden">
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button onclick="generateMFGOutput()" class="w-full bg-sf-accent text-white py-4 rounded-xl font-bold text-lg hover:bg-sf-blue transition-all shadow-lg cursor-pointer">
+          ✨ Generate Demo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN: AUTO FORM ===== -->
+<div id="screen-auto-form" class="hidden fade-in">
+  <!-- Top Bar -->
+  <div class="bg-sf-blue text-white py-4">
+    <div class="max-w-4xl mx-auto px-6 flex items-center gap-4">
+      <button onclick="showScreen('screen-landing')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
+      <div class="flex items-center gap-2">
+        <span class="bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">AE</span>
+        <span class="font-bold text-lg">Create a Demo · Automotive</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-6 py-10">
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+      <h2 class="text-2xl font-bold text-sf-blue mb-2">Tell us about the customer</h2>
+      <p class="text-sf-muted mb-8">We'll auto-extract their brand colors and logo from their website.</p>
+
+      <div class="space-y-6">
+        <!-- Account Name -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Account Name *</label>
+          <input id="auto-account" type="text" placeholder="e.g. AutoNation, Penske, Lithia Motors" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+        </div>
+
+        <!-- Website URL -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Customer Website URL *</label>
+          <div class="relative">
+            <input id="auto-website" type="text" placeholder="e.g. autonation.com" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+            <div class="absolute right-3 top-3.5 text-sm text-sf-muted">🎨 Auto-extracts brand</div>
+          </div>
+        </div>
+
+        <!-- AE Name -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Your Name *</label>
+          <input id="auto-name" type="text" placeholder="e.g. Sarah Johnson" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
+        </div>
+
+        <!-- Agent Archetype -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Agent Archetype *</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="auto-archetypes">
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="auto-archetype" value="auto-vehicle-sales" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🚗</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Vehicle Sales Agent</div>
+                  <div class="text-sm text-sf-muted">Inventory search, test drives, financing, trade-in valuation</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="auto-archetype" value="auto-service-advisor" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🔧</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Service Advisor Agent</div>
+                  <div class="text-sm text-sf-muted">Appointment scheduling, repair status, recall notices, service history</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="auto-archetype" value="auto-dealership-ops" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">📊</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Dealership Ops Agent</div>
+                  <div class="text-sm text-sf-muted">Sales performance, F&I metrics, lot management, staff scheduling</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="auto-archetype" value="auto-customer-retention" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🤝</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Customer Retention Agent</div>
+                  <div class="text-sm text-sf-muted">Lease renewals, loyalty programs, follow-up campaigns, NPS tracking</div>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Optional Upload -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
+          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
+            <div class="text-3xl mb-2">📎</div>
+            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
+            <input type="file" class="hidden">
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button onclick="generateAutoOutput()" class="w-full bg-sf-accent text-white py-4 rounded-xl font-bold text-lg hover:bg-sf-blue transition-all shadow-lg cursor-pointer">
+          ✨ Generate Demo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== MODIFY MODAL ===== -->
 <div id="modify-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
   <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-8 fade-in">
@@ -2218,6 +2536,111 @@ function generateEUOutput() {
       archetype: archetype,
       archetypeKey: archetypeKey,
       industry: 'Energy & Utilities',
+      brandColor: brandColors.primary,
+      brandColorEnd: brandColors.secondary,
+      createdAt: new Date().toISOString()
+    };
+    savePOV(pov);
+    window.location.href = `pov.html?id=${slug}`;
+  });
+}
+
+function generateCGOutput() {
+  const account = document.getElementById('cg-account').value || 'Procter & Gamble';
+  const website = document.getElementById('cg-website').value || '';
+  const aeName = document.getElementById('cg-name').value || '';
+  const cgArchetypeLabels = {
+    'cg-retail-execution': 'Retail Execution Agent',
+    'cg-trade-promotion': 'Trade Promotion Agent',
+    'cg-distributor-service': 'Distributor Service Agent',
+    'cg-demand-planning': 'Demand Planning Agent'
+  };
+  const selected = document.querySelector('input[name="cg-archetype"]:checked');
+  const archetypeKey = selected ? selected.value : 'cg-retail-execution';
+  const archetype = cgArchetypeLabels[archetypeKey];
+
+  const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
+  const brandColors = extractBrandColor(website || account);
+  showGeneratingModal(() => {
+    const pov = {
+      id: slug,
+      type: 'ae',
+      customer: account,
+      website: website,
+      aeName: aeName,
+      archetype: archetype,
+      archetypeKey: archetypeKey,
+      industry: 'Consumer Goods',
+      brandColor: brandColors.primary,
+      brandColorEnd: brandColors.secondary,
+      createdAt: new Date().toISOString()
+    };
+    savePOV(pov);
+    window.location.href = `pov.html?id=${slug}`;
+  });
+}
+
+function generateMFGOutput() {
+  const account = document.getElementById('mfg-account').value || 'Caterpillar';
+  const website = document.getElementById('mfg-website').value || '';
+  const aeName = document.getElementById('mfg-name').value || '';
+  const mfgArchetypeLabels = {
+    'mfg-equipment-service': 'Equipment Service Agent',
+    'mfg-quality-control': 'Quality Control Agent',
+    'mfg-production-ops': 'Production Operations Agent',
+    'mfg-supply-chain': 'Supply Chain Agent'
+  };
+  const selected = document.querySelector('input[name="mfg-archetype"]:checked');
+  const archetypeKey = selected ? selected.value : 'mfg-equipment-service';
+  const archetype = mfgArchetypeLabels[archetypeKey];
+
+  const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
+  const brandColors = extractBrandColor(website || account);
+  showGeneratingModal(() => {
+    const pov = {
+      id: slug,
+      type: 'ae',
+      customer: account,
+      website: website,
+      aeName: aeName,
+      archetype: archetype,
+      archetypeKey: archetypeKey,
+      industry: 'Manufacturing',
+      brandColor: brandColors.primary,
+      brandColorEnd: brandColors.secondary,
+      createdAt: new Date().toISOString()
+    };
+    savePOV(pov);
+    window.location.href = `pov.html?id=${slug}`;
+  });
+}
+
+function generateAutoOutput() {
+  const account = document.getElementById('auto-account').value || 'AutoNation';
+  const website = document.getElementById('auto-website').value || '';
+  const aeName = document.getElementById('auto-name').value || '';
+  const autoArchetypeLabels = {
+    'auto-vehicle-sales': 'Vehicle Sales Agent',
+    'auto-service-advisor': 'Service Advisor Agent',
+    'auto-dealership-ops': 'Dealership Ops Agent',
+    'auto-customer-retention': 'Customer Retention Agent'
+  };
+  const selected = document.querySelector('input[name="auto-archetype"]:checked');
+  const archetypeKey = selected ? selected.value : 'auto-vehicle-sales';
+  const archetype = autoArchetypeLabels[archetypeKey];
+
+  const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
+  const brandColors = extractBrandColor(website || account);
+  showGeneratingModal(() => {
+    const pov = {
+      id: slug,
+      type: 'ae',
+      customer: account,
+      website: website,
+      aeName: aeName,
+      archetype: archetype,
+      archetypeKey: archetypeKey,
+      industry: 'Automotive',
       brandColor: brandColors.primary,
       brandColorEnd: brandColors.secondary,
       createdAt: new Date().toISOString()
