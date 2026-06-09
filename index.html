@@ -416,6 +416,121 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
         </div>
 
+        <!-- ═══ AGENT READINESS ASSESSMENT ═══ -->
+        <div class="border-2 border-sf-accent/20 rounded-2xl p-6 bg-gradient-to-br from-blue-50/50 to-purple-50/50">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="bg-sf-accent text-white text-xs font-bold px-2.5 py-1 rounded-full">READINESS</span>
+            <h3 class="text-lg font-bold text-sf-blue">Agent Readiness Assessment</h3>
+          </div>
+          <p class="text-xs text-sf-muted mb-5">Quick pulse check — where is this customer on their Agentforce journey?</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Dimension 1: Data Foundation -->
+            <div class="bg-white rounded-xl p-4 border border-gray-100">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-lg">📊</span>
+                <span class="text-sm font-bold text-sf-blue">Data Foundation</span>
+              </div>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-data" value="1" class="accent-red-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🔴 Siloed — data lives in disconnected systems</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-data" value="2" class="accent-yellow-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🟡 Partial — some data in Salesforce, gaps remain</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-data" value="3" class="accent-green-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🟢 Unified — Data Cloud or CRM is source of truth</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Dimension 2: Process Maturity -->
+            <div class="bg-white rounded-xl p-4 border border-gray-100">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-lg">⚙️</span>
+                <span class="text-sm font-bold text-sf-blue">Process Maturity</span>
+              </div>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-process" value="1" class="accent-red-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🔴 Ad hoc — no documented processes for target use case</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-process" value="2" class="accent-yellow-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🟡 Defined — processes exist but manual / inconsistent</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-process" value="3" class="accent-green-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🟢 Optimized — well-documented, some automation in place</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Dimension 3: AI / Automation Experience -->
+            <div class="bg-white rounded-xl p-4 border border-gray-100">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-lg">🤖</span>
+                <span class="text-sm font-bold text-sf-blue">AI & Automation Experience</span>
+              </div>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-ai" value="1" class="accent-red-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🔴 None — no chatbots, AI, or automation in production</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-ai" value="2" class="accent-yellow-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🟡 Basic — rule-based bots, simple Flows, or copilots</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-ai" value="3" class="accent-green-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🟢 Advanced — AI models, NLP bots, or Einstein in use</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Dimension 4: Org Sponsorship -->
+            <div class="bg-white rounded-xl p-4 border border-gray-100">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-lg">👥</span>
+                <span class="text-sm font-bold text-sf-blue">Executive Sponsorship</span>
+              </div>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-sponsor" value="1" class="accent-red-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🔴 Exploring — interest but no champion or budget</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-sponsor" value="2" class="accent-yellow-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🟡 Engaged — exec sponsor identified, budget pending</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input type="radio" name="ready-sponsor" value="3" class="accent-green-500" onchange="updateReadinessScore()">
+                  <span class="text-xs text-sf-muted group-hover:text-sf-blue transition">🟢 Committed — funded initiative with clear timeline</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Readiness Score Bar -->
+          <div class="mt-5 bg-white rounded-xl p-4 border border-gray-100">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-bold text-sf-blue">Overall Readiness</span>
+              <span id="readiness-label" class="text-xs font-bold px-2.5 py-1 rounded-full bg-gray-100 text-sf-muted">Select all dimensions above</span>
+            </div>
+            <div class="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+              <div id="readiness-bar" class="h-full rounded-full transition-all duration-500 bg-gray-300" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-[10px] text-sf-muted mt-1 px-0.5">
+              <span>Foundation Phase</span>
+              <span>Quick Win Ready</span>
+              <span>Scale Ready</span>
+            </div>
+          </div>
+        </div>
+
         <!-- Salesforce Footprint -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Current Salesforce Footprint</label>
@@ -2968,6 +3083,40 @@ function showShareableLink(slug, customer) {
   document.body.appendChild(toast);
   // Auto-dismiss after 15s
   setTimeout(() => { if (toast.parentNode) toast.remove(); }, 15000);
+}
+
+// Agent Readiness Score Calculator
+function updateReadinessScore() {
+  const dims = ['ready-data', 'ready-process', 'ready-ai', 'ready-sponsor'];
+  let total = 0, answered = 0;
+  dims.forEach(name => {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    if (checked) { total += parseInt(checked.value); answered++; }
+  });
+  const bar = document.getElementById('readiness-bar');
+  const label = document.getElementById('readiness-label');
+  if (answered < 4) {
+    bar.style.width = '0%';
+    bar.className = 'h-full rounded-full transition-all duration-500 bg-gray-300';
+    label.textContent = `${answered}/4 dimensions assessed`;
+    label.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-gray-100 text-sf-muted';
+    return;
+  }
+  const pct = Math.round((total / 12) * 100);
+  bar.style.width = pct + '%';
+  if (pct <= 40) {
+    bar.className = 'h-full rounded-full transition-all duration-500 bg-red-400';
+    label.textContent = `🔴 Foundation Phase (${pct}%) — Build the foundation first`;
+    label.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-red-50 text-red-700';
+  } else if (pct <= 70) {
+    bar.className = 'h-full rounded-full transition-all duration-500 bg-yellow-400';
+    label.textContent = `🟡 Quick Win Ready (${pct}%) — Start with a focused use case`;
+    label.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-yellow-50 text-yellow-700';
+  } else {
+    bar.className = 'h-full rounded-full transition-all duration-500 bg-green-500';
+    label.textContent = `🟢 Scale Ready (${pct}%) — Ready for production deployment`;
+    label.className = 'text-xs font-bold px-2.5 py-1 rounded-full bg-green-50 text-green-700';
+  }
 }
 
 // Generate Architect output
