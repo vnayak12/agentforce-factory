@@ -2074,6 +2074,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
 <script>
 // ===== BRAND COLOR EXTRACTION =====
 const BRAND_COLORS = {
+  // Retail & Apparel
   'staples': { primary: '#CC0000', secondary: '#8B0000' },
   'wingstop': { primary: '#006938', secondary: '#004d29' },
   'starbucks': { primary: '#006242', secondary: '#1E3932' },
@@ -2084,7 +2085,7 @@ const BRAND_COLORS = {
   'target': { primary: '#CC0000', secondary: '#990000' },
   'walmart': { primary: '#0071DC', secondary: '#004C91' },
   'costco': { primary: '#E31837', secondary: '#005DAA' },
-  'pacsun': { primary: '#000000', secondary: '#1a1a1a' },
+  'pacsun': { primary: '#0099CC', secondary: '#006B8F' },
   'hot topic': { primary: '#E4002B', secondary: '#B80025' },
   'hottopic': { primary: '#E4002B', secondary: '#B80025' },
   'sephora': { primary: '#000000', secondary: '#1a1a1a' },
@@ -2117,7 +2118,137 @@ const BRAND_COLORS = {
   'publix': { primary: '#3D8B37', secondary: '#2D6829' },
   'cvs': { primary: '#CC0000', secondary: '#990000' },
   'walgreens': { primary: '#E31837', secondary: '#B31229' },
-  'rite aid': { primary: '#003DA5', secondary: '#002D7B' }
+  'rite aid': { primary: '#003DA5', secondary: '#002D7B' },
+  // Automotive
+  'honda': { primary: '#CC0000', secondary: '#8B0000' },
+  'toyota': { primary: '#EB0A1E', secondary: '#282830' },
+  'ford': { primary: '#003478', secondary: '#001E50' },
+  'chevrolet': { primary: '#CF9F21', secondary: '#1A1A1A' },
+  'bmw': { primary: '#1C69D3', secondary: '#0D4EA6' },
+  'mercedes': { primary: '#000000', secondary: '#1a1a1a' },
+  'tesla': { primary: '#CC0000', secondary: '#8B0000' },
+  'audi': { primary: '#000000', secondary: '#BB0A30' },
+  'volkswagen': { primary: '#001E50', secondary: '#001133' },
+  'hyundai': { primary: '#002C5F', secondary: '#001A3A' },
+  'kia': { primary: '#05141F', secondary: '#BB162B' },
+  'subaru': { primary: '#003478', secondary: '#002255' },
+  'mazda': { primary: '#900028', secondary: '#5F001A' },
+  'nissan': { primary: '#C3002F', secondary: '#8B0020' },
+  'lexus': { primary: '#1A1A1A', secondary: '#000000' },
+  'jeep': { primary: '#3A5A40', secondary: '#2C4432' },
+  'gmc': { primary: '#CC0000', secondary: '#8B0000' },
+  'ram': { primary: '#000000', secondary: '#1a1a1a' },
+  'volvo': { primary: '#003057', secondary: '#001E3A' },
+  'porsche': { primary: '#000000', secondary: '#C50016' },
+  // Consumer Goods
+  'procter': { primary: '#003DA5', secondary: '#002D7B' },
+  'p&g': { primary: '#003DA5', secondary: '#002D7B' },
+  'unilever': { primary: '#1F36C7', secondary: '#162B9E' },
+  'coca-cola': { primary: '#F40009', secondary: '#B3000A' },
+  'cocacola': { primary: '#F40009', secondary: '#B3000A' },
+  'pepsi': { primary: '#004B93', secondary: '#003366' },
+  'nestle': { primary: '#7B868C', secondary: '#5A6368' },
+  'johnson': { primary: '#D51900', secondary: '#A31300' },
+  'colgate': { primary: '#ED1C24', secondary: '#B3151B' },
+  'kraft': { primary: '#1A1F71', secondary: '#131755' },
+  'general mills': { primary: '#003DA5', secondary: '#002D7B' },
+  'kellogg': { primary: '#ED1C24', secondary: '#B3151B' },
+  'mondelez': { primary: '#4F2683', secondary: '#3A1D62' },
+  'mars': { primary: '#002147', secondary: '#001430' },
+  'loreal': { primary: '#000000', secondary: '#1a1a1a' },
+  'estee lauder': { primary: '#012169', secondary: '#00174A' },
+  'henkel': { primary: '#D40511', secondary: '#A3040D' },
+  'reckitt': { primary: '#E50695', secondary: '#B30574' },
+  'church & dwight': { primary: '#003B75', secondary: '#002A55' },
+  'clorox': { primary: '#0072CE', secondary: '#005499' },
+  'energizer': { primary: '#0033A0', secondary: '#002678' },
+  'hershey': { primary: '#3C1A08', secondary: '#2A1206' },
+  'campbells': { primary: '#CC0000', secondary: '#990000' },
+  // Energy & Utilities
+  'duke energy': { primary: '#00789E', secondary: '#005A75' },
+  'nextera': { primary: '#003DA5', secondary: '#002D7B' },
+  'southern company': { primary: '#005596', secondary: '#003F70' },
+  'dominion': { primary: '#002F6C', secondary: '#001E45' },
+  'exelon': { primary: '#003A70', secondary: '#002A52' },
+  'aep': { primary: '#006341', secondary: '#004A31' },
+  'edison': { primary: '#ED1C24', secondary: '#B3151B' },
+  'entergy': { primary: '#00274C', secondary: '#001A33' },
+  'xcel': { primary: '#00853E', secondary: '#00632E' },
+  'eversource': { primary: '#006D6F', secondary: '#004F51' },
+  'conedison': { primary: '#003DA5', secondary: '#002D7B' },
+  'pge': { primary: '#006DA5', secondary: '#005180' },
+  'enel': { primary: '#461E7D', secondary: '#33165D' },
+  'shell': { primary: '#FFD500', secondary: '#E6BF00' },
+  'bp': { primary: '#009B3A', secondary: '#00752C' },
+  'exxon': { primary: '#ED1C24', secondary: '#B3151B' },
+  'chevron': { primary: '#003DA5', secondary: '#D0103A' },
+  // Manufacturing
+  'caterpillar': { primary: '#FFCD11', secondary: '#1A1A1A' },
+  'deere': { primary: '#367C2B', secondary: '#FFDE00' },
+  'john deere': { primary: '#367C2B', secondary: '#FFDE00' },
+  '3m': { primary: '#FF0000', secondary: '#CC0000' },
+  'ge': { primary: '#003DA5', secondary: '#002D7B' },
+  'honeywell': { primary: '#CF202F', secondary: '#A31924' },
+  'siemens': { primary: '#009999', secondary: '#007575' },
+  'bosch': { primary: '#EA0016', secondary: '#B30011' },
+  'schneider': { primary: '#3DCD58', secondary: '#009530' },
+  'emerson': { primary: '#005EB8', secondary: '#004689' },
+  'rockwell': { primary: '#E31937', secondary: '#B3142B' },
+  'parker': { primary: '#003DA5', secondary: '#002D7B' },
+  'eaton': { primary: '#003DA5', secondary: '#002D7B' },
+  'cummins': { primary: '#CF202F', secondary: '#A31924' },
+  // Financial Services
+  'jpmorgan': { primary: '#003087', secondary: '#002264' },
+  'chase': { primary: '#003087', secondary: '#002264' },
+  'bank of america': { primary: '#012169', secondary: '#00174A' },
+  'wells fargo': { primary: '#D71E28', secondary: '#A3171E' },
+  'citibank': { primary: '#003DA5', secondary: '#002D7B' },
+  'goldman sachs': { primary: '#6BB6E7', secondary: '#0073B1' },
+  'morgan stanley': { primary: '#003986', secondary: '#002A63' },
+  'american express': { primary: '#006FCF', secondary: '#00529B' },
+  'visa': { primary: '#1A1F71', secondary: '#131755' },
+  'mastercard': { primary: '#EB001B', secondary: '#F79E1B' },
+  'paypal': { primary: '#003087', secondary: '#001E5A' },
+  'stripe': { primary: '#635BFF', secondary: '#4B45CC' },
+  'square': { primary: '#000000', secondary: '#1a1a1a' },
+  'fidelity': { primary: '#4AA64D', secondary: '#38803A' },
+  'schwab': { primary: '#00A0DC', secondary: '#0078A5' },
+  'vanguard': { primary: '#8B1A1A', secondary: '#6B1414' },
+  // Healthcare
+  'unitedhealth': { primary: '#002677', secondary: '#001C59' },
+  'cvs health': { primary: '#CC0000', secondary: '#990000' },
+  'anthem': { primary: '#4D008C', secondary: '#3A0069' },
+  'cigna': { primary: '#0072CE', secondary: '#005499' },
+  'humana': { primary: '#4FA800', secondary: '#3C8000' },
+  'kaiser': { primary: '#003DA5', secondary: '#002D7B' },
+  'pfizer': { primary: '#0093D0', secondary: '#006E9C' },
+  'abbvie': { primary: '#071D49', secondary: '#051535' },
+  'merck': { primary: '#00857C', secondary: '#00645D' },
+  'johnson & johnson': { primary: '#D51900', secondary: '#A31300' },
+  // Media & Entertainment
+  'disney': { primary: '#006E99', secondary: '#005475' },
+  'netflix': { primary: '#E50914', secondary: '#B3070F' },
+  'spotify': { primary: '#1DB954', secondary: '#17923F' },
+  'apple': { primary: '#000000', secondary: '#1a1a1a' },
+  'google': { primary: '#4285F4', secondary: '#3367D6' },
+  'amazon': { primary: '#FF9900', secondary: '#232F3E' },
+  'meta': { primary: '#0668E1', secondary: '#0553B4' },
+  'facebook': { primary: '#1877F2', secondary: '#1260C4' },
+  'microsoft': { primary: '#00A4EF', secondary: '#7FBA00' },
+  'youtube': { primary: '#FF0000', secondary: '#CC0000' },
+  'tiktok': { primary: '#000000', secondary: '#FE2C55' },
+  'twitch': { primary: '#9146FF', secondary: '#7035CC' },
+  'nba': { primary: '#1D428A', secondary: '#C8102E' },
+  'nfl': { primary: '#003369', secondary: '#D50A0A' },
+  'mlb': { primary: '#002D72', secondary: '#BF0D3E' },
+  'espn': { primary: '#CC0000', secondary: '#990000' },
+  'warner': { primary: '#003DA5', secondary: '#002D7B' },
+  'paramount': { primary: '#0064FF', secondary: '#004BCC' },
+  'sony': { primary: '#000000', secondary: '#1a1a1a' },
+  'comcast': { primary: '#000000', secondary: '#C30F08' },
+  'verizon': { primary: '#EE0000', secondary: '#BB0000' },
+  'att': { primary: '#009FDB', secondary: '#0078A5' },
+  't-mobile': { primary: '#E20074', secondary: '#B3005A' }
 };
 
 function extractBrandColor(websiteOrName) {
@@ -2142,6 +2273,46 @@ function extractBrandColor(websiteOrName) {
   const primary = `hsl(${hue}, 65%, 35%)`;
   const secondary = `hsl(${hue}, 65%, 25%)`;
   return { primary, secondary };
+}
+
+// Extract dominant color from a logo image (canvas-based, works cross-origin with uplead)
+function extractColorFromLogo(logoUrl) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        // Count colors, skip white/near-white and transparent pixels
+        const colorCounts = {};
+        for (let i = 0; i < data.length; i += 16) { // sample every 4th pixel
+          const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+          if (a < 128) continue; // skip transparent
+          if (r > 230 && g > 230 && b > 230) continue; // skip white
+          if (r < 25 && g < 25 && b < 25) continue; // skip pure black
+          const key = `${Math.round(r/16)*16},${Math.round(g/16)*16},${Math.round(b/16)*16}`;
+          colorCounts[key] = (colorCounts[key] || 0) + 1;
+        }
+        const sorted = Object.entries(colorCounts).sort((a,b) => b[1] - a[1]);
+        if (sorted.length > 0) {
+          const [r,g,b] = sorted[0][0].split(',').map(Number);
+          const primary = `rgb(${r},${g},${b})`;
+          const secondary = `rgb(${Math.max(0,r-30)},${Math.max(0,g-30)},${Math.max(0,b-30)})`;
+          resolve({ primary, secondary });
+        } else {
+          resolve(null);
+        }
+      } catch(e) { resolve(null); }
+    };
+    img.onerror = () => resolve(null);
+    img.src = logoUrl;
+    setTimeout(() => resolve(null), 3000); // timeout after 3s
+  });
 }
 
 function getBrandDomain(websiteOrName) {
@@ -2209,7 +2380,7 @@ function renderMyPOVs() {
     return `
       <div class="group flex flex-col rounded-xl border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden cursor-pointer" onclick="loadSavedPOV('${pov.id}')">
         <div class="bg-white px-5 py-4 flex items-center gap-3 border-b border-gray-100">
-          <img src="${logoUrl}" alt="${pov.customer}" class="h-9 object-contain" onerror="if(!this.dataset.tried){this.dataset.tried='1';var d=this.src.split('/').pop();this.src='https://t1.gstatic.com/faviconV2?client=SOCIAL&amp;type=FAVICON&amp;fallback_opts=TYPE,SIZE,URL&amp;url=http://'+d+'&amp;size=128';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
+          <img src="${logoUrl}" alt="${pov.customer}" class="h-9 max-w-[120px] object-contain" onerror="if(!this.dataset.tried){this.dataset.tried='1';var d=this.src.split('/').pop();this.src='https://t1.gstatic.com/faviconV2?client=SOCIAL&amp;type=FAVICON&amp;fallback_opts=TYPE,SIZE,URL&amp;url=http://'+d+'&amp;size=128';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
           <div class="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm" style="display:none;background:${brandColor};">${pov.customer.charAt(0)}</div>
           <span class="text-lg font-bold tracking-wide" style="color: ${brandColor};">${pov.customer}</span>
         </div>
@@ -2393,7 +2564,7 @@ async function loadGeneratedPOVs() {
       return `
         <a href="${shareUrl}" target="_blank" class="group flex flex-col rounded-xl border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden">
           <div class="bg-white px-5 py-4 flex items-center gap-3 border-b border-gray-100">
-            <img src="${logoUrl}" alt="${pov.customer}" class="h-9 object-contain" onerror="if(!this.dataset.tried){this.dataset.tried='1';var d=this.src.split('/').pop();this.src='https://t1.gstatic.com/faviconV2?client=SOCIAL&amp;type=FAVICON&amp;fallback_opts=TYPE,SIZE,URL&amp;url=http://'+d+'&amp;size=128';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
+            <img src="${logoUrl}" alt="${pov.customer}" class="h-9 max-w-[120px] object-contain" onerror="if(!this.dataset.tried){this.dataset.tried='1';var d=this.src.split('/').pop();this.src='https://t1.gstatic.com/faviconV2?client=SOCIAL&amp;type=FAVICON&amp;fallback_opts=TYPE,SIZE,URL&amp;url=http://'+d+'&amp;size=128';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
             <div class="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm" style="display:none;background:${brandColor};">${pov.customer.charAt(0)}</div>
             <span class="text-lg font-bold tracking-wide" style="color: ${brandColor};">${pov.customer}</span>
           </div>
@@ -2519,25 +2690,10 @@ function generateAEOutput() {
   // Create stable slug for shareable URL
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
 
-  // Extract brand color from website, then generate
-  const brandColors = extractBrandColor(website || account);
-  showGeneratingModal(() => {
-    const pov = {
-      id: slug,
-      type: 'ae',
-      customer: account,
-      website: website,
-      aeName: aeName,
-      archetype: archetype,
-      archetypeKey: archetypeKey,
-      industry: 'Retail',
-      logoUrl: getBrandLogoUrl(website || account),
-      brandColor: brandColors.primary,
-      brandColorEnd: brandColors.secondary,
-      createdAt: new Date().toISOString()
-    };
-    savePOV(pov);
-    window.location.href = `pov.html?id=${slug}`;
+  generatePOVWithSmartColors({
+    id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
+    archetype: archetype, archetypeKey: archetypeKey, industry: 'Retail',
+    createdAt: new Date().toISOString()
   });
 }
 
@@ -2612,24 +2768,10 @@ function generateEUOutput() {
   const archetype = euArchetypeLabels[archetypeKey];
 
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
-  const brandColors = extractBrandColor(website || account);
-  showGeneratingModal(() => {
-    const pov = {
-      id: slug,
-      type: 'ae',
-      customer: account,
-      website: website,
-      aeName: aeName,
-      archetype: archetype,
-      archetypeKey: archetypeKey,
-      industry: 'Energy & Utilities',
-      logoUrl: getBrandLogoUrl(website || account),
-      brandColor: brandColors.primary,
-      brandColorEnd: brandColors.secondary,
-      createdAt: new Date().toISOString()
-    };
-    savePOV(pov);
-    window.location.href = `pov.html?id=${slug}`;
+  generatePOVWithSmartColors({
+    id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
+    archetype: archetype, archetypeKey: archetypeKey, industry: 'Energy & Utilities',
+    createdAt: new Date().toISOString()
   });
 }
 
@@ -2649,24 +2791,10 @@ function generateCGOutput() {
   const archetype = cgArchetypeLabels[archetypeKey];
 
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
-  const brandColors = extractBrandColor(website || account);
-  showGeneratingModal(() => {
-    const pov = {
-      id: slug,
-      type: 'ae',
-      customer: account,
-      website: website,
-      aeName: aeName,
-      archetype: archetype,
-      archetypeKey: archetypeKey,
-      industry: 'Consumer Goods',
-      logoUrl: getBrandLogoUrl(website || account),
-      brandColor: brandColors.primary,
-      brandColorEnd: brandColors.secondary,
-      createdAt: new Date().toISOString()
-    };
-    savePOV(pov);
-    window.location.href = `pov.html?id=${slug}`;
+  generatePOVWithSmartColors({
+    id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
+    archetype: archetype, archetypeKey: archetypeKey, industry: 'Consumer Goods',
+    createdAt: new Date().toISOString()
   });
 }
 
@@ -2685,24 +2813,10 @@ function generateMFGOutput() {
   const archetype = mfgArchetypeLabels[archetypeKey];
 
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
-  const brandColors = extractBrandColor(website || account);
-  showGeneratingModal(() => {
-    const pov = {
-      id: slug,
-      type: 'ae',
-      customer: account,
-      website: website,
-      aeName: aeName,
-      archetype: archetype,
-      archetypeKey: archetypeKey,
-      industry: 'Manufacturing',
-      logoUrl: getBrandLogoUrl(website || account),
-      brandColor: brandColors.primary,
-      brandColorEnd: brandColors.secondary,
-      createdAt: new Date().toISOString()
-    };
-    savePOV(pov);
-    window.location.href = `pov.html?id=${slug}`;
+  generatePOVWithSmartColors({
+    id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
+    archetype: archetype, archetypeKey: archetypeKey, industry: 'Manufacturing',
+    createdAt: new Date().toISOString()
   });
 }
 
@@ -2721,28 +2835,40 @@ function generateAutoOutput() {
   const archetype = autoArchetypeLabels[archetypeKey];
 
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
-  const brandColors = extractBrandColor(website || account);
-  showGeneratingModal(() => {
-    const pov = {
-      id: slug,
-      type: 'ae',
-      customer: account,
-      website: website,
-      aeName: aeName,
-      archetype: archetype,
-      archetypeKey: archetypeKey,
-      industry: 'Automotive',
-      logoUrl: getBrandLogoUrl(website || account),
-      brandColor: brandColors.primary,
-      brandColorEnd: brandColors.secondary,
-      createdAt: new Date().toISOString()
-    };
-    savePOV(pov);
-    window.location.href = `pov.html?id=${slug}`;
+  generatePOVWithSmartColors({
+    id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
+    archetype: archetype, archetypeKey: archetypeKey, industry: 'Automotive',
+    createdAt: new Date().toISOString()
   });
 }
 
 // Generating modal with progress
+// Smart POV generation: tries logo color extraction for unknown brands
+function generatePOVWithSmartColors(povData) {
+  const logoUrl = getBrandLogoUrl(povData.website || povData.customer);
+  const lookupColors = extractBrandColor(povData.website || povData.customer);
+  const isHashFallback = lookupColors.primary.startsWith('hsl(');
+  povData.logoUrl = logoUrl;
+
+  if (isHashFallback) {
+    showGeneratingModal(async () => {
+      const logoColors = await extractColorFromLogo(logoUrl);
+      const brandColors = logoColors || lookupColors;
+      povData.brandColor = brandColors.primary;
+      povData.brandColorEnd = brandColors.secondary;
+      savePOV(povData);
+      window.location.href = `pov.html?id=${povData.id}`;
+    });
+  } else {
+    povData.brandColor = lookupColors.primary;
+    povData.brandColorEnd = lookupColors.secondary;
+    showGeneratingModal(() => {
+      savePOV(povData);
+      window.location.href = `pov.html?id=${povData.id}`;
+    });
+  }
+}
+
 function showGeneratingModal(callback) {
   const modal = document.getElementById('generating-modal');
   const bar = document.getElementById('progress-bar');
