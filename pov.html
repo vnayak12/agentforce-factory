@@ -388,6 +388,25 @@
       <h2 class="text-xl font-bold text-sf-blue">✏️ Modify POV</h2>
       <button onclick="hideModifyModal()" class="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer">&times;</button>
     </div>
+    <!-- Quick Edit Section -->
+    <div class="border-2 border-sf-accent/20 rounded-xl p-4 mb-5 bg-blue-50/50">
+      <div class="text-xs font-bold text-sf-accent uppercase tracking-wide mb-3">Quick Edit</div>
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs font-semibold text-sf-blue block mb-1">Customer Name</label>
+          <input id="modify-customer-name" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:border-sf-accent transition text-sm" placeholder="e.g. Honda Motors">
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-sf-blue block mb-1">Website</label>
+          <input id="modify-customer-website" type="text" class="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 focus:border-sf-accent transition text-sm" placeholder="e.g. honda.com">
+        </div>
+      </div>
+      <button onclick="saveQuickEdit()" class="mt-3 w-full bg-sf-accent text-white py-2.5 rounded-xl font-bold hover:bg-sf-blue transition cursor-pointer text-sm">
+        💾 Save & Update POV
+      </button>
+    </div>
+
+    <div class="text-xs font-bold text-sf-muted uppercase tracking-wide mb-3">Request Additional Changes</div>
     <div id="modify-form-body">
       <div id="modify-changes" class="space-y-4">
         <!-- Change #1 -->
@@ -442,6 +461,11 @@ function setViewMode(mode) {
 // ─── Modify Modal ───
 let modifyChangeCount = 1;
 function showModifyModal() {
+  // Pre-populate quick edit fields with current POV data
+  if (currentPOV) {
+    document.getElementById('modify-customer-name').value = currentPOV.customer || '';
+    document.getElementById('modify-customer-website').value = currentPOV.website || '';
+  }
   // Reset form to one blank change
   modifyChangeCount = 1;
   document.getElementById('modify-changes').innerHTML = buildChangeItem(1);
@@ -449,6 +473,49 @@ function showModifyModal() {
 }
 function hideModifyModal() {
   document.getElementById('modify-modal').classList.add('hidden');
+}
+function saveQuickEdit() {
+  const newName = document.getElementById('modify-customer-name').value.trim();
+  const newWebsite = document.getElementById('modify-customer-website').value.trim();
+  if (!newName) { alert('Please enter a customer name.'); return; }
+  if (!currentPOV) return;
+
+  // Update POV object
+  const oldId = currentPOV.id;
+  currentPOV.customer = newName;
+  currentPOV.website = newWebsite;
+  currentPOV.logoUrl = getBrandLogoUrl(newWebsite || newName);
+
+  // Recompute brand colors from new name using deterministic hash
+  const input = (newWebsite || newName).toLowerCase().replace(/https?:\/\/(www\.)?/, '').replace(/\.com.*$/, '').trim();
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) hash = input.charCodeAt(i) + ((hash << 5) - hash);
+  const hue = Math.abs(hash) % 360;
+  currentPOV.brandColor = `hsl(${hue}, 65%, 35%)`;
+  currentPOV.brandColorEnd = `hsl(${hue}, 65%, 25%)`;
+
+  // Generate new slug
+  const newSlug = `${newName.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${currentPOV.archetypeKey}`;
+  currentPOV.id = newSlug;
+
+  // Update localStorage
+  try {
+    const saved = JSON.parse(localStorage.getItem('agentforce-povs') || '[]');
+    const idx = saved.findIndex(p => p.id === oldId);
+    if (idx >= 0) saved[idx] = currentPOV; else saved.unshift(currentPOV);
+    localStorage.setItem('agentforce-povs', JSON.stringify(saved));
+  } catch(e) { console.error('Failed to save POV:', e); }
+
+  // Re-render the POV page with updated data
+  hideModifyModal();
+  renderPOV(currentPOV);
+
+  // Update URL to match new slug
+  const newUrl = `pov.html?id=${newSlug}`;
+  window.history.replaceState({}, '', newUrl);
+
+  // Auto-push updated POV to GitHub if token exists
+  if (typeof pushPOVToGitHub === 'function') pushPOVToGitHub(currentPOV);
 }
 function buildChangeItem(num) {
   return `<div class="modify-change-item border-2 border-gray-100 rounded-xl p-4 space-y-3">
@@ -847,6 +914,7 @@ let isFirstMessage = true;
 let sseReader = null;
 let currentPOVConfig = null;
 let currentPOVName = '';
+let currentPOV = null;
 let pendingBotMessage = '';
 let typingIndicatorActive = false;
 let sessionInitialized = false;
@@ -1375,6 +1443,7 @@ function renderPOV(pov) {
   const name = pov.customer || 'Customer';
 
   // Store for scenario-aware responses
+  currentPOV = pov;
   currentPOVConfig = config;
   currentPOVName = name;
 
