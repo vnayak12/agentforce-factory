@@ -202,35 +202,8 @@
       </div>
     </div>
 
-    <!-- Agentforce for Retail -->
-    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
-      <h2 class="text-2xl font-bold text-sf-blue mb-2">Agentforce for Retail</h2>
-      <p class="text-sf-muted mb-6">Unleash digital labor to grow revenue and relationships with agent-first retail</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div class="bg-blue-50 rounded-xl p-6 border-l-4 border-sf-accent">
-          <div class="text-3xl mb-3">🎧</div>
-          <h3 class="font-bold text-sf-blue mb-1">Customer Service Agent</h3>
-          <div class="text-sf-accent font-semibold text-sm mb-2">Pre & Post-Sales · Orders & Returns</div>
-          <div class="text-sm text-sf-muted">Resolves inquiries 24/7 across every channel. Handles order status, returns, exchanges, and shipping — with smart escalation to human agents when needed.</div>
-        </div>
-        <div class="bg-purple-50 rounded-xl p-6 border-l-4 border-sf-purple">
-          <div class="text-3xl mb-3">👗</div>
-          <h3 class="font-bold text-sf-blue mb-1">Personal Shopper Agent</h3>
-          <div class="text-sf-purple font-semibold text-sm mb-2">Styling · Recommendations · Commerce</div>
-          <div class="text-sm text-sf-muted">Provides personalized product recommendations and styling assistance through commerce sites or messaging apps like WhatsApp.</div>
-        </div>
-        <div class="bg-green-50 rounded-xl p-6 border-l-4 border-sf-success">
-          <div class="text-3xl mb-3">📣</div>
-          <h3 class="font-bold text-sf-blue mb-1">Campaign Agent</h3>
-          <div class="text-sf-success font-semibold text-sm mb-2">Audience · Content · Performance</div>
-          <div class="text-sm text-sf-muted">Automates marketing tasks including brief generation, audience segmentation, content creation, and campaign performance optimization.</div>
-        </div>
-      </div>
-      <div class="mt-5 bg-gray-50 rounded-xl p-4 flex items-center gap-3">
-        <span class="text-xl">🏗️</span>
-        <div class="text-sm text-sf-muted"><strong class="text-sf-blue">Built on trusted data:</strong> Domain-specific retail roles, inventory & order data models, product catalogs, loyalty systems, and pre-built actions — all grounded in the Einstein Trust Layer.</div>
-      </div>
-    </div>
+    <!-- Industry-Specific Agents (dynamic) -->
+    <div id="industry-section" class="bg-white rounded-2xl shadow-md p-8 mb-6"></div>
 
     <!-- Agentforce Coworker -->
     <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
@@ -517,6 +490,84 @@ function submitModification() {
 }
 
 // ─── Archetype Configurations ───
+// ─── Industry-Specific Content ───
+const INDUSTRY_CONTENT = {
+  'Retail': {
+    title: 'Agentforce for Retail',
+    subtitle: 'Unleash digital labor to grow revenue and relationships with agent-first retail',
+    agents: [
+      { emoji: '🎧', name: 'Customer Service Agent', tag: 'Pre & Post-Sales · Orders & Returns', desc: 'Resolves inquiries 24/7 across every channel. Handles order status, returns, exchanges, and shipping — with smart escalation to human agents when needed.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
+      { emoji: '👗', name: 'Personal Shopper Agent', tag: 'Styling · Recommendations · Commerce', desc: 'Provides personalized product recommendations and styling assistance through commerce sites or messaging apps like WhatsApp.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
+      { emoji: '📣', name: 'Campaign Agent', tag: 'Audience · Content · Performance', desc: 'Automates marketing tasks including brief generation, audience segmentation, content creation, and campaign performance optimization.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+    ],
+    footer: 'Domain-specific retail roles, inventory & order data models, product catalogs, loyalty systems, and pre-built actions — all grounded in the Einstein Trust Layer.'
+  },
+  'Consumer Goods': {
+    title: 'Agentforce for Consumer Goods',
+    subtitle: 'Drive trade efficiency, shelf compliance, and customer engagement at scale',
+    agents: [
+      { emoji: '🏪', name: 'Retail Execution Agent', tag: 'Store Audits · Shelf Compliance · Visits', desc: 'Automates store visit scheduling, planogram compliance checks, and real-time shelf auditing to maximize in-store execution.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
+      { emoji: '📊', name: 'Trade Promotion Agent', tag: 'Promo Planning · Spend · ROI', desc: 'Optimizes trade spend with AI-driven promo planning, retailer deal analysis, and ROI tracking across all channels.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
+      { emoji: '📞', name: 'Customer Service Agent', tag: 'Orders · Returns · Loyalty · Support', desc: 'Handles order status, returns, product inquiries, loyalty programs, and post-sales support — similar to the Nike Customer Service Agent.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+    ],
+    footer: 'Consumer goods data models, distributor management, trade promotion optimization, and demand planning — all grounded in the Einstein Trust Layer.'
+  },
+  'Energy & Utilities': {
+    title: 'Agentforce for Energy & Utilities',
+    subtitle: 'Modernize field operations, customer engagement, and regulatory compliance',
+    agents: [
+      { emoji: '🔧', name: 'Field Service Agent', tag: 'Work Orders · Scheduling · Equipment', desc: 'Manages field service operations including work order creation, technician scheduling, equipment tracking, and real-time job updates.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
+      { emoji: '🎧', name: 'Customer Service Agent', tag: 'Billing · Outages · Account Management', desc: 'Handles billing inquiries, outage reporting, service requests, and account management across all customer channels.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
+      { emoji: '📋', name: 'Regulatory Compliance Agent', tag: 'Compliance · Reporting · Audits', desc: 'Automates compliance tracking, regulatory reporting, audit preparation, and real-time alerts for upcoming deadlines.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+    ],
+    footer: 'Energy & utility asset models, field service operations, regulatory frameworks, and grid management data — all grounded in the Einstein Trust Layer.'
+  },
+  'Manufacturing': {
+    title: 'Agentforce for Manufacturing',
+    subtitle: 'Optimize production, quality, and supply chain with intelligent agents',
+    agents: [
+      { emoji: '🔧', name: 'Equipment Service Agent', tag: 'Maintenance · IoT · Downtime Prevention', desc: 'Monitors equipment health via IoT sensors, predicts maintenance needs, schedules service, and minimizes unplanned downtime.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
+      { emoji: '📋', name: 'Quality Control Agent', tag: 'Inspections · Defects · Compliance', desc: 'Automates quality inspections, defect tracking, root cause analysis, and compliance reporting across production lines.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
+      { emoji: '🏭', name: 'Production Operations Agent', tag: 'Scheduling · Capacity · Efficiency', desc: 'Optimizes production scheduling, capacity planning, and operational efficiency with real-time shop floor insights.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+    ],
+    footer: 'Manufacturing data models, IoT integrations, production scheduling, quality management, and supply chain data — all grounded in the Einstein Trust Layer.'
+  },
+  'Automotive': {
+    title: 'Agentforce for Automotive',
+    subtitle: 'Transform the dealership experience from showroom to service bay',
+    agents: [
+      { emoji: '🚗', name: 'Vehicle Sales Agent', tag: 'Inventory · Financing · Test Drives', desc: 'Guides customers through vehicle selection, availability checks, financing options, and test drive scheduling — online and in-dealership.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
+      { emoji: '🔧', name: 'Service Advisor Agent', tag: 'Appointments · Recalls · Maintenance', desc: 'Manages service appointments, recall notifications, maintenance reminders, and real-time service status updates for vehicle owners.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
+      { emoji: '🤝', name: 'Customer Retention Agent', tag: 'Loyalty · Lifecycle · Re-engagement', desc: 'Proactively engages customers throughout the vehicle lifecycle — from post-purchase follow-ups to trade-in offers and lease renewal reminders.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+    ],
+    footer: 'Automotive data models, vehicle inventory management, dealer operations, and customer lifecycle data — all grounded in the Einstein Trust Layer.'
+  }
+};
+
+function renderIndustrySection(industry) {
+  const content = INDUSTRY_CONTENT[industry] || INDUSTRY_CONTENT['Retail'];
+  const el = document.getElementById('industry-section');
+  if (!el) return;
+  el.innerHTML = `
+    <h2 class="text-2xl font-bold text-sf-blue mb-2">${content.title}</h2>
+    <p class="text-sf-muted mb-6">${content.subtitle}</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      ${content.agents.map(a => `
+        <div class="${a.bg} rounded-xl p-6 border-l-4 ${a.border}">
+          <div class="text-3xl mb-3">${a.emoji}</div>
+          <h3 class="font-bold text-sf-blue mb-1">${a.name}</h3>
+          <div class="${a.tagColor} font-semibold text-sm mb-2">${a.tag}</div>
+          <div class="text-sm text-sf-muted">${a.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="mt-5 bg-gray-50 rounded-xl p-4 flex items-center gap-3">
+      <span class="text-xl">🏗️</span>
+      <div class="text-sm text-sf-muted"><strong class="text-sf-blue">Built on trusted data:</strong> ${content.footer}</div>
+    </div>
+  `;
+}
+
 const ARCHETYPES = {
   'product-advisor': {
     label: 'Customer Service Agent',
@@ -1328,6 +1379,9 @@ function renderPOV(pov) {
     heroEl.className = `bg-gradient-to-r ${config.gradient} rounded-2xl p-10 text-white mb-8`;
     heroEl.style.background = '';
   }
+
+  // Industry section (dynamic based on pov.industry)
+  renderIndustrySection(pov.industry || 'Retail');
 
   // Coworker section names
   document.querySelectorAll('.coworker-name').forEach(el => el.textContent = name);

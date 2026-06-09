@@ -90,7 +90,6 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
               <div class="text-xs font-medium text-blue-200">Discovery framework</div>
             </div>
             <span class="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-            <span class="absolute -top-2 -right-2 text-sm bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-full font-bold">🚧 Beta</span>
           </button>
         </div>
       </div>
@@ -149,7 +148,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <span class="text-lg font-bold tracking-wide" style="color: #111111;">Nike</span>
           </div>
           <div class="flex-1 px-5 pb-5 pt-3" style="background: linear-gradient(135deg, #111111 0%, #2D2D2D 100%);">
-            <div class="text-white/70 text-xs font-medium mb-2">Retail · Apparel</div>
+            <div class="text-white/70 text-xs font-medium mb-2">Consumer Goods · Apparel</div>
             <div class="text-sm text-white/90">Customer Service Agent (Pre & Post-Sales)</div>
             <div class="text-xs text-white/60 font-medium mt-1">+ Storefront Experience & Order Tracking</div>
             <div class="text-white text-sm font-semibold mt-3 group-hover:underline">View →</div>
@@ -515,6 +514,59 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           <div>
             <label class="block text-sm font-semibold text-sf-blue mb-2">Knowledge Sources <span class="text-sf-muted font-normal">(optional)</span></label>
             <input type="text" placeholder="e.g. Product manuals, FAQ docs, policy PDFs" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition">
+          </div>
+        </div>
+
+        <!-- Technology Maturity & Agent Volume -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Technology Maturity</label>
+            <div class="flex flex-wrap gap-2">
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="radio" name="arch-maturity" class="accent-sf-accent" value="early"> <span class="text-sm">🌱 Early (exploring AI)</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="radio" name="arch-maturity" class="accent-sf-accent" value="growing"> <span class="text-sm">📈 Growing (some automation)</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="radio" name="arch-maturity" class="accent-sf-accent" value="advanced"> <span class="text-sm">🚀 Advanced (AI/ML in production)</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Estimated Agent Volume</label>
+            <select id="arch-volume" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+              <option value="">Select estimated volume...</option>
+              <option value="low">&lt; 1K conversations/month</option>
+              <option value="medium">1K – 10K conversations/month</option>
+              <option value="high">10K – 100K conversations/month</option>
+              <option value="enterprise">100K+ conversations/month</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Compliance & Data Residency -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Compliance & Data Residency</label>
+          <div class="flex flex-wrap gap-2">
+            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🇪🇺 GDPR</span>
+            </label>
+            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🏥 HIPAA</span>
+            </label>
+            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🏛️ FedRAMP</span>
+            </label>
+            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🔒 SOC 2</span>
+            </label>
+            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">💳 PCI DSS</span>
+            </label>
+            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">📍 Data Residency Requirements</span>
+            </label>
           </div>
         </div>
 
@@ -1216,7 +1268,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
     <div class="max-w-4xl mx-auto px-6 flex items-center gap-4">
       <button onclick="showScreen('screen-landing')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
       <div class="flex items-center gap-2">
-        <span class="bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded-full">SE · BETA</span>
+        <span class="bg-sf-accent text-white text-xs font-bold px-2 py-0.5 rounded-full">SE</span>
         <span class="font-bold text-lg">Agentforce Discovery Framework</span>
       </div>
     </div>
@@ -1254,7 +1306,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
               </div>
               <div>
                 <label class="block text-sm font-semibold text-sf-blue mb-2">Industry / Vertical</label>
-                <select id="se-industry" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+                <select id="se-industry" onchange="updateSEAgents()" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
                   <option>Retail</option>
                   <option>Consumer Goods</option>
                   <option>Manufacturing</option>
@@ -1333,31 +1385,24 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           <div class="space-y-4 pl-8">
             <div>
               <label class="block text-sm font-semibold text-sf-blue mb-2">Which agent types would create the most value? *</label>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                  <input type="checkbox" class="accent-sf-accent" name="se-agents"> <span class="text-sm">🎧 Customer Service Agent</span>
-                </label>
-                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                  <input type="checkbox" class="accent-sf-accent" name="se-agents"> <span class="text-sm">💰 Sales Agent</span>
-                </label>
-                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                  <input type="checkbox" class="accent-sf-accent" name="se-agents"> <span class="text-sm">📦 Order & Returns Agent</span>
-                </label>
-                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                  <input type="checkbox" class="accent-sf-accent" name="se-agents"> <span class="text-sm">⭐ Loyalty & Rewards Agent</span>
-                </label>
-                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                  <input type="checkbox" class="accent-sf-accent" name="se-agents"> <span class="text-sm">👗 Personal Shopper Agent</span>
-                </label>
-                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                  <input type="checkbox" class="accent-sf-accent" name="se-agents"> <span class="text-sm">👥 Employee Ops Agent</span>
-                </label>
-                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                  <input type="checkbox" class="accent-sf-accent" name="se-agents"> <span class="text-sm">📣 Campaign Agent</span>
-                </label>
-                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                  <input type="checkbox" class="accent-sf-accent" name="se-agents"> <span class="text-sm">📍 Store & Inventory Agent</span>
-                </label>
+              <div id="se-agents-container" class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <!-- Populated dynamically by updateSEAgents() based on selected industry -->
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-semibold text-sf-blue mb-2">Budget / Deal Size Range</label>
+                <select id="se-budget" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+                  <option value="">Select range...</option>
+                  <option value="under-100k">&lt; $100K</option>
+                  <option value="100k-500k">$100K – $500K</option>
+                  <option value="500k-1m">$500K – $1M</option>
+                  <option value="over-1m">$1M+</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-sf-blue mb-2">Competitive Landscape</label>
+                <input id="se-competitors" type="text" placeholder="e.g. ChatGPT Enterprise, Google Vertex AI, AWS Bedrock, Intercom..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition">
               </div>
             </div>
             <div>
@@ -2375,7 +2420,32 @@ document.addEventListener('DOMContentLoaded', () => {
   renderMyPOVs();
   loadGeneratedPOVs();
   checkSharedPOV();
+  updateSEAgents();
 });
+
+// SE Discovery — dynamic agent types by industry
+const SE_INDUSTRY_AGENTS = {
+  'Retail': ['🎧 Customer Service Agent', '💰 Sales Agent', '📦 Order & Returns Agent', '⭐ Loyalty & Rewards Agent', '👗 Personal Shopper Agent', '👥 Employee Ops Agent', '📣 Campaign Agent', '📍 Store & Inventory Agent'],
+  'Consumer Goods': ['🏪 Retail Execution Agent', '📊 Trade Promotion Agent', '📦 Distributor Service Agent', '🔮 Demand Planning Agent', '📞 Customer Service Agent', '💰 Sales Agent'],
+  'Manufacturing': ['🔧 Equipment Service Agent', '📋 Quality Control Agent', '🏭 Production Operations Agent', '📦 Supply Chain Agent', '🎧 Customer Service Agent', '💰 Sales Agent'],
+  'Automotive': ['🚗 Vehicle Sales Agent', '🔧 Service Advisor Agent', '📊 Dealership Ops Agent', '🤝 Customer Retention Agent', '🎧 Customer Service Agent', '💰 Sales Agent'],
+  'Energy & Utilities': ['🔧 Field Service Agent', '🎧 Customer Service Agent', '📋 Regulatory Compliance Agent', '💰 Sales Agent', '👥 Employee Ops Agent'],
+  'Financial Services': ['🎧 Customer Service Agent', '💰 Sales Agent', '📋 Compliance Agent', '🔒 Fraud Detection Agent', '📊 Wealth Advisor Agent', '👥 Employee Ops Agent'],
+  'Healthcare': ['🎧 Patient Service Agent', '📋 Care Coordination Agent', '💊 Pharmacy Agent', '📅 Scheduling Agent', '📊 Population Health Agent'],
+  'Media & Entertainment': ['🎧 Subscriber Service Agent', '🎬 Content Recommendation Agent', '📣 Campaign Agent', '💰 Ad Sales Agent', '📊 Audience Analytics Agent'],
+  'Other': ['🎧 Customer Service Agent', '💰 Sales Agent', '👥 Employee Ops Agent', '📣 Campaign Agent', '📋 Compliance Agent']
+};
+
+function updateSEAgents() {
+  const industry = document.getElementById('se-industry').value;
+  const agents = SE_INDUSTRY_AGENTS[industry] || SE_INDUSTRY_AGENTS['Other'];
+  const container = document.getElementById('se-agents-container');
+  container.innerHTML = agents.map(agent =>
+    `<label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+      <input type="checkbox" class="accent-sf-accent" name="se-agents"> <span class="text-sm">${agent}</span>
+    </label>`
+  ).join('');
+}
 
 // Screen management
 function showScreen(screenId) {
