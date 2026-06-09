@@ -922,11 +922,33 @@ let initPromise = null;
 let suppressNextWelcome = true; // Suppress first agent greeting — we show our own
 
 // ─── Get brand logo URL from website domain ───
-function getBrandLogoUrl(websiteOrName) {
+function getBrandDomain(websiteOrName) {
   const input = (websiteOrName || '').toLowerCase().trim();
   let domain = input.replace(/https?:\/\/(www\.)?/, '').replace(/\/.*$/, '');
   if (!domain.includes('.')) domain = domain.replace(/\s+/g, '') + '.com';
-  return `https://logo.clearbit.com/${domain}`;
+  return domain;
+}
+function getBrandLogoUrl(websiteOrName) {
+  return `https://logo.uplead.com/${getBrandDomain(websiteOrName)}`;
+}
+function getBrandLogoFallback(websiteOrName) {
+  return `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://${getBrandDomain(websiteOrName)}&size=128`;
+}
+// Attach fallback chain to any brand logo img: uplead → google favicon → emoji
+function attachLogoFallback(imgEl, websiteOrName, emojiEl) {
+  if (!imgEl) return;
+  let tried = 0;
+  imgEl.onerror = function() {
+    tried++;
+    if (tried === 1) {
+      // First fail (uplead) → try Google favicon
+      this.src = getBrandLogoFallback(websiteOrName);
+    } else {
+      // Second fail → show emoji fallback
+      this.style.display = 'none';
+      if (emojiEl) emojiEl.style.display = 'block';
+    }
+  };
 }
 
 // ─── Render scenario cards ───
@@ -1461,11 +1483,18 @@ function renderPOV(pov) {
   // POV Hero — use brand color if available, else archetype gradient
   document.getElementById('pov-customer-name').textContent = name;
   document.getElementById('pov-archetype-label').textContent = `${config.label} · Powered by Headless 360`;
-  // Set hero brand logo
+  // Set hero brand logo with fallback chain
   const heroLogoUrl = pov.logoUrl || getBrandLogoUrl(pov.website || pov.customer);
   const heroLogo = document.getElementById('pov-brand-logo');
-  if (heroLogo) { heroLogo.src = heroLogoUrl; heroLogo.alt = name; }
-  document.getElementById('pov-emoji').textContent = config.emoji;
+  const heroEmoji = document.getElementById('pov-emoji');
+  if (heroLogo) {
+    heroLogo.src = heroLogoUrl;
+    heroLogo.alt = name;
+    heroLogo.style.display = '';
+    if (heroEmoji) heroEmoji.style.display = 'none';
+    attachLogoFallback(heroLogo, pov.website || pov.customer, heroEmoji);
+  }
+  if (heroEmoji) heroEmoji.textContent = config.emoji;
   const heroEl = document.getElementById('pov-hero');
   if (pov.brandColor) {
     heroEl.className = 'rounded-2xl p-10 text-white mb-8';
@@ -1497,12 +1526,16 @@ function renderPOV(pov) {
   // Demo tab — use brand logo and brand color
   document.getElementById('demo-brand').textContent = name;
   document.getElementById('demo-subtitle').textContent = config.subtitle;
-  // Set brand logo from web (Clearbit) instead of agent emoji
+  // Set brand logo with fallback chain
   const brandLogoUrl = pov.logoUrl || getBrandLogoUrl(pov.website || pov.customer);
   const logoImg = document.getElementById('demo-logo-img');
+  const demoIconFallback = document.getElementById('demo-icon-fallback');
   if (logoImg) {
     logoImg.src = brandLogoUrl;
     logoImg.alt = name;
+    logoImg.style.display = '';
+    if (demoIconFallback) demoIconFallback.style.display = 'none';
+    attachLogoFallback(logoImg, pov.website || pov.customer, demoIconFallback);
   }
   document.getElementById('demo-container').className = `rounded-2xl overflow-hidden shadow-xl`;
   const demoHeaderEl = document.getElementById('demo-header');

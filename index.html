@@ -2144,13 +2144,17 @@ function extractBrandColor(websiteOrName) {
   return { primary, secondary };
 }
 
-function getBrandLogoUrl(websiteOrName) {
+function getBrandDomain(websiteOrName) {
   const input = (websiteOrName || '').toLowerCase().trim();
-  // Extract domain from URL or name
   let domain = input.replace(/https?:\/\/(www\.)?/, '').replace(/\/.*$/, '');
   if (!domain.includes('.')) domain = domain.replace(/\s+/g, '') + '.com';
-  // Use Clearbit Logo API for high-quality brand logos
-  return `https://logo.clearbit.com/${domain}`;
+  return domain;
+}
+function getBrandLogoUrl(websiteOrName) {
+  return `https://logo.uplead.com/${getBrandDomain(websiteOrName)}`;
+}
+function getBrandLogoFallback(websiteOrName) {
+  return `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://${getBrandDomain(websiteOrName)}&size=128`;
 }
 
 // ===== POV PERSISTENCE =====
@@ -2205,7 +2209,7 @@ function renderMyPOVs() {
     return `
       <div class="group flex flex-col rounded-xl border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden cursor-pointer" onclick="loadSavedPOV('${pov.id}')">
         <div class="bg-white px-5 py-4 flex items-center gap-3 border-b border-gray-100">
-          <img src="${logoUrl}" alt="${pov.customer}" class="h-9 object-contain" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <img src="${logoUrl}" alt="${pov.customer}" class="h-9 object-contain" onerror="if(!this.dataset.tried){this.dataset.tried='1';var d=this.src.split('/').pop();this.src='https://t1.gstatic.com/faviconV2?client=SOCIAL&amp;type=FAVICON&amp;fallback_opts=TYPE,SIZE,URL&amp;url=http://'+d+'&amp;size=128';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
           <div class="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm" style="display:none;background:${brandColor};">${pov.customer.charAt(0)}</div>
           <span class="text-lg font-bold tracking-wide" style="color: ${brandColor};">${pov.customer}</span>
         </div>
@@ -2389,7 +2393,7 @@ async function loadGeneratedPOVs() {
       return `
         <a href="${shareUrl}" target="_blank" class="group flex flex-col rounded-xl border border-gray-200 hover:shadow-xl hover:scale-[1.02] transition-all overflow-hidden">
           <div class="bg-white px-5 py-4 flex items-center gap-3 border-b border-gray-100">
-            <img src="${logoUrl}" alt="${pov.customer}" class="h-9 object-contain" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <img src="${logoUrl}" alt="${pov.customer}" class="h-9 object-contain" onerror="if(!this.dataset.tried){this.dataset.tried='1';var d=this.src.split('/').pop();this.src='https://t1.gstatic.com/faviconV2?client=SOCIAL&amp;type=FAVICON&amp;fallback_opts=TYPE,SIZE,URL&amp;url=http://'+d+'&amp;size=128';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}">
             <div class="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm" style="display:none;background:${brandColor};">${pov.customer.charAt(0)}</div>
             <span class="text-lg font-bold tracking-wide" style="color: ${brandColor};">${pov.customer}</span>
           </div>
