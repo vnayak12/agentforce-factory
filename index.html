@@ -450,12 +450,6 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
         </div>
 
-        <!-- Key Applications -->
-        <div>
-          <label class="block text-sm font-semibold text-sf-blue mb-2">Key Applications & Integrations</label>
-          <textarea rows="2" placeholder="e.g. SAP ERP, Shopify POS, Snowflake data warehouse, Workday HR..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition"></textarea>
-        </div>
-
         <!-- Primary Use Case -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Primary Use Case *</label>
@@ -493,80 +487,334 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
         </div>
 
-        <!-- Data Sources & Escalation -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-sm font-semibold text-sf-blue mb-2">Data Sources</label>
-            <textarea rows="2" placeholder="e.g. Salesforce Knowledge, Data Cloud, external product catalog API..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition"></textarea>
+        <!-- ═══ SECTION: Data Strategy ═══ -->
+        <div class="border-t-2 border-gray-100 pt-6 mt-2">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="bg-sf-purple text-white text-xs font-bold px-2.5 py-1 rounded-full">DATA</span>
+            <h3 class="text-lg font-bold text-sf-blue">Data Strategy</h3>
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-sf-blue mb-2">Escalation Needs</label>
-            <textarea rows="2" placeholder="e.g. Tier 2 support queue, VIP routing to dedicated reps..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition"></textarea>
-          </div>
-        </div>
 
-        <!-- Custom Agent Name -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-sm font-semibold text-sf-blue mb-2">Custom Agent Name <span class="text-sf-muted font-normal">(optional)</span></label>
-            <input type="text" placeholder="e.g. Nordstrom Style Advisor" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition">
-          </div>
-          <div>
-            <label class="block text-sm font-semibold text-sf-blue mb-2">Knowledge Sources <span class="text-sf-muted font-normal">(optional)</span></label>
-            <input type="text" placeholder="e.g. Product manuals, FAQ docs, policy PDFs" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition">
-          </div>
-        </div>
-
-        <!-- Technology Maturity & Agent Volume -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-sm font-semibold text-sf-blue mb-2">Technology Maturity</label>
+          <!-- Data Cloud Readiness -->
+          <div class="mb-5">
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Data Cloud Status</label>
             <div class="flex flex-wrap gap-2">
-              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                <input type="radio" name="arch-maturity" class="accent-sf-accent" value="early"> <span class="text-sm">🌱 Early (exploring AI)</span>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-datacloud" class="accent-sf-purple" value="none"> <span class="text-sm">Not provisioned</span>
               </label>
-              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                <input type="radio" name="arch-maturity" class="accent-sf-accent" value="growing"> <span class="text-sm">📈 Growing (some automation)</span>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-datacloud" class="accent-sf-purple" value="provisioned"> <span class="text-sm">Provisioned, not in use</span>
               </label>
-              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-                <input type="radio" name="arch-maturity" class="accent-sf-accent" value="advanced"> <span class="text-sm">🚀 Advanced (AI/ML in production)</span>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-datacloud" class="accent-sf-purple" value="active"> <span class="text-sm">Active with data streams</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-datacloud" class="accent-sf-purple" value="mature"> <span class="text-sm">Mature (identity resolution, segments)</span>
               </label>
             </div>
           </div>
-          <div>
-            <label class="block text-sm font-semibold text-sf-blue mb-2">Estimated Agent Volume</label>
-            <select id="arch-volume" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
-              <option value="">Select estimated volume...</option>
-              <option value="low">&lt; 1K conversations/month</option>
-              <option value="medium">1K – 10K conversations/month</option>
-              <option value="high">10K – 100K conversations/month</option>
-              <option value="enterprise">100K+ conversations/month</option>
-            </select>
+
+          <!-- Data Sources for Grounding -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Structured Data Sources</label>
+              <div class="grid grid-cols-1 gap-2">
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-structured"> <span class="text-sm">📊 CRM Objects (Accounts, Cases, Opportunities)</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-structured"> <span class="text-sm">🛒 Order & Transaction Data</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-structured"> <span class="text-sm">📦 Product Catalog / Inventory</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-structured"> <span class="text-sm">🏢 ERP / Financial Systems</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-structured"> <span class="text-sm">📈 Data Warehouse (Snowflake, BigQuery, Redshift)</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Unstructured Knowledge Sources</label>
+              <div class="grid grid-cols-1 gap-2">
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-unstructured"> <span class="text-sm">📚 Knowledge Articles (Salesforce Knowledge)</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-unstructured"> <span class="text-sm">📄 PDF / Policy Documents</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-unstructured"> <span class="text-sm">🌐 Website / Help Center Content</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-unstructured"> <span class="text-sm">💬 Conversation History / Transcripts</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                  <input type="checkbox" class="accent-sf-purple" name="arch-unstructured"> <span class="text-sm">🎥 Training Videos / Media</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Identity & Unification -->
+          <div class="mb-5">
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Identity & Customer 360</label>
+            <div class="flex flex-wrap gap-2">
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="checkbox" class="accent-sf-purple" name="arch-identity"> <span class="text-sm">🆔 Unified Customer Profile exists</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="checkbox" class="accent-sf-purple" name="arch-identity"> <span class="text-sm">🔗 Cross-channel identity resolution needed</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="checkbox" class="accent-sf-purple" name="arch-identity"> <span class="text-sm">📊 Customer segmentation in use</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="checkbox" class="accent-sf-purple" name="arch-identity"> <span class="text-sm">🔄 Real-time data sync required</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Data Volume & Freshness -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Customer Record Volume</label>
+              <select id="arch-data-volume" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+                <option value="">Select volume...</option>
+                <option value="small">&lt; 100K profiles</option>
+                <option value="medium">100K – 1M profiles</option>
+                <option value="large">1M – 10M profiles</option>
+                <option value="massive">10M+ profiles</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Data Freshness Requirement</label>
+              <select id="arch-data-freshness" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+                <option value="">Select freshness...</option>
+                <option value="realtime">Real-time (streaming)</option>
+                <option value="near-realtime">Near real-time (minutes)</option>
+                <option value="hourly">Hourly batch</option>
+                <option value="daily">Daily batch</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <!-- Compliance & Data Residency -->
-        <div>
-          <label class="block text-sm font-semibold text-sf-blue mb-2">Compliance & Data Residency</label>
-          <div class="flex flex-wrap gap-2">
-            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🇪🇺 GDPR</span>
-            </label>
-            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🏥 HIPAA</span>
-            </label>
-            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🏛️ FedRAMP</span>
-            </label>
-            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🔒 SOC 2</span>
-            </label>
-            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">💳 PCI DSS</span>
-            </label>
-            <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
-              <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">📍 Data Residency Requirements</span>
-            </label>
+        <!-- ═══ SECTION: Architecture Approach ═══ -->
+        <div class="border-t-2 border-gray-100 pt-6 mt-2">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="bg-sf-accent text-white text-xs font-bold px-2.5 py-1 rounded-full">ARCH</span>
+            <h3 class="text-lg font-bold text-sf-blue">Architecture Approach</h3>
+          </div>
+
+          <!-- Agent Architecture Pattern -->
+          <div class="mb-5">
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Agent Architecture Pattern</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <label class="flex items-start gap-3 border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="radio" name="arch-pattern" class="accent-sf-accent mt-1" value="single">
+                <div>
+                  <div class="text-sm font-semibold text-sf-blue">Single Agent</div>
+                  <div class="text-xs text-sf-muted mt-1">One autonomous agent handles a focused domain (e.g. customer service). Simplest to build and manage.</div>
+                </div>
+              </label>
+              <label class="flex items-start gap-3 border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="radio" name="arch-pattern" class="accent-sf-accent mt-1" value="multi-topic">
+                <div>
+                  <div class="text-sm font-semibold text-sf-blue">Multi-Topic Agent</div>
+                  <div class="text-xs text-sf-muted mt-1">Single agent with multiple topics/actions. Handles several use cases with clear routing between them.</div>
+                </div>
+              </label>
+              <label class="flex items-start gap-3 border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="radio" name="arch-pattern" class="accent-sf-accent mt-1" value="multi-agent">
+                <div>
+                  <div class="text-sm font-semibold text-sf-blue">Multi-Agent Orchestration</div>
+                  <div class="text-xs text-sf-muted mt-1">Multiple specialized agents that hand off between each other. Best for complex workflows spanning departments.</div>
+                </div>
+              </label>
+              <label class="flex items-start gap-3 border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="radio" name="arch-pattern" class="accent-sf-accent mt-1" value="headless">
+                <div>
+                  <div class="text-sm font-semibold text-sf-blue">Headless 360 (API-First)</div>
+                  <div class="text-xs text-sf-muted mt-1">Agent exposed via API for embedding in custom apps, portals, or third-party channels. Maximum flexibility.</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Integration Architecture -->
+          <div class="mb-5">
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Integration Architecture</label>
+            <div class="flex flex-wrap gap-2">
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-integration"> <span class="text-sm">🔌 MuleSoft API Layer</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-integration"> <span class="text-sm">🔗 Direct Salesforce APIs</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-integration"> <span class="text-sm">⚡ Event-Driven (Platform Events)</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-integration"> <span class="text-sm">🔄 Change Data Capture</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-integration"> <span class="text-sm">🌐 External REST/SOAP APIs</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-integration"> <span class="text-sm">🤖 MCP Tool Servers</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Escalation & Human-in-the-Loop -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Escalation & Handoff Strategy</label>
+              <div class="grid grid-cols-1 gap-2">
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="checkbox" class="accent-sf-accent" name="arch-escalation"> <span class="text-sm">🧑‍💻 Omni-Channel transfer to live agent</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="checkbox" class="accent-sf-accent" name="arch-escalation"> <span class="text-sm">📋 Case creation for async follow-up</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="checkbox" class="accent-sf-accent" name="arch-escalation"> <span class="text-sm">👤 Skill-based routing (specialty queues)</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="checkbox" class="accent-sf-accent" name="arch-escalation"> <span class="text-sm">⚠️ Sentiment-based escalation triggers</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Trust & Guardrails</label>
+              <div class="grid grid-cols-1 gap-2">
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="checkbox" class="accent-sf-accent" name="arch-guardrails"> <span class="text-sm">🛡️ Einstein Trust Layer (toxicity, PII masking)</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="checkbox" class="accent-sf-accent" name="arch-guardrails"> <span class="text-sm">🔒 Topic-level guardrails (allowed/blocked topics)</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="checkbox" class="accent-sf-accent" name="arch-guardrails"> <span class="text-sm">📝 Audit trail & conversation logging</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="checkbox" class="accent-sf-accent" name="arch-guardrails"> <span class="text-sm">✅ Human approval for high-risk actions</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Applications & External Systems -->
+          <div>
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Key External Systems to Integrate</label>
+            <textarea rows="2" placeholder="e.g. SAP ERP, Shopify POS, Snowflake, Workday HR, Custom portal APIs, Legacy ticketing system..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition"></textarea>
+          </div>
+        </div>
+
+        <!-- ═══ SECTION: Agent Configuration ═══ -->
+        <div class="border-t-2 border-gray-100 pt-6 mt-2">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="bg-sf-success text-white text-xs font-bold px-2.5 py-1 rounded-full">CONFIG</span>
+            <h3 class="text-lg font-bold text-sf-blue">Agent Configuration</h3>
+          </div>
+
+          <!-- Custom Agent Name + Knowledge -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Custom Agent Name <span class="text-sf-muted font-normal">(optional)</span></label>
+              <input type="text" placeholder="e.g. Nordstrom Style Advisor" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Agent Persona / Tone</label>
+              <select class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+                <option value="">Select tone...</option>
+                <option value="professional">Professional & Formal</option>
+                <option value="friendly">Friendly & Approachable</option>
+                <option value="concise">Concise & Efficient</option>
+                <option value="empathetic">Empathetic & Supportive</option>
+                <option value="brand">Match Brand Voice</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Technology Maturity & Agent Volume -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Technology Maturity</label>
+              <div class="flex flex-wrap gap-2">
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="radio" name="arch-maturity" class="accent-sf-accent" value="early"> <span class="text-sm">🌱 Early</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="radio" name="arch-maturity" class="accent-sf-accent" value="growing"> <span class="text-sm">📈 Growing</span>
+                </label>
+                <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                  <input type="radio" name="arch-maturity" class="accent-sf-accent" value="advanced"> <span class="text-sm">🚀 Advanced</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Estimated Agent Volume</label>
+              <select id="arch-volume" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+                <option value="">Select estimated volume...</option>
+                <option value="low">&lt; 1K conversations/month</option>
+                <option value="medium">1K – 10K conversations/month</option>
+                <option value="high">10K – 100K conversations/month</option>
+                <option value="enterprise">100K+ conversations/month</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Compliance & Data Residency -->
+          <div class="mb-5">
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Compliance & Data Residency</label>
+            <div class="flex flex-wrap gap-2">
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🇪🇺 GDPR</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🏥 HIPAA</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🏛️ FedRAMP</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">🔒 SOC 2</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">💳 PCI DSS</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 transition has-[:checked]:bg-blue-100 has-[:checked]:border-sf-accent">
+                <input type="checkbox" class="accent-sf-accent" name="arch-compliance"> <span class="text-sm">📍 Data Residency</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Success Metrics -->
+          <div>
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Success Metrics <span class="text-sf-muted font-normal">(what does success look like?)</span></label>
+            <div class="flex flex-wrap gap-2">
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-green-50 transition has-[:checked]:bg-green-100 has-[:checked]:border-sf-success">
+                <input type="checkbox" class="accent-sf-success" name="arch-success"> <span class="text-sm">📉 Case deflection rate</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-green-50 transition has-[:checked]:bg-green-100 has-[:checked]:border-sf-success">
+                <input type="checkbox" class="accent-sf-success" name="arch-success"> <span class="text-sm">⏱️ Average handle time reduction</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-green-50 transition has-[:checked]:bg-green-100 has-[:checked]:border-sf-success">
+                <input type="checkbox" class="accent-sf-success" name="arch-success"> <span class="text-sm">⭐ CSAT / NPS improvement</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-green-50 transition has-[:checked]:bg-green-100 has-[:checked]:border-sf-success">
+                <input type="checkbox" class="accent-sf-success" name="arch-success"> <span class="text-sm">💰 Cost per interaction reduction</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-green-50 transition has-[:checked]:bg-green-100 has-[:checked]:border-sf-success">
+                <input type="checkbox" class="accent-sf-success" name="arch-success"> <span class="text-sm">📈 Revenue per conversation</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-green-50 transition has-[:checked]:bg-green-100 has-[:checked]:border-sf-success">
+                <input type="checkbox" class="accent-sf-success" name="arch-success"> <span class="text-sm">🚀 Time to resolution</span>
+              </label>
+            </div>
           </div>
         </div>
 
