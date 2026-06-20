@@ -351,10 +351,11 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <!-- Optional Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
-            <div class="text-3xl mb-2">📎</div>
-            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <input type="file" class="hidden">
+          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="ae-file-input" onclick="document.getElementById('ae-file-input').click()">
+            <div class="dropzone-icon text-3xl mb-2">📎</div>
+            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
+            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+            <input type="file" id="ae-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
           </div>
         </div>
 
@@ -946,10 +947,11 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <!-- Optional Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Upload Context Documents <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
-            <div class="text-3xl mb-2">📎</div>
-            <div class="text-sf-muted text-sm">Account plans, architecture docs, Slack canvas, or notes</div>
-            <input type="file" class="hidden" multiple>
+          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="arch-file-input" onclick="document.getElementById('arch-file-input').click()">
+            <div class="dropzone-icon text-3xl mb-2">📎</div>
+            <div class="dropzone-text text-sf-muted text-sm">Account plans, architecture docs, Slack canvas, or notes</div>
+            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+            <input type="file" id="arch-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" multiple onchange="handleFileSelect(this)">
           </div>
         </div>
 
@@ -1891,10 +1893,11 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <!-- Upload -->
             <div>
               <label class="block text-sm font-semibold text-sf-blue mb-2">Upload Context Documents <span class="text-sf-muted font-normal">(optional)</span></label>
-              <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
-                <div class="text-3xl mb-2">📎</div>
-                <div class="text-sf-muted text-sm">Account plans, architecture diagrams, discovery notes, Slack canvas</div>
-                <input type="file" class="hidden" multiple>
+              <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="se-file-input" onclick="document.getElementById('se-file-input').click()">
+                <div class="dropzone-icon text-3xl mb-2">📎</div>
+                <div class="dropzone-text text-sf-muted text-sm">Account plans, architecture diagrams, discovery notes, Slack canvas</div>
+                <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+                <input type="file" id="se-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" multiple onchange="handleFileSelect(this)">
               </div>
             </div>
           </div>
@@ -2078,10 +2081,11 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <!-- Optional Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
-            <div class="text-3xl mb-2">📎</div>
-            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <input type="file" class="hidden">
+          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="eu-file-input" onclick="document.getElementById('eu-file-input').click()">
+            <div class="dropzone-icon text-3xl mb-2">📎</div>
+            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
+            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+            <input type="file" id="eu-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
           </div>
         </div>
 
@@ -2194,10 +2198,11 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <!-- Optional Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
-            <div class="text-3xl mb-2">📎</div>
-            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <input type="file" class="hidden">
+          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="cg-file-input" onclick="document.getElementById('cg-file-input').click()">
+            <div class="dropzone-icon text-3xl mb-2">📎</div>
+            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
+            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+            <input type="file" id="cg-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
           </div>
         </div>
 
@@ -2300,10 +2305,11 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <!-- Optional Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
-            <div class="text-3xl mb-2">📎</div>
-            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <input type="file" class="hidden">
+          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="mfg-file-input" onclick="document.getElementById('mfg-file-input').click()">
+            <div class="dropzone-icon text-3xl mb-2">📎</div>
+            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
+            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+            <input type="file" id="mfg-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
           </div>
         </div>
 
@@ -2406,10 +2412,11 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <!-- Optional Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer">
-            <div class="text-3xl mb-2">📎</div>
-            <div class="text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <input type="file" class="hidden">
+          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="auto-file-input" onclick="document.getElementById('auto-file-input').click()">
+            <div class="dropzone-icon text-3xl mb-2">📎</div>
+            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
+            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+            <input type="file" id="auto-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
           </div>
         </div>
 
@@ -3064,6 +3071,57 @@ function setViewMode(mode) {
     }
   });
 }
+
+// ─── File Upload / Drag-Drop Handler ───
+function handleFileSelect(inputEl) {
+  const dropzone = inputEl.closest('.dropzone');
+  if (!dropzone) return;
+  const files = inputEl.files;
+  if (!files || files.length === 0) return;
+  const iconEl = dropzone.querySelector('.dropzone-icon');
+  const textEl = dropzone.querySelector('.dropzone-text');
+  const fileEl = dropzone.querySelector('.dropzone-file');
+  const names = Array.from(files).map(f => f.name);
+  if (iconEl) iconEl.textContent = '✅';
+  if (textEl) textEl.innerHTML = names.length === 1 ? 'File attached' : `${names.length} files attached`;
+  if (fileEl) { fileEl.textContent = names.join(', '); fileEl.classList.remove('hidden'); }
+  dropzone.classList.remove('border-gray-300');
+  dropzone.classList.add('border-sf-accent', 'bg-blue-50/50');
+}
+
+// Initialize drag-and-drop on all .dropzone elements
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.dropzone').forEach(dz => {
+    const targetId = dz.dataset.target;
+    if (!targetId) return;
+    const fileInput = document.getElementById(targetId);
+    if (!fileInput) return;
+
+    dz.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dz.classList.add('border-sf-accent', 'bg-blue-50');
+    });
+    dz.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!dz.querySelector('.dropzone-file.hidden') === false) return;
+      dz.classList.remove('border-sf-accent', 'bg-blue-50');
+    });
+    dz.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dz.classList.remove('bg-blue-50');
+      const dt = e.dataTransfer;
+      if (dt && dt.files && dt.files.length > 0) {
+        fileInput.files = dt.files;
+        handleFileSelect(fileInput);
+      }
+    });
+    // Prevent click on file input from bubbling back up to the dropzone onclick
+    fileInput.addEventListener('click', (e) => e.stopPropagation());
+  });
+});
 
 // Generate AE output
 function generateAEOutput() {
