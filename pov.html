@@ -1238,13 +1238,20 @@ function handleAgentMessage(data) {
 }
 
 // ─── SCRT2: Send Message ───
+let attachedContextSent = false;
 async function sendMessageToAgent(text) {
   if (!accessToken || !conversationId) return;
+  // On first user message, prepend attached context if available
+  let msgText = text;
+  if (!attachedContextSent && currentPOV && currentPOV.attachedContext) {
+    msgText = `[Account Context from uploaded document]\n${currentPOV.attachedContext}\n\n[User Question]\n${text}`;
+    attachedContextSent = true;
+  }
   const msgPayload = {
     message: {
       id: uuid(),
       messageType: 'StaticContentMessage',
-      staticContent: { formatType: 'Text', text: text }
+      staticContent: { formatType: 'Text', text: msgText }
     },
     esDeveloperName: activeEsDevName,
     isNewMessagingSession: isFirstMessage,
@@ -1333,6 +1340,8 @@ function showGreeting() {
   if (!config) return;
   const chat = document.getElementById('demo-chat');
   if (!chat) return;
+  const hasContext = currentPOV && currentPOV.attachedContext;
+  const contextBadge = hasContext ? `<div class="mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-xs text-blue-700">📄 Account context loaded from uploaded document</div>` : '';
   let html = `<div class="flex gap-3 fade-in">
     <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
     <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
@@ -1340,6 +1349,7 @@ function showGreeting() {
       <div class="mt-2 space-y-1 text-sm text-gray-600">
         ${config.demoCapabilities.map(c => `<div>${c}</div>`).join('')}
       </div>
+      ${contextBadge}
       <p class="text-sm text-gray-800 mt-2">How can I help you today?</p>
     </div>
   </div>`;
@@ -1409,6 +1419,8 @@ async function sendMessage() {
 
 function fallbackSimulatedResponse(text) {
   showTypingIndicator();
+  // If attached context exists, enhance simulated response with context awareness
+  const contextNote = (currentPOV && currentPOV.attachedContext) ? `\n\n📄 *Using context from uploaded document to tailor response*` : '';
   const resp = getScenarioResponse(text, currentPOVName || 'Customer');
   setTimeout(() => {
     removeTypingIndicator();

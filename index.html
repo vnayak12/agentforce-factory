@@ -34,6 +34,8 @@
 .coming-soon-badge { position: absolute; top: 12px; right: 12px; }
 input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px rgba(1,118,211,0.3); }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 </head>
 <body class="bg-sf-bg min-h-screen">
 
@@ -3073,6 +3075,9 @@ function setViewMode(mode) {
 }
 
 // ─── File Upload / Drag-Drop Handler ───
+// Store extracted file text per input ID
+const fileTextCache = {};
+
 function handleFileSelect(inputEl) {
   const dropzone = inputEl.closest('.dropzone');
   if (!dropzone) return;
@@ -3087,6 +3092,53 @@ function handleFileSelect(inputEl) {
   if (fileEl) { fileEl.textContent = names.join(', '); fileEl.classList.remove('hidden'); }
   dropzone.classList.remove('border-gray-300');
   dropzone.classList.add('border-sf-accent', 'bg-blue-50/50');
+
+  // Read file content for context injection
+  const inputId = inputEl.id;
+  fileTextCache[inputId] = '';
+  const readPromises = Array.from(files).map(file => {
+    return new Promise(resolve => {
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (['txt', 'csv', 'md', 'json'].includes(ext)) {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result || '');
+        reader.onerror = () => resolve('');
+        reader.readAsText(file);
+      } else if (ext === 'pdf') {
+        // Try to extract PDF text via pdf.js if loaded
+        if (window.pdfjsLib) {
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(e.target.result) }).promise;
+              let text = '';
+              for (let i = 1; i <= Math.min(pdf.numPages, 10); i++) {
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                text += content.items.map(item => item.str).join(' ') + '\n';
+              }
+              resolve(text.trim());
+            } catch (err) { resolve(`[PDF: ${file.name}]`); }
+          };
+          reader.onerror = () => resolve('');
+          reader.readAsArrayBuffer(file);
+        } else {
+          resolve(`[PDF attached: ${file.name} - content available in meeting]`);
+        }
+      } else {
+        resolve(`[File attached: ${file.name}]`);
+      }
+    });
+  });
+  Promise.all(readPromises).then(texts => {
+    fileTextCache[inputId] = texts.filter(t => t).join('\n\n');
+    console.log(`File content cached for ${inputId}:`, fileTextCache[inputId].substring(0, 200) + '...');
+  });
+}
+
+// Get attached file text for a given input ID (returns empty string if none)
+function getAttachedContext(inputId) {
+  return (fileTextCache[inputId] || '').substring(0, 5000); // Cap at 5K chars
 }
 
 // Initialize drag-and-drop on all .dropzone elements
@@ -3143,9 +3195,11 @@ function generateAEOutput() {
   // Create stable slug for shareable URL
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
 
+  const attachedContext = getAttachedContext('ae-file-input');
   generatePOVWithSmartColors({
     id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
     archetype: archetype, archetypeKey: archetypeKey, industry: 'Retail',
+    attachedContext: attachedContext,
     createdAt: new Date().toISOString()
   });
 }
@@ -3680,10 +3734,12 @@ function generateEUOutput() {
   const archetypeKey = selected ? selected.value : 'eu-field-service';
   const archetype = euArchetypeLabels[archetypeKey];
 
+  const attachedContext = getAttachedContext('eu-file-input');
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
   generatePOVWithSmartColors({
     id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
     archetype: archetype, archetypeKey: archetypeKey, industry: 'Energy & Utilities',
+    attachedContext: attachedContext,
     createdAt: new Date().toISOString()
   });
 }
@@ -3703,10 +3759,12 @@ function generateCGOutput() {
   const archetypeKey = selected ? selected.value : 'cg-retail-execution';
   const archetype = cgArchetypeLabels[archetypeKey];
 
+  const attachedContext = getAttachedContext('cg-file-input');
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
   generatePOVWithSmartColors({
     id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
     archetype: archetype, archetypeKey: archetypeKey, industry: 'Consumer Goods',
+    attachedContext: attachedContext,
     createdAt: new Date().toISOString()
   });
 }
@@ -3725,10 +3783,12 @@ function generateMFGOutput() {
   const archetypeKey = selected ? selected.value : 'mfg-equipment-service';
   const archetype = mfgArchetypeLabels[archetypeKey];
 
+  const attachedContext = getAttachedContext('mfg-file-input');
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
   generatePOVWithSmartColors({
     id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
     archetype: archetype, archetypeKey: archetypeKey, industry: 'Manufacturing',
+    attachedContext: attachedContext,
     createdAt: new Date().toISOString()
   });
 }
@@ -3747,10 +3807,12 @@ function generateAutoOutput() {
   const archetypeKey = selected ? selected.value : 'auto-vehicle-sales';
   const archetype = autoArchetypeLabels[archetypeKey];
 
+  const attachedContext = getAttachedContext('auto-file-input');
   const slug = `${account.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}-${archetypeKey}`;
   generatePOVWithSmartColors({
     id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
     archetype: archetype, archetypeKey: archetypeKey, industry: 'Automotive',
+    attachedContext: attachedContext,
     createdAt: new Date().toISOString()
   });
 }
