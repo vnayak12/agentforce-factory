@@ -350,14 +350,23 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
         </div>
 
-        <!-- Optional Upload -->
+        <!-- Optional Context: Paste or Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="ae-file-input" onclick="document.getElementById('ae-file-input').click()">
-            <div class="dropzone-icon text-3xl mb-2">📎</div>
-            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
-            <input type="file" id="ae-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+          <div class="flex gap-2 mb-2">
+            <button type="button" onclick="toggleContextMode('ae', 'paste')" id="ae-mode-paste" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-sf-accent text-white cursor-pointer">📝 Paste Text</button>
+            <button type="button" onclick="toggleContextMode('ae', 'file')" id="ae-mode-file" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-sf-muted hover:bg-gray-200 cursor-pointer">📎 Upload File</button>
+          </div>
+          <div id="ae-paste-area">
+            <textarea id="ae-paste-input" rows="4" placeholder="Paste account notes, Slack canvas content, customer priorities, pain points..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition text-sm" oninput="pasteTextCache['ae-paste-input']=this.value"></textarea>
+          </div>
+          <div id="ae-file-area" class="hidden">
+            <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="ae-file-input" onclick="document.getElementById('ae-file-input').click()">
+              <div class="dropzone-icon text-3xl mb-2">📎</div>
+              <div class="dropzone-text text-sf-muted text-sm">Drop a PDF, doc, or text file here</div>
+              <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+              <input type="file" id="ae-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+            </div>
           </div>
         </div>
 
@@ -946,14 +955,23 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
         </div>
 
-        <!-- Optional Upload -->
+        <!-- Optional Upload / Paste -->
         <div>
-          <label class="block text-sm font-semibold text-sf-blue mb-2">Upload Context Documents <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="arch-file-input" onclick="document.getElementById('arch-file-input').click()">
-            <div class="dropzone-icon text-3xl mb-2">📎</div>
-            <div class="dropzone-text text-sf-muted text-sm">Account plans, architecture docs, Slack canvas, or notes</div>
-            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
-            <input type="file" id="arch-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" multiple onchange="handleFileSelect(this)">
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Account Context <span class="text-sf-muted font-normal">(optional)</span></label>
+          <div class="flex gap-2 mb-2">
+            <button type="button" onclick="toggleContextMode('arch', 'paste')" id="arch-mode-paste" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-sf-accent text-white cursor-pointer">📝 Paste Text</button>
+            <button type="button" onclick="toggleContextMode('arch', 'file')" id="arch-mode-file" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-sf-muted hover:bg-gray-200 cursor-pointer">📎 Upload File</button>
+          </div>
+          <div id="arch-paste-area">
+            <textarea id="arch-paste-input" rows="4" placeholder="Paste account notes, Slack canvas content, architecture docs, customer priorities..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition text-sm" oninput="pasteTextCache['arch-paste-input']=this.value"></textarea>
+          </div>
+          <div id="arch-file-area" class="hidden">
+            <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="arch-file-input" onclick="document.getElementById('arch-file-input').click()">
+              <div class="dropzone-icon text-3xl mb-2">📎</div>
+              <div class="dropzone-text text-sf-muted text-sm">Account plans, architecture docs, Slack canvas, or notes</div>
+              <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+              <input type="file" id="arch-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" multiple onchange="handleFileSelect(this)">
+            </div>
           </div>
         </div>
 
@@ -1892,14 +1910,23 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
               <label class="block text-sm font-semibold text-sf-blue mb-2">Notes / Anything Else</label>
               <textarea id="se-notes" rows="3" placeholder="e.g. Customer has an AI steering committee, already evaluating ChatGPT Enterprise, key stakeholder is VP of Digital..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition"></textarea>
             </div>
-            <!-- Upload -->
+            <!-- Upload / Paste -->
             <div>
-              <label class="block text-sm font-semibold text-sf-blue mb-2">Upload Context Documents <span class="text-sf-muted font-normal">(optional)</span></label>
-              <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="se-file-input" onclick="document.getElementById('se-file-input').click()">
-                <div class="dropzone-icon text-3xl mb-2">📎</div>
-                <div class="dropzone-text text-sf-muted text-sm">Account plans, architecture diagrams, discovery notes, Slack canvas</div>
-                <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
-                <input type="file" id="se-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" multiple onchange="handleFileSelect(this)">
+              <label class="block text-sm font-semibold text-sf-blue mb-2">Account Context <span class="text-sf-muted font-normal">(optional)</span></label>
+              <div class="flex gap-2 mb-2">
+                <button type="button" onclick="toggleContextMode('se', 'paste')" id="se-mode-paste" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-sf-accent text-white cursor-pointer">📝 Paste Text</button>
+                <button type="button" onclick="toggleContextMode('se', 'file')" id="se-mode-file" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-sf-muted hover:bg-gray-200 cursor-pointer">📎 Upload File</button>
+              </div>
+              <div id="se-paste-area">
+                <textarea id="se-paste-input" rows="4" placeholder="Paste account notes, Slack canvas content, discovery notes, customer priorities..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition text-sm" oninput="pasteTextCache['se-paste-input']=this.value"></textarea>
+              </div>
+              <div id="se-file-area" class="hidden">
+                <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="se-file-input" onclick="document.getElementById('se-file-input').click()">
+                  <div class="dropzone-icon text-3xl mb-2">📎</div>
+                  <div class="dropzone-text text-sf-muted text-sm">Account plans, architecture diagrams, discovery notes, Slack canvas</div>
+                  <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+                  <input type="file" id="se-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" multiple onchange="handleFileSelect(this)">
+                </div>
               </div>
             </div>
           </div>
@@ -2080,14 +2107,23 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
         </div>
 
-        <!-- Optional Upload -->
+        <!-- Optional Context: Paste or Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="eu-file-input" onclick="document.getElementById('eu-file-input').click()">
-            <div class="dropzone-icon text-3xl mb-2">📎</div>
-            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
-            <input type="file" id="eu-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+          <div class="flex gap-2 mb-2">
+            <button type="button" onclick="toggleContextMode('eu', 'paste')" id="eu-mode-paste" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-sf-accent text-white cursor-pointer">📝 Paste Text</button>
+            <button type="button" onclick="toggleContextMode('eu', 'file')" id="eu-mode-file" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-sf-muted hover:bg-gray-200 cursor-pointer">📎 Upload File</button>
+          </div>
+          <div id="eu-paste-area">
+            <textarea id="eu-paste-input" rows="4" placeholder="Paste account notes, Slack canvas content, customer priorities, pain points..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition text-sm" oninput="pasteTextCache['eu-paste-input']=this.value"></textarea>
+          </div>
+          <div id="eu-file-area" class="hidden">
+            <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="eu-file-input" onclick="document.getElementById('eu-file-input').click()">
+              <div class="dropzone-icon text-3xl mb-2">📎</div>
+              <div class="dropzone-text text-sf-muted text-sm">Drop a PDF, doc, or text file here</div>
+              <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+              <input type="file" id="eu-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+            </div>
           </div>
         </div>
 
@@ -2197,14 +2233,23 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
         </div>
 
-        <!-- Optional Upload -->
+        <!-- Optional Context: Paste or Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="cg-file-input" onclick="document.getElementById('cg-file-input').click()">
-            <div class="dropzone-icon text-3xl mb-2">📎</div>
-            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
-            <input type="file" id="cg-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+          <div class="flex gap-2 mb-2">
+            <button type="button" onclick="toggleContextMode('cg', 'paste')" id="cg-mode-paste" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-sf-accent text-white cursor-pointer">📝 Paste Text</button>
+            <button type="button" onclick="toggleContextMode('cg', 'file')" id="cg-mode-file" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-sf-muted hover:bg-gray-200 cursor-pointer">📎 Upload File</button>
+          </div>
+          <div id="cg-paste-area">
+            <textarea id="cg-paste-input" rows="4" placeholder="Paste account notes, Slack canvas content, customer priorities, pain points..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition text-sm" oninput="pasteTextCache['cg-paste-input']=this.value"></textarea>
+          </div>
+          <div id="cg-file-area" class="hidden">
+            <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="cg-file-input" onclick="document.getElementById('cg-file-input').click()">
+              <div class="dropzone-icon text-3xl mb-2">📎</div>
+              <div class="dropzone-text text-sf-muted text-sm">Drop a PDF, doc, or text file here</div>
+              <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+              <input type="file" id="cg-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+            </div>
           </div>
         </div>
 
@@ -2307,11 +2352,20 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <!-- Optional Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="mfg-file-input" onclick="document.getElementById('mfg-file-input').click()">
-            <div class="dropzone-icon text-3xl mb-2">📎</div>
-            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
-            <input type="file" id="mfg-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+          <div class="flex gap-2 mb-2">
+            <button type="button" onclick="toggleContextMode('mfg', 'paste')" id="mfg-mode-paste" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-sf-accent text-white cursor-pointer">📝 Paste Text</button>
+            <button type="button" onclick="toggleContextMode('mfg', 'file')" id="mfg-mode-file" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-sf-muted hover:bg-gray-200 cursor-pointer">📎 Upload File</button>
+          </div>
+          <div id="mfg-paste-area">
+            <textarea id="mfg-paste-input" rows="4" placeholder="Paste account notes, Slack canvas content, customer priorities, pain points..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition text-sm" oninput="pasteTextCache['mfg-paste-input']=this.value"></textarea>
+          </div>
+          <div id="mfg-file-area" class="hidden">
+            <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="mfg-file-input" onclick="document.getElementById('mfg-file-input').click()">
+              <div class="dropzone-icon text-3xl mb-2">📎</div>
+              <div class="dropzone-text text-sf-muted text-sm">Drop a PDF, doc, or text file here</div>
+              <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+              <input type="file" id="mfg-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+            </div>
           </div>
         </div>
 
@@ -2411,14 +2465,23 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
         </div>
 
-        <!-- Optional Upload -->
+        <!-- Optional Context: Paste or Upload -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Additional Context <span class="text-sf-muted font-normal">(optional)</span></label>
-          <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="auto-file-input" onclick="document.getElementById('auto-file-input').click()">
-            <div class="dropzone-icon text-3xl mb-2">📎</div>
-            <div class="dropzone-text text-sf-muted text-sm">Have a Slack canvas, account plan, or notes?<br>Drop it here for a more tailored demo</div>
-            <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
-            <input type="file" id="auto-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+          <div class="flex gap-2 mb-2">
+            <button type="button" onclick="toggleContextMode('auto', 'paste')" id="auto-mode-paste" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-sf-accent text-white cursor-pointer">📝 Paste Text</button>
+            <button type="button" onclick="toggleContextMode('auto', 'file')" id="auto-mode-file" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-sf-muted hover:bg-gray-200 cursor-pointer">📎 Upload File</button>
+          </div>
+          <div id="auto-paste-area">
+            <textarea id="auto-paste-input" rows="4" placeholder="Paste account notes, Slack canvas content, customer priorities, pain points..." class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition text-sm" oninput="pasteTextCache['auto-paste-input']=this.value"></textarea>
+          </div>
+          <div id="auto-file-area" class="hidden">
+            <div class="dropzone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-sf-accent transition cursor-pointer" data-target="auto-file-input" onclick="document.getElementById('auto-file-input').click()">
+              <div class="dropzone-icon text-3xl mb-2">📎</div>
+              <div class="dropzone-text text-sf-muted text-sm">Drop a PDF, doc, or text file here</div>
+              <div class="dropzone-file hidden text-sm text-sf-blue font-semibold mt-1"></div>
+              <input type="file" id="auto-file-input" class="hidden" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx,.png,.jpg,.jpeg" onchange="handleFileSelect(this)">
+            </div>
           </div>
         </div>
 
@@ -3074,6 +3137,29 @@ function setViewMode(mode) {
   });
 }
 
+// ─── Paste Text / File Upload Toggle ───
+const pasteTextCache = {};
+
+function toggleContextMode(prefix, mode) {
+  const pasteBtn = document.getElementById(`${prefix}-mode-paste`);
+  const fileBtn = document.getElementById(`${prefix}-mode-file`);
+  const pasteArea = document.getElementById(`${prefix}-paste-area`);
+  const fileArea = document.getElementById(`${prefix}-file-area`);
+  if (!pasteBtn || !fileBtn || !pasteArea || !fileArea) return;
+
+  if (mode === 'paste') {
+    pasteBtn.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-sf-accent text-white cursor-pointer';
+    fileBtn.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-sf-muted hover:bg-gray-200 cursor-pointer';
+    pasteArea.classList.remove('hidden');
+    fileArea.classList.add('hidden');
+  } else {
+    fileBtn.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-sf-accent text-white cursor-pointer';
+    pasteBtn.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-sf-muted hover:bg-gray-200 cursor-pointer';
+    fileArea.classList.remove('hidden');
+    pasteArea.classList.add('hidden');
+  }
+}
+
 // ─── File Upload / Drag-Drop Handler ───
 // Store extracted file text per input ID
 const fileTextCache = {};
@@ -3136,9 +3222,14 @@ function handleFileSelect(inputEl) {
   });
 }
 
-// Get attached file text for a given input ID (returns empty string if none)
+// Get attached context: checks file upload first, then paste text fallback
 function getAttachedContext(inputId) {
-  return (fileTextCache[inputId] || '').substring(0, 5000); // Cap at 5K chars
+  const fileText = (fileTextCache[inputId] || '').trim();
+  if (fileText) return fileText.substring(0, 5000);
+  // Derive paste input ID from file input ID: e.g. 'ae-file-input' -> 'ae-paste-input'
+  const pasteId = inputId.replace('-file-input', '-paste-input');
+  const pasteText = (pasteTextCache[pasteId] || '').trim();
+  return pasteText.substring(0, 5000);
 }
 
 // Initialize drag-and-drop on all .dropzone elements
@@ -3706,6 +3797,7 @@ function generateArchOutput() {
     showScreen('screen-architect-output');
 
     // Save POV
+    const archAttachedContext = getAttachedContext('arch-file-input');
     savePOV({
       id: `arch-${customer.toLowerCase().replace(/[^a-z0-9]/g,'-')}-${Date.now()}`,
       type: 'architect',
@@ -3714,6 +3806,7 @@ function generateArchOutput() {
       architectName: archName,
       usecase: usecaseLabel,
       archetype: 'Architecture Demo',
+      attachedContext: archAttachedContext,
       createdAt: new Date().toISOString()
     });
   });
@@ -3900,6 +3993,7 @@ function generateSEOutput() {
     showScreen('screen-se-output');
 
     // Save POV
+    const seAttachedContext = getAttachedContext('se-file-input');
     savePOV({
       id: `se-${customer.toLowerCase().replace(/[^a-z0-9]/g,'-')}-${Date.now()}`,
       type: 'se',
@@ -3908,6 +4002,7 @@ function generateSEOutput() {
       channels: channels.join(', '),
       timeline: timeline,
       archetype: 'Agentforce Discovery',
+      attachedContext: seAttachedContext,
       createdAt: new Date().toISOString()
     });
   });
