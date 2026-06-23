@@ -25,6 +25,10 @@
 .tab-active { border-bottom: 3px solid #0176D3; color: #032D60; }
 .tab-inactive { color: #706E6B; border-bottom: 3px solid transparent; }
 .tab-inactive:hover { color: #032D60; }
+/* NGA Voice Widget z-index overrides */
+.embeddedMessagingTopContainer { z-index: 10000 !important; }
+.embeddedMessagingFrame[name*="ChatWindow"] { z-index: 10000 !important; }
+.embeddedMessagingConversationButtonWrapper { z-index: 10000 !important; }
 </style>
 </head>
 <body class="bg-sf-bg min-h-screen">
@@ -629,7 +633,8 @@ const INDUSTRY_CONTENT = {
     agents: [
       { emoji: '🎧', name: 'Customer Service Agent', tag: 'Pre & Post-Sales | Orders & Returns', desc: 'Resolves inquiries 24/7 across every channel. Handles order status, returns, exchanges, and shipping -with smart escalation to human agents when needed.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '👗', name: 'Personal Shopper Agent', tag: 'Styling | Recommendations | Commerce', desc: 'Provides personalized product recommendations and styling assistance through commerce sites or messaging apps like WhatsApp.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
-      { emoji: '📣', name: 'Campaign Agent', tag: 'Audience | Content | Performance', desc: 'Automates marketing tasks including brief generation, audience segmentation, content creation, and campaign performance optimization.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+      { emoji: '📣', name: 'Campaign Agent', tag: 'Audience | Content | Performance', desc: 'Automates marketing tasks including brief generation, audience segmentation, content creation, and campaign performance optimization.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Enables real-time voice conversations with customers using natural speech recognition and AI-powered responses -hands-free customer service.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Domain-specific retail roles, inventory & order data models, product catalogs, loyalty systems, and pre-built actions -all grounded in the Einstein Trust Layer.'
   },
@@ -639,7 +644,8 @@ const INDUSTRY_CONTENT = {
     agents: [
       { emoji: '🏪', name: 'Retail Execution Agent', tag: 'Store Audits | Shelf Compliance | Visits', desc: 'Automates store visit scheduling, planogram compliance checks, and real-time shelf auditing to maximize in-store execution.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '📊', name: 'Trade Promotion Agent', tag: 'Promo Planning | Spend | ROI', desc: 'Optimizes trade spend with AI-driven promo planning, retailer deal analysis, and ROI tracking across all channels.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
-      { emoji: '📞', name: 'Customer Service Agent', tag: 'Orders | Returns | Loyalty | Support', desc: 'Handles order status, returns, product inquiries, loyalty programs, and post-sales support -similar to the Nike Customer Service Agent.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+      { emoji: '📞', name: 'Customer Service Agent', tag: 'Orders | Returns | Loyalty | Support', desc: 'Handles order status, returns, product inquiries, loyalty programs, and post-sales support -similar to the Nike Customer Service Agent.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Enables real-time voice conversations with customers using natural speech recognition and AI-powered responses -hands-free customer service.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Consumer goods data models, distributor management, trade promotion optimization, and demand planning -all grounded in the Einstein Trust Layer.'
   },
@@ -649,7 +655,8 @@ const INDUSTRY_CONTENT = {
     agents: [
       { emoji: '🔧', name: 'Field Service Agent', tag: 'Work Orders | Scheduling | Equipment', desc: 'Manages field service operations including work order creation, technician scheduling, equipment tracking, and real-time job updates.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '🎧', name: 'Customer Service Agent', tag: 'Billing | Outages | Account Management', desc: 'Handles billing inquiries, outage reporting, service requests, and account management across all customer channels.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
-      { emoji: '📋', name: 'Regulatory Compliance Agent', tag: 'Compliance | Reporting | Audits', desc: 'Automates compliance tracking, regulatory reporting, audit preparation, and real-time alerts for upcoming deadlines.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+      { emoji: '📋', name: 'Regulatory Compliance Agent', tag: 'Compliance | Reporting | Audits', desc: 'Automates compliance tracking, regulatory reporting, audit preparation, and real-time alerts for upcoming deadlines.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Enables real-time voice conversations with customers using natural speech recognition and AI-powered responses -hands-free customer service.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Energy & utility asset models, field service operations, regulatory frameworks, and grid management data -all grounded in the Einstein Trust Layer.'
   },
@@ -659,7 +666,8 @@ const INDUSTRY_CONTENT = {
     agents: [
       { emoji: '🔧', name: 'Equipment Service Agent', tag: 'Maintenance | IoT | Downtime Prevention', desc: 'Monitors equipment health via IoT sensors, predicts maintenance needs, schedules service, and minimizes unplanned downtime.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '📋', name: 'Quality Control Agent', tag: 'Inspections | Defects | Compliance', desc: 'Automates quality inspections, defect tracking, root cause analysis, and compliance reporting across production lines.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
-      { emoji: '🏭', name: 'Production Operations Agent', tag: 'Scheduling | Capacity | Efficiency', desc: 'Optimizes production scheduling, capacity planning, and operational efficiency with real-time shop floor insights.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+      { emoji: '🏭', name: 'Production Operations Agent', tag: 'Scheduling | Capacity | Efficiency', desc: 'Optimizes production scheduling, capacity planning, and operational efficiency with real-time shop floor insights.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Enables real-time voice conversations with customers using natural speech recognition and AI-powered responses -hands-free customer service.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Manufacturing data models, IoT integrations, production scheduling, quality management, and supply chain data -all grounded in the Einstein Trust Layer.'
   },
@@ -669,7 +677,8 @@ const INDUSTRY_CONTENT = {
     agents: [
       { emoji: '🚗', name: 'Vehicle Sales Agent', tag: 'Inventory | Financing | Test Drives', desc: 'Guides customers through vehicle selection, availability checks, financing options, and test drive scheduling -online and in-dealership.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '🔧', name: 'Service Advisor Agent', tag: 'Appointments | Recalls | Maintenance', desc: 'Manages service appointments, recall notifications, maintenance reminders, and real-time service status updates for vehicle owners.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
-      { emoji: '🤝', name: 'Customer Retention Agent', tag: 'Loyalty | Lifecycle | Re-engagement', desc: 'Proactively engages customers throughout the vehicle lifecycle -from post-purchase follow-ups to trade-in offers and lease renewal reminders.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' }
+      { emoji: '🤝', name: 'Customer Retention Agent', tag: 'Loyalty | Lifecycle | Re-engagement', desc: 'Proactively engages customers throughout the vehicle lifecycle -from post-purchase follow-ups to trade-in offers and lease renewal reminders.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Enables real-time voice conversations with customers using natural speech recognition and AI-powered responses -hands-free customer service.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Automotive data models, vehicle inventory management, dealer operations, and customer lifecycle data -all grounded in the Einstein Trust Layer.'
   }
@@ -915,6 +924,34 @@ const ARCHETYPES = {
       { role: 'user', text: `Where is my order #${name.substring(0,3).toUpperCase()}-48291?` },
       { role: 'bot', text: 'I found your order! Here\'s the status:', card: { title: `Order #${name.substring(0,3).toUpperCase()}-48291`, status: 'In Transit', details: ['📍 Currently at: Memphis, TN Distribution Center', '📅 Estimated delivery: June 9, 2026', '📦 2 items in this shipment'] } },
     ]
+  },
+  'voice-agent': {
+    label: 'Voice Agent',
+    subtitle: 'Real-Time Voice | Speech AI | Customer Service',
+    emoji: '🎙️',
+    gradient: 'from-violet-600 to-fuchsia-900',
+    scenarios: [
+      { icon: '🎙️', title: 'Live Voice Conversation', desc: 'Speak directly to an AI agent using your microphone for real-time customer service', prompt: '' },
+      { icon: '📦', title: 'Order Status by Voice', desc: 'Ask about your order status hands-free using natural speech', prompt: '' },
+      { icon: '🔧', title: 'Technical Support Call', desc: 'Describe your technical issue verbally and get guided troubleshooting', prompt: '' }
+    ],
+    capabilities: [
+      'Real-time voice-to-voice conversation with AI agent',
+      'Natural language understanding via speech recognition',
+      'Hands-free customer service across any device',
+      'Seamless escalation to human agents when needed',
+      'Multi-industry support: retail, energy, manufacturing, automotive, and more'
+    ],
+    impact: [
+      { value: '60%', label: 'Reduction in call wait time', color: 'blue' },
+      { value: '5x', label: 'Faster first response', color: 'green' },
+      { value: '24/7', label: 'Voice availability', color: 'purple' },
+      { value: '95%', label: 'Speech recognition accuracy', color: 'orange' }
+    ],
+    demoGreeting: (name) => `🎙️ Voice Agent is ready! Click the microphone button below to start a real-time voice conversation.`,
+    demoCapabilities: ['🎙️ Speak naturally with AI', '📦 Check order status by voice', '🔧 Get technical support', '🤝 Escalate to a human agent'],
+    quickPrompts: [],
+    demoConversation: (name) => []
   }
 };
 
@@ -938,7 +975,8 @@ const ARCHETYPE_ES_MAP = {
   'loyalty':         'Sales_Assistant_Teams_API',
   'store-locator':   'Sales_Assistant_Teams_API',
   'employee-ops':    'Sales_Assistant_Teams_API',
-  'sales-agent':     'Sales_Assistant_Teams_API'
+  'sales-agent':     'Sales_Assistant_Teams_API',
+  'voice-agent':     'Headless_Voice_Agent'
 };
 const DEFAULT_ES_DEV_NAME = 'Sales_Assistant_Teams_API';
 
@@ -1599,8 +1637,13 @@ function renderPOV(pov) {
   renderScenarios(config);
   renderQuickPrompts(config);
 
-  // Initialize live SCRT2 agent connection (falls back to simulated mode)
-  initLiveAgent();
+  // Voice Agent: swap demo area for NGA widget; otherwise use SCRT2 text chat
+  if (pov.archetypeKey === 'voice-agent') {
+    initVoiceDemo(pov);
+  } else {
+    // Initialize live SCRT2 agent connection (falls back to simulated mode)
+    initLiveAgent();
+  }
 
   // Show content
   document.getElementById('loading').classList.add('hidden');
@@ -1614,6 +1657,143 @@ function renderPOV(pov) {
 function showError() {
   document.getElementById('loading').classList.add('hidden');
   document.getElementById('error').classList.remove('hidden');
+}
+
+// ─── Voice Agent (NGA Widget) ───
+function initVoiceDemo(pov) {
+  // Replace the SCRT2 chat area with a voice CTA
+  const simArea = document.getElementById('demo-sim-area');
+  if (simArea) {
+    simArea.innerHTML = `
+      <div class="flex flex-col items-center justify-center p-12 text-center" style="min-height: 450px;">
+        <div class="w-24 h-24 bg-gradient-to-br from-violet-500 to-fuchsia-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+          <span class="text-5xl">🎙️</span>
+        </div>
+        <h3 class="text-2xl font-bold text-sf-blue mb-3">Voice Agent Ready</h3>
+        <p class="text-sf-muted max-w-md mb-6">Click the chat icon in the bottom-right corner to start a real-time voice conversation with the AI agent. Speak naturally — the agent understands your speech and responds in real time.</p>
+        <div class="flex flex-wrap gap-3 justify-center text-sm">
+          <span class="bg-violet-50 text-violet-700 px-3 py-1.5 rounded-full font-medium">🎙️ Voice Input</span>
+          <span class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full font-medium">🔊 AI Speech Response</span>
+          <span class="bg-green-50 text-green-700 px-3 py-1.5 rounded-full font-medium">⚡ Real-Time</span>
+        </div>
+        <div id="nga-loading-status" class="mt-6 text-sm text-sf-muted">Loading voice widget...</div>
+      </div>
+    `;
+  }
+
+  // Hide the quick prompts section (not applicable for voice)
+  const promptsSection = document.querySelector('#demo-prompts')?.closest('.bg-white.rounded-xl.shadow-md');
+  if (promptsSection) promptsSection.style.display = 'none';
+
+  // Update the scenarios section for voice
+  const scenariosEl = document.getElementById('demo-scenarios');
+  if (scenariosEl) {
+    scenariosEl.innerHTML = `
+      <div class="bg-violet-50 rounded-xl p-5 border border-violet-200 text-center col-span-full">
+        <div class="text-3xl mb-2">🎙️</div>
+        <h4 class="font-bold text-sf-blue mb-1">Live Voice Conversation</h4>
+        <p class="text-sm text-sf-muted">Click the chat icon below to open the voice agent. Allow microphone access when prompted, then speak naturally to ask questions or get support.</p>
+      </div>
+    `;
+  }
+
+  // Update status indicator
+  const statusDot = document.getElementById('status-dot');
+  const statusText = document.getElementById('status-text');
+  if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-violet-400 animate-pulse';
+  if (statusText) statusText.textContent = 'Voice Mode';
+
+  // Load the NGA widget bootstrap script
+  loadNGAWidget();
+}
+
+function loadNGAWidget() {
+  var ESD_NAME = 'Headless_Voice_Agent';
+  var SITE_DOMAIN = 'https://trailsignup-d7fd90d7f30b8a.my.salesforce.com';
+  var SCRT2_URL = SCRT2_BASE;
+  var NGA_ORG_ID = ORG_ID;
+
+  // Build the bootstrap script URL
+  var bootstrapUrl = SITE_DOMAIN + '/assets/js/bootstrap' + (SITE_DOMAIN.includes('sandbox') ? '-sandbox' : '') + '.min.js';
+
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://trailsignup-d7fd90d7f30b8a.my.salesforce.com/embeddedservice/7.0/esw.min.js';
+  script.onload = function() {
+    // Try the newer embedded messaging bootstrap
+    var bootScript = document.createElement('script');
+    bootScript.type = 'text/javascript';
+    bootScript.src = 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgentSite1748979178498/assets/js/bootstrap.min.js';
+    bootScript.onload = function() {
+      try {
+        var esw = window.embeddedservice_bootstrap || window.agentforce_messaging;
+        if (!esw) {
+          updateNGAStatus('Voice widget not available — bootstrap object not found');
+          return;
+        }
+        esw.settings.language = 'en_US';
+        esw.init(
+          NGA_ORG_ID,
+          ESD_NAME,
+          'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgentSite1748979178498',
+          { scrt2URL: SCRT2_URL }
+        );
+        updateNGAStatus('Voice widget loaded — click the chat icon to begin!');
+
+        // Listen for widget ready
+        window.addEventListener('onEmbeddedMessagingReady', function() {
+          updateNGAStatus('✅ Voice agent connected and ready!');
+          var statusDot = document.getElementById('status-dot');
+          if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-green-400';
+          var statusText = document.getElementById('status-text');
+          if (statusText) statusText.textContent = 'Connected';
+        });
+      } catch (e) {
+        console.error('NGA init error:', e);
+        updateNGAStatus('Error initializing voice widget: ' + e.message);
+      }
+    };
+    bootScript.onerror = function() {
+      updateNGAStatus('Could not load voice widget bootstrap script. Ensure the Embedded Service Deployment is published.');
+    };
+    document.body.appendChild(bootScript);
+  };
+  script.onerror = function() {
+    // Try directly with the bootstrap script
+    var bootScript = document.createElement('script');
+    bootScript.type = 'text/javascript';
+    bootScript.src = 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgentSite1748979178498/assets/js/bootstrap.min.js';
+    bootScript.onload = function() {
+      try {
+        var esw = window.embeddedservice_bootstrap || window.agentforce_messaging;
+        if (!esw) {
+          updateNGAStatus('Voice widget not available');
+          return;
+        }
+        esw.settings.language = 'en_US';
+        esw.init(
+          NGA_ORG_ID,
+          ESD_NAME,
+          'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgentSite1748979178498',
+          { scrt2URL: SCRT2_URL }
+        );
+        updateNGAStatus('Voice widget loaded — click the chat icon to begin!');
+      } catch (e) {
+        console.error('NGA init error:', e);
+        updateNGAStatus('Error initializing voice widget: ' + e.message);
+      }
+    };
+    bootScript.onerror = function() {
+      updateNGAStatus('Could not load voice widget. Please check the Embedded Service Deployment configuration.');
+    };
+    document.body.appendChild(bootScript);
+  };
+  document.body.appendChild(script);
+}
+
+function updateNGAStatus(msg) {
+  var el = document.getElementById('nga-loading-status');
+  if (el) el.textContent = msg;
 }
 
 // ─── Init ───

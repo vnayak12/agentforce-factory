@@ -347,6 +347,16 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
                 </div>
               </div>
             </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="archetype" value="voice-agent" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🎙️</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">Real-time voice-powered customer service</div>
+                </div>
+              </div>
+            </label>
           </div>
         </div>
 
@@ -2107,6 +2117,16 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
                 </div>
               </div>
             </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="eu-archetype" value="voice-agent" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🎙️</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">Real-time voice-powered customer service</div>
+                </div>
+              </div>
+            </label>
           </div>
         </div>
 
@@ -2233,6 +2253,16 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
                 </div>
               </div>
             </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="cg-archetype" value="voice-agent" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🎙️</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">Real-time voice-powered customer service</div>
+                </div>
+              </div>
+            </label>
           </div>
         </div>
 
@@ -2349,6 +2379,16 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
                 </div>
               </div>
             </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="mfg-archetype" value="voice-agent" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🎙️</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">Real-time voice-powered customer service</div>
+                </div>
+              </div>
+            </label>
           </div>
         </div>
 
@@ -2462,6 +2502,16 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
                 <div>
                   <div class="font-semibold text-sf-blue">Customer Retention Agent</div>
                   <div class="text-sm text-sf-muted">Lease renewals, loyalty programs, follow-up campaigns, NPS tracking</div>
+                </div>
+              </div>
+            </label>
+            <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
+              <input type="radio" name="auto-archetype" value="voice-agent" class="sr-only">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl">🎙️</span>
+                <div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">Real-time voice-powered customer service</div>
                 </div>
               </div>
             </label>
@@ -2844,7 +2894,8 @@ function renderMyPOVs() {
     'Customer Service Agent (Pre & Post-Sales, Orders & Returns)': '🎧',
     'Sales Agent': '💰',
     'Store Ops Agent': '🏪',
-    'Employee Ops Agent': '👥'
+    'Employee Ops Agent': '👥',
+    'Voice Agent': '🎙️'
   };
 
   grid.innerHTML = povs.map(pov => {
@@ -3024,7 +3075,8 @@ async function loadGeneratedPOVs() {
       'Sales Agent': '💰',
       'Store Ops Agent': '🏪',
       'Employee Ops Agent': '👥',
-      'Architecture Demo': '🏗️'
+      'Architecture Demo': '🏗️',
+      'Voice Agent': '🎙️'
     };
 
     const archetypeGradients = {
@@ -3033,7 +3085,8 @@ async function loadGeneratedPOVs() {
       'product-advisor': 'from-blue-600 to-cyan-700',
       'sales-agent': 'from-emerald-600 to-teal-700',
       'store-locator': 'from-rose-600 to-pink-700',
-      'employee-ops': 'from-slate-600 to-gray-700'
+      'employee-ops': 'from-slate-600 to-gray-700',
+      'voice-agent': 'from-violet-600 to-fuchsia-700'
     };
 
     grid.innerHTML = povs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(pov => {
@@ -3312,7 +3365,8 @@ function generateAEOutput() {
     'product-advisor': 'Customer Service Agent (Pre & Post-Sales, Orders & Returns)',
     'sales-agent': 'Sales Agent',
     'store-locator': 'Store Ops Agent',
-    'employee-ops': 'Employee Ops Agent'
+    'employee-ops': 'Employee Ops Agent',
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'order-returns';
@@ -3867,7 +3921,8 @@ function generateEUOutput() {
     'eu-field-service': 'Field Service Agent',
     'eu-customer-service': 'Customer Service Agent',
     'eu-regulatory': 'Regulatory Compliance Agent',
-    'eu-sales': 'Sales Agent'
+    'eu-sales': 'Sales Agent',
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="eu-archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'eu-field-service';
@@ -3896,7 +3951,8 @@ function generateCGOutput() {
     'cg-trade-promotion': 'Trade Promotion Agent',
     'cg-distributor-service': 'Distributor Service Agent',
     'cg-demand-planning': 'Demand Planning Agent',
-    'cg-customer-service': 'Customer Service Agent'
+    'cg-customer-service': 'Customer Service Agent',
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="cg-archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'cg-retail-execution';
@@ -3924,7 +3980,8 @@ function generateMFGOutput() {
     'mfg-equipment-service': 'Equipment Service Agent',
     'mfg-quality-control': 'Quality Control Agent',
     'mfg-production-ops': 'Production Operations Agent',
-    'mfg-supply-chain': 'Supply Chain Agent'
+    'mfg-supply-chain': 'Supply Chain Agent',
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="mfg-archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'mfg-equipment-service';
@@ -3952,7 +4009,8 @@ function generateAutoOutput() {
     'auto-vehicle-sales': 'Vehicle Sales Agent',
     'auto-service-advisor': 'Service Advisor Agent',
     'auto-dealership-ops': 'Dealership Ops Agent',
-    'auto-customer-retention': 'Customer Retention Agent'
+    'auto-customer-retention': 'Customer Retention Agent',
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="auto-archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'auto-vehicle-sales';
