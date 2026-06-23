@@ -1709,84 +1709,40 @@ function initVoiceDemo(pov) {
 
 function loadNGAWidget() {
   var ESD_NAME = 'Headless_Voice_Agent';
-  var SITE_DOMAIN = 'https://trailsignup-d7fd90d7f30b8a.my.salesforce.com';
+  var SITE_URL = 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgent1782173568742';
   var SCRT2_URL = SCRT2_BASE;
   var NGA_ORG_ID = ORG_ID;
-
-  // Build the bootstrap script URL
-  var bootstrapUrl = SITE_DOMAIN + '/assets/js/bootstrap' + (SITE_DOMAIN.includes('sandbox') ? '-sandbox' : '') + '.min.js';
+  var BOOTSTRAP_URL = SITE_URL + '/assets/js/bootstrap.min.js';
 
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src = 'https://trailsignup-d7fd90d7f30b8a.my.salesforce.com/embeddedservice/7.0/esw.min.js';
+  script.src = BOOTSTRAP_URL;
   script.onload = function() {
-    // Try the newer embedded messaging bootstrap
-    var bootScript = document.createElement('script');
-    bootScript.type = 'text/javascript';
-    bootScript.src = 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgentSite1748979178498/assets/js/bootstrap.min.js';
-    bootScript.onload = function() {
-      try {
-        var esw = window.embeddedservice_bootstrap || window.agentforce_messaging;
-        if (!esw) {
-          updateNGAStatus('Voice widget not available — bootstrap object not found');
-          return;
-        }
-        esw.settings.language = 'en_US';
-        esw.init(
-          NGA_ORG_ID,
-          ESD_NAME,
-          'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgentSite1748979178498',
-          { scrt2URL: SCRT2_URL }
-        );
-        updateNGAStatus('Voice widget loaded — click the chat icon to begin!');
-
-        // Listen for widget ready
-        window.addEventListener('onEmbeddedMessagingReady', function() {
-          updateNGAStatus('✅ Voice agent connected and ready!');
-          var statusDot = document.getElementById('status-dot');
-          if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-green-400';
-          var statusText = document.getElementById('status-text');
-          if (statusText) statusText.textContent = 'Connected';
-        });
-      } catch (e) {
-        console.error('NGA init error:', e);
-        updateNGAStatus('Error initializing voice widget: ' + e.message);
+    try {
+      var esw = window.embeddedservice_bootstrap || window.agentforce_messaging;
+      if (!esw) {
+        updateNGAStatus('Voice widget not available — bootstrap object not found');
+        return;
       }
-    };
-    bootScript.onerror = function() {
-      updateNGAStatus('Could not load voice widget bootstrap script. Ensure the Embedded Service Deployment is published.');
-    };
-    document.body.appendChild(bootScript);
+      esw.settings.language = 'en_US';
+      esw.init(NGA_ORG_ID, ESD_NAME, SITE_URL, { scrt2URL: SCRT2_URL });
+      updateNGAStatus('Voice widget loaded — click the chat icon to begin!');
+
+      // Listen for widget ready
+      window.addEventListener('onEmbeddedMessagingReady', function() {
+        updateNGAStatus('✅ Voice agent connected and ready!');
+        var statusDot = document.getElementById('status-dot');
+        if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-green-400';
+        var statusText = document.getElementById('status-text');
+        if (statusText) statusText.textContent = 'Connected';
+      });
+    } catch (e) {
+      console.error('NGA init error:', e);
+      updateNGAStatus('Error initializing voice widget: ' + e.message);
+    }
   };
   script.onerror = function() {
-    // Try directly with the bootstrap script
-    var bootScript = document.createElement('script');
-    bootScript.type = 'text/javascript';
-    bootScript.src = 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgentSite1748979178498/assets/js/bootstrap.min.js';
-    bootScript.onload = function() {
-      try {
-        var esw = window.embeddedservice_bootstrap || window.agentforce_messaging;
-        if (!esw) {
-          updateNGAStatus('Voice widget not available');
-          return;
-        }
-        esw.settings.language = 'en_US';
-        esw.init(
-          NGA_ORG_ID,
-          ESD_NAME,
-          'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgentSite1748979178498',
-          { scrt2URL: SCRT2_URL }
-        );
-        updateNGAStatus('Voice widget loaded — click the chat icon to begin!');
-      } catch (e) {
-        console.error('NGA init error:', e);
-        updateNGAStatus('Error initializing voice widget: ' + e.message);
-      }
-    };
-    bootScript.onerror = function() {
-      updateNGAStatus('Could not load voice widget. Please check the Embedded Service Deployment configuration.');
-    };
-    document.body.appendChild(bootScript);
+    updateNGAStatus('Could not load voice widget. Please check the Embedded Service Deployment configuration.');
   };
   document.body.appendChild(script);
 }
