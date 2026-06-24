@@ -64,6 +64,9 @@
           <button onclick="setViewMode('internal')" id="btn-mode-internal" class="px-3 py-1.5 text-sm rounded-md bg-white text-sf-blue font-semibold cursor-pointer transition">Internal</button>
           <button onclick="setViewMode('customer')" id="btn-mode-customer" class="px-3 py-1.5 text-sm rounded-md text-white/70 hover:text-white cursor-pointer transition">Customer</button>
         </div>
+        <button onclick="copyCurrentShareLink()" id="pov-share-btn" class="bg-white/15 hover:bg-white/25 text-white px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer flex items-center gap-2">
+          📋 Share Link
+        </button>
         <div class="text-sm text-blue-200">Powered by Salesforce Agentforce</div>
       </div>
     </div>
@@ -458,6 +461,28 @@ function setViewMode(mode) {
   }
 }
 
+// ─── Share Link ───
+function copyCurrentShareLink() {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('pov-share-btn');
+    if (btn) {
+      btn.innerHTML = '✅ Copied!';
+      setTimeout(() => { btn.innerHTML = '📋 Share Link'; }, 2000);
+    }
+  }).catch(() => {
+    // Fallback: select and copy
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    const btn = document.getElementById('pov-share-btn');
+    if (btn) { btn.innerHTML = '✅ Copied!'; setTimeout(() => { btn.innerHTML = '📋 Share Link'; }, 2000); }
+  });
+}
+
 // ─── Modify Modal ───
 let modifyChangeCount = 1;
 function showModifyModal() {
@@ -479,6 +504,19 @@ function saveQuickEdit() {
   const newWebsite = document.getElementById('modify-customer-website').value.trim();
   if (!newName) { alert('Please enter a customer name.'); return; }
   if (!currentPOV) return;
+
+  // Close existing SSE connection before re-initializing
+  if (sseReader) {
+    try { sseReader.cancel(); } catch(e) {}
+    sseReader = null;
+  }
+  // Reset session state so live agent reinitializes cleanly
+  accessToken = null;
+  conversationId = null;
+  isFirstMessage = true;
+  sessionInitialized = false;
+  initPromise = null;
+  attachedContextSent = false;
 
   // Update POV object
   const oldId = currentPOV.id;

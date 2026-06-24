@@ -418,7 +418,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
           <div>
             <label class="block text-sm font-semibold text-sf-blue mb-2">Industry / Subindustry</label>
-            <select class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+            <select id="arch-industry" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
               <option>Retail</option>
               <option>Energy & Utilities</option>
               <option>Consumer Goods</option>
@@ -997,8 +997,8 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       <div class="flex items-center gap-3">
         <!-- View Mode Toggle -->
         <div class="flex bg-white/10 rounded-lg p-0.5">
-          <button onclick="setViewMode('internal')" id="btn-internal-ae" class="px-3 py-1.5 text-sm rounded-md bg-white text-sf-blue font-semibold cursor-pointer">Internal</button>
-          <button onclick="setViewMode('demo')" id="btn-demo-ae" class="px-3 py-1.5 text-sm rounded-md text-white/70 hover:text-white cursor-pointer">Customer</button>
+          <button onclick="setViewMode('internal','ae')" id="btn-internal-ae" class="px-3 py-1.5 text-sm rounded-md bg-white text-sf-blue font-semibold cursor-pointer">Internal</button>
+          <button onclick="setViewMode('demo','ae')" id="btn-demo-ae" class="px-3 py-1.5 text-sm rounded-md text-white/70 hover:text-white cursor-pointer">Customer</button>
         </div>
       </div>
     </div>
@@ -1357,8 +1357,8 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       </div>
       <div class="flex items-center gap-3">
         <div class="flex bg-white/10 rounded-lg p-0.5">
-          <button onclick="setViewMode('internal')" id="btn-internal-arch" class="px-3 py-1.5 text-sm rounded-md bg-white text-sf-blue font-semibold cursor-pointer">Internal</button>
-          <button onclick="setViewMode('demo')" id="btn-demo-arch" class="px-3 py-1.5 text-sm rounded-md text-white/70 hover:text-white cursor-pointer">Customer</button>
+          <button onclick="setViewMode('internal','architect')" id="btn-internal-arch" class="px-3 py-1.5 text-sm rounded-md bg-white text-sf-blue font-semibold cursor-pointer">Internal</button>
+          <button onclick="setViewMode('demo','architect')" id="btn-demo-arch" class="px-3 py-1.5 text-sm rounded-md text-white/70 hover:text-white cursor-pointer">Customer</button>
         </div>
       </div>
     </div>
@@ -1986,6 +1986,9 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       </div>
     </div>
 
+    <!-- Dynamic Detail Area (populated by generateSEOutput) -->
+    <div id="se-detail-area"></div>
+
     <!-- Next Steps -->
     <div class="bg-sf-blue rounded-2xl p-8 text-white mb-6">
       <h2 class="text-2xl font-bold mb-4">Recommended Next Steps</h2>
@@ -2526,7 +2529,8 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
 
 <!-- ===== GENERATING MODAL ===== -->
 <div id="generating-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-  <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-10 text-center fade-in">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-10 text-center fade-in relative">
+    <button onclick="document.getElementById('generating-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-300 hover:text-gray-500 text-xl cursor-pointer hidden" id="generating-modal-close">&times;</button>
     <div class="text-6xl mb-4 animate-bounce">✨</div>
     <h2 class="text-2xl font-bold text-sf-blue mb-3">Generating your demo...</h2>
     <p class="text-sf-muted mb-6">Extracting brand from website, building agent, preparing demo</p>
@@ -2821,6 +2825,12 @@ function clearAllPOVs() {
   }
 }
 
+function deletePOV(id) {
+  const povs = getSavedPOVs().filter(p => p.id !== id);
+  localStorage.setItem('agentforce-povs', JSON.stringify(povs));
+  renderMyPOVs();
+}
+
 function renderMyPOVs() {
   const povs = getSavedPOVs();
   const section = document.getElementById('my-povs-section');
@@ -2850,22 +2860,27 @@ function renderMyPOVs() {
           <div class="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm" style="display:none;background:${brandColor};">${pov.customer.charAt(0)}</div>
           <span class="text-lg font-bold tracking-wide" style="color: ${brandColor};">${pov.customer}</span>
         </div>
-        <div class="flex-1 px-5 pb-5 pt-3" style="background: linear-gradient(135deg, ${brandColor} 0%, ${brandColorEnd} 100%);">
+        <div class="flex-1 px-5 pb-5 pt-3 relative" style="background: linear-gradient(135deg, ${brandColor} 0%, ${brandColorEnd} 100%);">
           <div class="text-white/70 text-xs font-medium mb-2">${pov.industry || 'Retail'}</div>
           <div class="text-sm text-white/90">${pov.archetype || 'Architecture Demo'}</div>
-          <div class="text-white text-sm font-semibold mt-3 group-hover:underline">View →</div>
+          <div class="flex items-center justify-between mt-3">
+            <div class="text-white text-sm font-semibold group-hover:underline">View →</div>
+            <button onclick="event.stopPropagation();deletePOV('${pov.id}')" class="text-white/50 hover:text-red-300 text-xs px-2 py-1 rounded hover:bg-white/10 transition cursor-pointer" title="Delete this demo">✕</button>
+          </div>
         </div>
       </div>
     `;
   }).join('');
 }
 
-function copyShareLink(url) {
+function copyShareLink(url, evt) {
   navigator.clipboard.writeText(url).then(() => {
-    const btn = event.target;
-    const orig = btn.textContent;
-    btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = orig, 1500);
+    const btn = evt ? evt.target : null;
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    }
   });
 }
 
@@ -3113,16 +3128,19 @@ function switchTab(mode, tab) {
   }
 }
 
-// View mode (internal vs customer)
+// View mode (internal vs customer) - scoped per screen
 let currentMode = 'internal';
-function setViewMode(mode) {
+function setViewMode(mode, screenPrefix) {
   currentMode = mode;
-  const internals = document.querySelectorAll('.internal-only');
-  internals.forEach(el => {
+  // Only affect the current visible screen's internal-only elements
+  const activeScreen = screenPrefix ? document.getElementById(`screen-${screenPrefix}-output`) : null;
+  const scope = activeScreen || document;
+  scope.querySelectorAll('.internal-only').forEach(el => {
     el.style.display = mode === 'internal' ? '' : 'none';
   });
-  // Update toggle buttons
-  ['ae', 'arch'].forEach(prefix => {
+  // Update toggle buttons for the specific screen
+  const prefixes = screenPrefix ? [screenPrefix] : ['ae', 'arch'];
+  prefixes.forEach(prefix => {
     const btnInternal = document.getElementById(`btn-internal-${prefix}`);
     const btnDemo = document.getElementById(`btn-demo-${prefix}`);
     if (btnInternal && btnDemo) {
@@ -3266,10 +3284,27 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// ─── Form Validation Helper ───
+function validateRequired(fields) {
+  for (const f of fields) {
+    const el = document.getElementById(f.id);
+    if (!el || !el.value.trim()) {
+      alert(`Please fill in: ${f.label}`);
+      el && el.focus();
+      return false;
+    }
+  }
+  return true;
+}
+
 // Generate AE output
 function generateAEOutput() {
-  const account = document.getElementById('ae-account').value || 'Lululemon';
-  const website = document.getElementById('ae-website').value || '';
+  if (!validateRequired([
+    { id: 'ae-account', label: 'Account Name' },
+    { id: 'ae-website', label: 'Customer Website URL' }
+  ])) return;
+  const account = document.getElementById('ae-account').value.trim();
+  const website = document.getElementById('ae-website').value.trim();
   const aeName = document.getElementById('ae-name').value || '';
   const archetypeLabels = {
     'order-returns': 'Order & Returns Agent',
@@ -3297,7 +3332,7 @@ function generateAEOutput() {
 
 // Show shareable link toast
 function showShareableLink(slug, customer) {
-  const baseUrl = 'https://vnayak12.github.io/agentforce-factory';
+  const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
   const shareUrl = `${baseUrl}/pov.html?id=${slug}`;
   const toast = document.createElement('div');
   toast.className = 'fixed bottom-6 right-6 bg-white rounded-2xl shadow-2xl p-5 max-w-sm z-50 border-2 border-sf-accent fade-in';
@@ -3757,8 +3792,12 @@ function renderSelectedUseCases(useCases, container) {
 
 // Generate Architect output
 function generateArchOutput() {
-  const customer = document.getElementById('arch-customer').value || 'Nordstrom';
-  const website = document.getElementById('arch-website').value || '';
+  if (!validateRequired([
+    { id: 'arch-customer', label: 'Customer Name' },
+    { id: 'arch-website', label: 'Customer Website URL' }
+  ])) return;
+  const customer = document.getElementById('arch-customer').value.trim();
+  const website = document.getElementById('arch-website').value.trim();
   const archName = document.getElementById('arch-name').value || '';
 
   // Capture use cases and workshops BEFORE navigating away from form
@@ -3797,6 +3836,7 @@ function generateArchOutput() {
     showScreen('screen-architect-output');
 
     // Save POV
+    const archIndustry = document.getElementById('arch-industry') ? document.getElementById('arch-industry').value : 'Retail';
     const archAttachedContext = getAttachedContext('arch-file-input');
     savePOV({
       id: `arch-${customer.toLowerCase().replace(/[^a-z0-9]/g,'-')}-${Date.now()}`,
@@ -3806,6 +3846,8 @@ function generateArchOutput() {
       architectName: archName,
       usecase: usecaseLabel,
       archetype: 'Architecture Demo',
+      archetypeKey: 'architecture',
+      industry: archIndustry,
       attachedContext: archAttachedContext,
       createdAt: new Date().toISOString()
     });
@@ -3814,8 +3856,12 @@ function generateArchOutput() {
 
 // Generate Energy & Utilities output
 function generateEUOutput() {
-  const account = document.getElementById('eu-account').value || 'Baker Hughes';
-  const website = document.getElementById('eu-website').value || '';
+  if (!validateRequired([
+    { id: 'eu-account', label: 'Account Name' },
+    { id: 'eu-website', label: 'Customer Website URL' }
+  ])) return;
+  const account = document.getElementById('eu-account').value.trim();
+  const website = document.getElementById('eu-website').value.trim();
   const aeName = document.getElementById('eu-name').value || '';
   const euArchetypeLabels = {
     'eu-field-service': 'Field Service Agent',
@@ -3838,8 +3884,12 @@ function generateEUOutput() {
 }
 
 function generateCGOutput() {
-  const account = document.getElementById('cg-account').value || 'Procter & Gamble';
-  const website = document.getElementById('cg-website').value || '';
+  if (!validateRequired([
+    { id: 'cg-account', label: 'Account Name' },
+    { id: 'cg-website', label: 'Customer Website URL' }
+  ])) return;
+  const account = document.getElementById('cg-account').value.trim();
+  const website = document.getElementById('cg-website').value.trim();
   const aeName = document.getElementById('cg-name').value || '';
   const cgArchetypeLabels = {
     'cg-retail-execution': 'Retail Execution Agent',
@@ -3863,8 +3913,12 @@ function generateCGOutput() {
 }
 
 function generateMFGOutput() {
-  const account = document.getElementById('mfg-account').value || 'Caterpillar';
-  const website = document.getElementById('mfg-website').value || '';
+  if (!validateRequired([
+    { id: 'mfg-account', label: 'Account Name' },
+    { id: 'mfg-website', label: 'Customer Website URL' }
+  ])) return;
+  const account = document.getElementById('mfg-account').value.trim();
+  const website = document.getElementById('mfg-website').value.trim();
   const aeName = document.getElementById('mfg-name').value || '';
   const mfgArchetypeLabels = {
     'mfg-equipment-service': 'Equipment Service Agent',
@@ -3887,8 +3941,12 @@ function generateMFGOutput() {
 }
 
 function generateAutoOutput() {
-  const account = document.getElementById('auto-account').value || 'AutoNation';
-  const website = document.getElementById('auto-website').value || '';
+  if (!validateRequired([
+    { id: 'auto-account', label: 'Account Name' },
+    { id: 'auto-website', label: 'Customer Website URL' }
+  ])) return;
+  const account = document.getElementById('auto-account').value.trim();
+  const website = document.getElementById('auto-website').value.trim();
   const aeName = document.getElementById('auto-name').value || '';
   const autoArchetypeLabels = {
     'auto-vehicle-sales': 'Vehicle Sales Agent',
@@ -3941,7 +3999,16 @@ function showGeneratingModal(callback) {
   const modal = document.getElementById('generating-modal');
   const bar = document.getElementById('progress-bar');
   const text = document.getElementById('progress-text');
+  const closeBtn = document.getElementById('generating-modal-close');
   modal.classList.remove('hidden');
+  if (closeBtn) closeBtn.classList.add('hidden');
+
+  // Show close button after 10s as safety valve
+  const safetyTimer = setTimeout(() => { if (closeBtn) closeBtn.classList.remove('hidden'); }, 10000);
+
+  // Escape key closes modal
+  const escHandler = (e) => { if (e.key === 'Escape') { modal.classList.add('hidden'); clearTimeout(safetyTimer); document.removeEventListener('keydown', escHandler); } };
+  document.addEventListener('keydown', escHandler);
 
   const steps = [
     { pct: 20, msg: '🌐 Extracting brand from website...' },
@@ -3959,10 +4026,12 @@ function showGeneratingModal(callback) {
       i++;
     } else {
       clearInterval(interval);
+      clearTimeout(safetyTimer);
+      document.removeEventListener('keydown', escHandler);
       setTimeout(() => {
         modal.classList.add('hidden');
         bar.style.width = '0%';
-        callback();
+        try { callback(); } catch(err) { console.error('Generation callback error:', err); }
       }, 500);
     }
   }, 600);
@@ -3970,7 +4039,10 @@ function showGeneratingModal(callback) {
 
 // Generate SE output
 function generateSEOutput() {
-  const customer = document.getElementById('se-customer').value || 'Customer';
+  if (!validateRequired([
+    { id: 'se-customer', label: 'Customer Name' }
+  ])) return;
+  const customer = document.getElementById('se-customer').value.trim();
 
   // Gather selected agents
   const agentChecks = document.querySelectorAll('input[name="se-agents"]:checked');
@@ -3984,12 +4056,66 @@ function generateSEOutput() {
   const timelineRadio = document.querySelector('input[name="se-timeline"]:checked');
   const timeline = timelineRadio ? timelineRadio.closest('label').querySelector('span.text-sm').textContent.replace(/^[^\s]+\s/, '') : 'Exploring';
 
+  // Gather all additional fields
+  const industry = document.getElementById('se-industry') ? document.getElementById('se-industry').value : '';
+  const business = document.getElementById('se-business') ? document.getElementById('se-business').value.trim() : '';
+  const painPoints = document.getElementById('se-pain') ? document.getElementById('se-pain').value.trim() : '';
+  const integrations = document.getElementById('se-integrations') ? document.getElementById('se-integrations').value.trim() : '';
+  const budget = document.getElementById('se-budget') ? document.getElementById('se-budget').value : '';
+  const competitors = document.getElementById('se-competitors') ? document.getElementById('se-competitors').value.trim() : '';
+  const footprintChecks = document.querySelectorAll('input[name="se-footprint"]:checked');
+  const footprint = Array.from(footprintChecks).map(cb => cb.closest('label').querySelector('span.text-sm').textContent.trim());
+  const headlessRadio = document.querySelector('input[name="se-headless"]:checked');
+  const headless = headlessRadio ? headlessRadio.value : '';
+  const headlessUC = document.getElementById('se-headless-uc') ? document.getElementById('se-headless-uc').value.trim() : '';
+  const seName = document.getElementById('se-name') ? document.getElementById('se-name').value.trim() : '';
+  const seAE = document.getElementById('se-ae') ? document.getElementById('se-ae').value.trim() : '';
+  const notes = document.getElementById('se-notes') ? document.getElementById('se-notes').value.trim() : '';
+
   showGeneratingModal(() => {
     document.getElementById('se-output-title').textContent = `${customer} | Agentforce Opportunity Assessment`;
     document.getElementById('se-customer-name').textContent = customer;
     document.getElementById('se-recommended-agents').textContent = agents.length ? agents.join(', ') : 'No agents selected yet';
     document.getElementById('se-recommended-channels').textContent = channels.length ? channels.join(', ') : 'No channels selected yet';
     document.getElementById('se-recommended-timeline').textContent = timeline;
+
+    // Render expanded detail sections
+    const detailArea = document.getElementById('se-detail-area');
+    if (detailArea) {
+      let html = '';
+      if (business || industry) {
+        html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">Customer Context</h3>`;
+        if (industry) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Industry:</span> ${industry}</div>`;
+        if (business) html += `<div class="text-sm text-sf-muted"><span class="font-semibold text-sf-blue">Business:</span> ${business}</div>`;
+        html += `</div>`;
+      }
+      if (painPoints || integrations || footprint.length) {
+        html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">Current State</h3>`;
+        if (footprint.length) html += `<div class="text-sm text-sf-muted mb-3"><span class="font-semibold text-sf-blue">Salesforce Footprint:</span> ${footprint.join(', ')}</div>`;
+        if (painPoints) html += `<div class="text-sm text-sf-muted mb-3"><span class="font-semibold text-sf-blue">Pain Points:</span><div class="mt-1 whitespace-pre-line">${painPoints}</div></div>`;
+        if (integrations) html += `<div class="text-sm text-sf-muted"><span class="font-semibold text-sf-blue">Key Integrations:</span> ${integrations}</div>`;
+        html += `</div>`;
+      }
+      if (budget || competitors || headless) {
+        html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">Opportunity Details</h3>`;
+        if (budget) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Budget Range:</span> ${budget.replace('-', ' - ').replace('under-', '< ').replace('over-', '> ')}</div>`;
+        if (competitors) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Competitors:</span> ${competitors}</div>`;
+        if (headless) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Headless Interest:</span> ${headless}</div>`;
+        if (headlessUC) html += `<div class="text-sm text-sf-muted"><span class="font-semibold text-sf-blue">Headless Use Cases:</span> ${headlessUC}</div>`;
+        html += `</div>`;
+      }
+      if (notes) {
+        html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">Additional Notes</h3><div class="text-sm text-sf-muted whitespace-pre-line">${notes}</div></div>`;
+      }
+      if (seName || seAE) {
+        html += `<div class="bg-gray-50 rounded-xl p-4 mb-6 text-sm text-sf-muted">`;
+        if (seName) html += `<span class="font-semibold text-sf-blue">SE:</span> ${seName} `;
+        if (seAE) html += `<span class="font-semibold text-sf-blue ml-4">AE:</span> ${seAE}`;
+        html += `</div>`;
+      }
+      detailArea.innerHTML = html;
+    }
+
     showScreen('screen-se-output');
 
     // Save POV
@@ -4001,6 +4127,7 @@ function generateSEOutput() {
       agents: agents.join(', '),
       channels: channels.join(', '),
       timeline: timeline,
+      industry: industry,
       archetype: 'Agentforce Discovery',
       attachedContext: seAttachedContext,
       createdAt: new Date().toISOString()
