@@ -350,10 +350,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
               <input type="radio" name="archetype" value="voice-agent" class="sr-only">
               <div class="flex items-start gap-3">
-                <span class="text-2xl">💬</span>
+                <span class="text-2xl">🎙️</span>
                 <div>
-                  <div class="font-semibold text-sf-blue">Agentforce Chat</div>
-                  <div class="text-sm text-sf-muted">Live AI-powered customer service chat</div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">AI-powered voice agent — call to speak live</div>
                 </div>
               </div>
             </label>
@@ -2120,10 +2120,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
               <input type="radio" name="eu-archetype" value="voice-agent" class="sr-only">
               <div class="flex items-start gap-3">
-                <span class="text-2xl">💬</span>
+                <span class="text-2xl">🎙️</span>
                 <div>
-                  <div class="font-semibold text-sf-blue">Agentforce Chat</div>
-                  <div class="text-sm text-sf-muted">Live AI-powered customer service chat</div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">AI-powered voice agent — call to speak live</div>
                 </div>
               </div>
             </label>
@@ -2256,10 +2256,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
               <input type="radio" name="cg-archetype" value="voice-agent" class="sr-only">
               <div class="flex items-start gap-3">
-                <span class="text-2xl">💬</span>
+                <span class="text-2xl">🎙️</span>
                 <div>
-                  <div class="font-semibold text-sf-blue">Agentforce Chat</div>
-                  <div class="text-sm text-sf-muted">Live AI-powered customer service chat</div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">AI-powered voice agent — call to speak live</div>
                 </div>
               </div>
             </label>
@@ -2382,10 +2382,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
               <input type="radio" name="mfg-archetype" value="voice-agent" class="sr-only">
               <div class="flex items-start gap-3">
-                <span class="text-2xl">💬</span>
+                <span class="text-2xl">🎙️</span>
                 <div>
-                  <div class="font-semibold text-sf-blue">Agentforce Chat</div>
-                  <div class="text-sm text-sf-muted">Live AI-powered customer service chat</div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">AI-powered voice agent — call to speak live</div>
                 </div>
               </div>
             </label>
@@ -2508,10 +2508,10 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
             <label class="archetype-card cursor-pointer block border-2 border-gray-200 rounded-xl p-4 hover:border-sf-accent transition has-[:checked]:border-sf-accent has-[:checked]:bg-blue-50">
               <input type="radio" name="auto-archetype" value="voice-agent" class="sr-only">
               <div class="flex items-start gap-3">
-                <span class="text-2xl">💬</span>
+                <span class="text-2xl">🎙️</span>
                 <div>
-                  <div class="font-semibold text-sf-blue">Agentforce Chat</div>
-                  <div class="text-sm text-sf-muted">Live AI-powered customer service chat</div>
+                  <div class="font-semibold text-sf-blue">Voice Agent</div>
+                  <div class="text-sm text-sf-muted">AI-powered voice agent — call to speak live</div>
                 </div>
               </div>
             </label>
@@ -2895,7 +2895,7 @@ function renderMyPOVs() {
     'Sales Agent': '💰',
     'Store Ops Agent': '🏪',
     'Employee Ops Agent': '👥',
-    'Agentforce Chat': '💬'
+    'Voice Agent': '🎙️'
   };
 
   grid.innerHTML = povs.map(pov => {
@@ -3076,7 +3076,7 @@ async function loadGeneratedPOVs() {
       'Store Ops Agent': '🏪',
       'Employee Ops Agent': '👥',
       'Architecture Demo': '🏗️',
-      'Agentforce Chat': '💬'
+      'Voice Agent': '🎙️'
     };
 
     const archetypeGradients = {
@@ -3366,7 +3366,7 @@ function generateAEOutput() {
     'sales-agent': 'Sales Agent',
     'store-locator': 'Store Ops Agent',
     'employee-ops': 'Employee Ops Agent',
-    'voice-agent': 'Agentforce Chat'
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'order-returns';
@@ -3922,7 +3922,7 @@ function generateEUOutput() {
     'eu-customer-service': 'Customer Service Agent',
     'eu-regulatory': 'Regulatory Compliance Agent',
     'eu-sales': 'Sales Agent',
-    'voice-agent': 'Agentforce Chat'
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="eu-archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'eu-field-service';
@@ -3952,7 +3952,7 @@ function generateCGOutput() {
     'cg-distributor-service': 'Distributor Service Agent',
     'cg-demand-planning': 'Demand Planning Agent',
     'cg-customer-service': 'Customer Service Agent',
-    'voice-agent': 'Agentforce Chat'
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="cg-archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'cg-retail-execution';
@@ -3981,7 +3981,7 @@ function generateMFGOutput() {
     'mfg-quality-control': 'Quality Control Agent',
     'mfg-production-ops': 'Production Operations Agent',
     'mfg-supply-chain': 'Supply Chain Agent',
-    'voice-agent': 'Agentforce Chat'
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="mfg-archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'mfg-equipment-service';
@@ -4010,7 +4010,7 @@ function generateAutoOutput() {
     'auto-service-advisor': 'Service Advisor Agent',
     'auto-dealership-ops': 'Dealership Ops Agent',
     'auto-customer-retention': 'Customer Retention Agent',
-    'voice-agent': 'Agentforce Chat'
+    'voice-agent': 'Voice Agent'
   };
   const selected = document.querySelector('input[name="auto-archetype"]:checked');
   const archetypeKey = selected ? selected.value : 'auto-vehicle-sales';

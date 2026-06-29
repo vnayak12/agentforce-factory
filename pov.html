@@ -25,48 +25,10 @@
 .tab-active { border-bottom: 3px solid #0176D3; color: #032D60; }
 .tab-inactive { color: #706E6B; border-bottom: 3px solid transparent; }
 .tab-inactive:hover { color: #032D60; }
-/* NGA Voice Widget — embedded inside demo card */
-/* Hide the default floating chat button */
-.embeddedMessagingConversationButton,
-.embeddedMessagingFrame[name*="ConversationButton"],
-iframe[name*="ConversationButton"],
-.embeddedMessagingConversationButtonWrapper {
-  display: none !important;
-  visibility: hidden !important;
-  width: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-}
-/* Reposition the chat window inside our container */
-.embeddedMessagingTopContainer {
-  z-index: 10000 !important;
-}
-.embeddedMessagingFrame[name*="ChatWindow"] {
-  z-index: 10000 !important;
-}
-/* When voice-agent is active, dock the chat window in the container */
-body.voice-agent-active .embeddedMessagingTopContainer {
-  position: absolute !important;
-  bottom: 0 !important;
-  right: 0 !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-body.voice-agent-active .embeddedMessagingFrame[name*="ChatWindow"] {
-  position: absolute !important;
-  bottom: 0 !important;
-  right: 0 !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  max-height: 100% !important;
-  max-width: 100% !important;
-  border-radius: 0 !important;
-}
+/* NGA Widget z-index overrides (used by non-voice archetypes) */
+.embeddedMessagingTopContainer { z-index: 10000 !important; }
+.embeddedMessagingFrame[name*="ChatWindow"] { z-index: 10000 !important; }
+.embeddedMessagingConversationButtonWrapper { z-index: 10000 !important; }
 </style>
 </head>
 <body class="bg-sf-bg min-h-screen">
@@ -672,7 +634,7 @@ const INDUSTRY_CONTENT = {
       { emoji: '🎧', name: 'Customer Service Agent', tag: 'Pre & Post-Sales | Orders & Returns', desc: 'Resolves inquiries 24/7 across every channel. Handles order status, returns, exchanges, and shipping -with smart escalation to human agents when needed.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '👗', name: 'Personal Shopper Agent', tag: 'Styling | Recommendations | Commerce', desc: 'Provides personalized product recommendations and styling assistance through commerce sites or messaging apps like WhatsApp.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
       { emoji: '📣', name: 'Campaign Agent', tag: 'Audience | Content | Performance', desc: 'Automates marketing tasks including brief generation, audience segmentation, content creation, and campaign performance optimization.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
-      { emoji: '💬', name: 'Agentforce Chat', tag: 'Live AI Chat | Real-Time', desc: 'Chat with a live Agentforce agent for instant AI-powered customer service — order status, returns, billing, product questions, and more.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Speak with a live Agentforce voice agent by phone for instant AI-powered customer service — natural conversation, real-time support, and seamless escalation.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Domain-specific retail roles, inventory & order data models, product catalogs, loyalty systems, and pre-built actions -all grounded in the Einstein Trust Layer.'
   },
@@ -683,7 +645,7 @@ const INDUSTRY_CONTENT = {
       { emoji: '🏪', name: 'Retail Execution Agent', tag: 'Store Audits | Shelf Compliance | Visits', desc: 'Automates store visit scheduling, planogram compliance checks, and real-time shelf auditing to maximize in-store execution.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '📊', name: 'Trade Promotion Agent', tag: 'Promo Planning | Spend | ROI', desc: 'Optimizes trade spend with AI-driven promo planning, retailer deal analysis, and ROI tracking across all channels.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
       { emoji: '📞', name: 'Customer Service Agent', tag: 'Orders | Returns | Loyalty | Support', desc: 'Handles order status, returns, product inquiries, loyalty programs, and post-sales support -similar to the Nike Customer Service Agent.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
-      { emoji: '💬', name: 'Agentforce Chat', tag: 'Live AI Chat | Real-Time', desc: 'Chat with a live Agentforce agent for instant AI-powered customer service — order status, returns, billing, product questions, and more.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Speak with a live Agentforce voice agent by phone for instant AI-powered customer service — natural conversation, real-time support, and seamless escalation.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Consumer goods data models, distributor management, trade promotion optimization, and demand planning -all grounded in the Einstein Trust Layer.'
   },
@@ -694,7 +656,7 @@ const INDUSTRY_CONTENT = {
       { emoji: '🔧', name: 'Field Service Agent', tag: 'Work Orders | Scheduling | Equipment', desc: 'Manages field service operations including work order creation, technician scheduling, equipment tracking, and real-time job updates.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '🎧', name: 'Customer Service Agent', tag: 'Billing | Outages | Account Management', desc: 'Handles billing inquiries, outage reporting, service requests, and account management across all customer channels.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
       { emoji: '📋', name: 'Regulatory Compliance Agent', tag: 'Compliance | Reporting | Audits', desc: 'Automates compliance tracking, regulatory reporting, audit preparation, and real-time alerts for upcoming deadlines.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
-      { emoji: '💬', name: 'Agentforce Chat', tag: 'Live AI Chat | Real-Time', desc: 'Chat with a live Agentforce agent for instant AI-powered customer service — order status, returns, billing, product questions, and more.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Speak with a live Agentforce voice agent by phone for instant AI-powered customer service — natural conversation, real-time support, and seamless escalation.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Energy & utility asset models, field service operations, regulatory frameworks, and grid management data -all grounded in the Einstein Trust Layer.'
   },
@@ -705,7 +667,7 @@ const INDUSTRY_CONTENT = {
       { emoji: '🔧', name: 'Equipment Service Agent', tag: 'Maintenance | IoT | Downtime Prevention', desc: 'Monitors equipment health via IoT sensors, predicts maintenance needs, schedules service, and minimizes unplanned downtime.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '📋', name: 'Quality Control Agent', tag: 'Inspections | Defects | Compliance', desc: 'Automates quality inspections, defect tracking, root cause analysis, and compliance reporting across production lines.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
       { emoji: '🏭', name: 'Production Operations Agent', tag: 'Scheduling | Capacity | Efficiency', desc: 'Optimizes production scheduling, capacity planning, and operational efficiency with real-time shop floor insights.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
-      { emoji: '💬', name: 'Agentforce Chat', tag: 'Live AI Chat | Real-Time', desc: 'Chat with a live Agentforce agent for instant AI-powered customer service — order status, returns, billing, product questions, and more.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Speak with a live Agentforce voice agent by phone for instant AI-powered customer service — natural conversation, real-time support, and seamless escalation.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Manufacturing data models, IoT integrations, production scheduling, quality management, and supply chain data -all grounded in the Einstein Trust Layer.'
   },
@@ -716,7 +678,7 @@ const INDUSTRY_CONTENT = {
       { emoji: '🚗', name: 'Vehicle Sales Agent', tag: 'Inventory | Financing | Test Drives', desc: 'Guides customers through vehicle selection, availability checks, financing options, and test drive scheduling -online and in-dealership.', bg: 'bg-blue-50', border: 'border-sf-accent', tagColor: 'text-sf-accent' },
       { emoji: '🔧', name: 'Service Advisor Agent', tag: 'Appointments | Recalls | Maintenance', desc: 'Manages service appointments, recall notifications, maintenance reminders, and real-time service status updates for vehicle owners.', bg: 'bg-purple-50', border: 'border-sf-purple', tagColor: 'text-sf-purple' },
       { emoji: '🤝', name: 'Customer Retention Agent', tag: 'Loyalty | Lifecycle | Re-engagement', desc: 'Proactively engages customers throughout the vehicle lifecycle -from post-purchase follow-ups to trade-in offers and lease renewal reminders.', bg: 'bg-green-50', border: 'border-sf-success', tagColor: 'text-sf-success' },
-      { emoji: '💬', name: 'Agentforce Chat', tag: 'Live AI Chat | Real-Time', desc: 'Chat with a live Agentforce agent for instant AI-powered customer service — order status, returns, billing, product questions, and more.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
+      { emoji: '🎙️', name: 'Voice Agent', tag: 'Real-Time Voice | Speech AI', desc: 'Speak with a live Agentforce voice agent by phone for instant AI-powered customer service — natural conversation, real-time support, and seamless escalation.', bg: 'bg-violet-50', border: 'border-violet-400', tagColor: 'text-violet-600' }
     ],
     footer: 'Automotive data models, vehicle inventory management, dealer operations, and customer lifecycle data -all grounded in the Einstein Trust Layer.'
   }
@@ -964,16 +926,16 @@ const ARCHETYPES = {
     ]
   },
   'voice-agent': {
-    label: 'Agentforce Chat',
-    subtitle: 'Live AI Chat | Customer Service | Real-Time',
-    emoji: '💬',
+    label: 'Voice Agent',
+    subtitle: 'Real-Time Voice | Speech AI | Phone Support',
+    emoji: '🎙️',
     gradient: 'from-violet-600 to-fuchsia-900',
     scenarios: [
-      { icon: '💬', title: 'Live Agent Chat', desc: 'Chat with the live Agentforce agent — type your question and get instant AI-powered responses', prompt: '' }
+      { icon: '📞', title: 'Call the AI Agent', desc: 'Speak directly with the Agentforce voice agent by calling the dedicated phone line — get instant AI-powered support via natural conversation', prompt: '' }
     ],
     capabilities: [
-      'Real-time AI-powered chat with Agentforce',
-      'Natural language understanding for complex questions',
+      'Real-time AI-powered voice conversations',
+      'Natural speech understanding for complex questions',
       'Cross-industry customer service support',
       'Seamless escalation to human agents when needed',
       'Multi-industry support: retail, energy, manufacturing, automotive, and more'
@@ -984,8 +946,8 @@ const ARCHETYPES = {
       { value: '24/7', label: 'Always available', color: 'purple' },
       { value: '40%', label: 'Case deflection rate', color: 'orange' }
     ],
-    demoGreeting: (name) => `💬 Agentforce Chat is ready! The agent is embedded below — just type your question to get started.`,
-    demoCapabilities: ['💬 Chat with live AI agent', '📦 Check order status', '🔧 Get technical support', '🤝 Escalate to a human agent'],
+    demoGreeting: (name) => `🎙️ Voice Agent is ready! Call the number below to speak with the AI agent.`,
+    demoCapabilities: ['📞 Call the AI agent', '🗣️ Natural voice conversation', '🔧 Get real-time support', '🤝 Escalate to a human agent'],
     quickPrompts: [],
     demoConversation: (name) => []
   }
@@ -1695,40 +1657,65 @@ function showError() {
   document.getElementById('error').classList.remove('hidden');
 }
 
-// ─── Voice Agent (NGA Widget) ───
-var _ngaWidgetReady = false;
-var _ngaChatOpened = false;
-
+// ─── Voice Agent (Phone Card) ───
 function initVoiceDemo(pov) {
   // Add class to body for CSS targeting
   document.body.classList.add('voice-agent-active');
 
-  // Replace the SCRT2 chat area with the embedded NGA container
+  // Replace the SCRT2 chat area with a phone card
   const simArea = document.getElementById('demo-sim-area');
   if (simArea) {
-    // Make the sim area a positioned container so the NGA widget can dock inside it
-    simArea.style.position = 'relative';
-    simArea.style.minHeight = '550px';
-    simArea.style.maxHeight = '650px';
-    simArea.style.overflow = 'hidden';
     simArea.innerHTML = `
-      <div id="nga-placeholder" class="flex flex-col items-center justify-center p-12 text-center" style="min-height: 550px;">
-        <div class="w-20 h-20 bg-gradient-to-br from-violet-500 to-fuchsia-600 rounded-full flex items-center justify-center mb-5 shadow-lg">
-          <span class="text-4xl">💬</span>
+      <div class="flex flex-col items-center justify-center p-10 text-center" style="min-height: 480px;">
+        <!-- Animated phone icon -->
+        <div class="w-24 h-24 bg-gradient-to-br from-violet-500 to-fuchsia-600 rounded-full flex items-center justify-center mb-6 shadow-xl" style="animation: pulse-glow 2s ease-in-out infinite;">
+          <span class="text-5xl">📞</span>
         </div>
-        <h3 class="text-2xl font-bold text-sf-blue mb-3">Agentforce Chat</h3>
-        <p class="text-sf-muted max-w-md mb-6">Chat with the live Agentforce agent. Ask about orders, returns, billing, product questions, or anything else — the agent is ready to help.</p>
-        <div class="flex flex-wrap gap-3 justify-center text-sm">
-          <span class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full font-medium">💬 Live Chat</span>
-          <span class="bg-green-50 text-green-700 px-3 py-1.5 rounded-full font-medium">🤖 AI-Powered</span>
-          <span class="bg-violet-50 text-violet-700 px-3 py-1.5 rounded-full font-medium">⚡ Real-Time</span>
+
+        <h3 class="text-2xl font-bold text-sf-blue mb-2">Agentforce Voice Agent</h3>
+        <p class="text-sf-muted max-w-md mb-6">Call the number below to speak with the AI-powered voice agent. Ask about orders, returns, billing, product questions, or anything else.</p>
+
+        <!-- Phone number card -->
+        <a href="tel:+12132102254" class="group flex items-center gap-4 bg-gradient-to-r from-violet-50 to-fuchsia-50 border-2 border-violet-300 rounded-2xl px-8 py-5 mb-6 shadow-md hover:shadow-lg hover:border-violet-500 transition-all">
+          <div class="w-14 h-14 bg-gradient-to-br from-violet-500 to-fuchsia-600 rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+          </div>
+          <div class="text-left">
+            <div class="text-xs font-semibold text-violet-600 uppercase tracking-wider mb-1">Call Now</div>
+            <div class="text-2xl font-bold text-sf-blue tracking-wide">+1 (213) 210-2254</div>
+          </div>
+        </a>
+
+        <!-- Status & instructions -->
+        <div class="flex flex-wrap gap-3 justify-center text-sm mb-6">
+          <span class="bg-green-50 text-green-700 px-3 py-1.5 rounded-full font-medium flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Voice Channel Active
+          </span>
+          <span class="bg-violet-50 text-violet-700 px-3 py-1.5 rounded-full font-medium">🤖 AI-Powered</span>
+          <span class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full font-medium">⚡ Real-Time</span>
         </div>
-        <div id="nga-loading-status" class="mt-6 text-sm text-sf-muted">Loading agent...</div>
+
+        <div class="bg-gray-50 rounded-xl p-4 max-w-md text-left border border-gray-200">
+          <h4 class="text-sm font-semibold text-sf-blue mb-2">📋 How to try the voice agent:</h4>
+          <ol class="text-sm text-sf-muted space-y-1.5 list-decimal list-inside">
+            <li>Dial <strong>+1 (213) 210-2254</strong> from any phone</li>
+            <li>Wait for the AI agent greeting</li>
+            <li>Speak naturally — ask any question</li>
+            <li>The agent will respond in real-time</li>
+          </ol>
+        </div>
       </div>
+
+      <style>
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+          50% { box-shadow: 0 0 35px rgba(139, 92, 246, 0.6); }
+        }
+      </style>
     `;
   }
 
-  // Hide the quick prompts section (not applicable for embedded chat)
+  // Hide the quick prompts section (not applicable for voice)
   const promptsSection = document.querySelector('#demo-prompts')?.closest('.bg-white.rounded-xl.shadow-md');
   if (promptsSection) promptsSection.style.display = 'none';
 
@@ -1736,10 +1723,10 @@ function initVoiceDemo(pov) {
   const scenariosEl = document.getElementById('demo-scenarios');
   if (scenariosEl) {
     scenariosEl.innerHTML = `
-      <div class="bg-blue-50 rounded-xl p-5 border border-blue-200 text-center col-span-full">
-        <div class="text-3xl mb-2">💬</div>
-        <h4 class="font-bold text-sf-blue mb-1">Live Agent Chat</h4>
-        <p class="text-sm text-sf-muted">The Agentforce agent is embedded below. Type your question in the chat window to get started.</p>
+      <div class="bg-violet-50 rounded-xl p-5 border border-violet-200 text-center col-span-full">
+        <div class="text-3xl mb-2">📞</div>
+        <h4 class="font-bold text-sf-blue mb-1">Call the AI Agent</h4>
+        <p class="text-sm text-sf-muted">Dial the phone number above to speak with the Agentforce voice agent. The agent understands natural speech and can help with any customer service question.</p>
       </div>
     `;
   }
@@ -1747,111 +1734,8 @@ function initVoiceDemo(pov) {
   // Update status indicator
   const statusDot = document.getElementById('status-dot');
   const statusText = document.getElementById('status-text');
-  if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-violet-400 animate-pulse';
-  if (statusText) statusText.textContent = 'Loading...';
-
-  // Load the NGA widget bootstrap script
-  loadNGAWidget();
-}
-
-function loadNGAWidget() {
-  var ESD_NAME = 'Headless_Voice_Agent';
-  var SITE_URL = 'https://trailsignup-d7fd90d7f30b8a.my.site.com/ESWHeadlessVoiceAgent1782173568742';
-  var SCRT2_URL = SCRT2_BASE;
-  var NGA_ORG_ID = ORG_ID;
-  var BOOTSTRAP_URL = SITE_URL + '/assets/js/bootstrap.min.js';
-
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = BOOTSTRAP_URL;
-  script.onload = function() {
-    try {
-      var esw = window.embeddedservice_bootstrap || window.agentforce_messaging;
-      if (!esw) {
-        updateNGAStatus('Agent not available — bootstrap object not found');
-        return;
-      }
-      esw.settings.language = 'en_US';
-
-      // Hide the default chat button before init
-      if (esw.settings) {
-        esw.settings.hideChatButton = true;
-      }
-
-      esw.init(NGA_ORG_ID, ESD_NAME, SITE_URL, { scrt2URL: SCRT2_URL });
-      updateNGAStatus('Agent loaded — opening chat...');
-
-      // Listen for widget ready — then auto-open and dock it
-      window.addEventListener('onEmbeddedMessagingReady', function() {
-        _ngaWidgetReady = true;
-        updateNGAStatus('✅ Agent connected!');
-        var statusDot = document.getElementById('status-dot');
-        if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-green-400';
-        var statusText = document.getElementById('status-text');
-        if (statusText) statusText.textContent = 'Connected';
-
-        // Auto-open the chat window
-        dockNGAWidget();
-      });
-    } catch (e) {
-      console.error('NGA init error:', e);
-      updateNGAStatus('Error initializing agent: ' + e.message);
-    }
-  };
-  script.onerror = function() {
-    updateNGAStatus('Could not load agent. Please check the deployment configuration.');
-  };
-  document.body.appendChild(script);
-}
-
-function dockNGAWidget() {
-  // Move the NGA widget container into our demo-sim-area
-  var simArea = document.getElementById('demo-sim-area');
-  if (!simArea) return;
-
-  // Try to find the top-level NGA container and move it into the sim area
-  var attempts = 0;
-  var dockInterval = setInterval(function() {
-    attempts++;
-    var ngaContainer = document.querySelector('.embeddedMessagingTopContainer');
-    if (ngaContainer) {
-      // Move into our container
-      simArea.appendChild(ngaContainer);
-      // Hide the placeholder
-      var placeholder = document.getElementById('nga-placeholder');
-      if (placeholder) placeholder.style.display = 'none';
-
-      // Click the chat button programmatically if it exists (may be hidden but still clickable)
-      var chatBtn = ngaContainer.querySelector('.embeddedMessagingConversationButton button, [class*="ConversationButton"] button');
-      if (chatBtn && !_ngaChatOpened) {
-        _ngaChatOpened = true;
-        // Un-hide the button briefly to click it
-        var btnWrapper = ngaContainer.querySelector('.embeddedMessagingConversationButtonWrapper, .embeddedMessagingConversationButton');
-        if (btnWrapper) {
-          btnWrapper.style.cssText = 'display:block!important;visibility:visible!important;width:auto!important;height:auto!important;overflow:visible!important;pointer-events:auto!important;position:absolute!important;opacity:0!important;';
-          chatBtn.click();
-          // Re-hide after clicking
-          setTimeout(function() {
-            if (btnWrapper) btnWrapper.style.cssText = 'display:none!important;visibility:hidden!important;width:0!important;height:0!important;overflow:hidden!important;pointer-events:none!important;';
-          }, 500);
-        }
-      }
-
-      clearInterval(dockInterval);
-      console.log('NGA widget docked into demo area');
-    }
-
-    if (attempts > 30) {
-      clearInterval(dockInterval);
-      // Fallback: if we can't find the container, show instructions
-      updateNGAStatus('Chat agent is ready — look for the chat window on the page.');
-    }
-  }, 500);
-}
-
-function updateNGAStatus(msg) {
-  var el = document.getElementById('nga-loading-status');
-  if (el) el.textContent = msg;
+  if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-green-400';
+  if (statusText) statusText.textContent = 'Voice Channel Active';
 }
 
 // ─── Init ───
