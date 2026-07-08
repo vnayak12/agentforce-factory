@@ -724,7 +724,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
 
           <!-- Data Volume & Freshness -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
             <div>
               <label class="block text-sm font-semibold text-sf-blue mb-2">Customer Record Volume</label>
               <select id="arch-data-volume" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
@@ -744,6 +744,57 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
                 <option value="hourly">Hourly batch</option>
                 <option value="daily">Daily batch</option>
               </select>
+            </div>
+          </div>
+
+          <!-- NEW: Data Quality -->
+          <div class="mb-5">
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Current Data Quality</label>
+            <div class="flex flex-wrap gap-2">
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-data-quality" class="accent-sf-purple" value="poor"> <span class="text-sm">🔴 Poor — inconsistent, duplicates, no governance</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-data-quality" class="accent-sf-purple" value="fair"> <span class="text-sm">🟡 Fair — some standards, manual cleanup needed</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-data-quality" class="accent-sf-purple" value="good"> <span class="text-sm">🟢 Good — governed, automated quality checks</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- NEW: Existing Integration Layer -->
+          <div class="mb-5">
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Existing Integration Layer</label>
+            <div class="flex flex-wrap gap-2">
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="checkbox" class="accent-sf-purple" name="arch-int-layer"> <span class="text-sm">🔌 MuleSoft Anypoint</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="checkbox" class="accent-sf-purple" name="arch-int-layer"> <span class="text-sm">🔄 iPaaS (Informatica, Boomi, Workato)</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="checkbox" class="accent-sf-purple" name="arch-int-layer"> <span class="text-sm">🔗 Custom point-to-point integrations</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="checkbox" class="accent-sf-purple" name="arch-int-layer"> <span class="text-sm">❌ No integration layer</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- NEW: Data Governance -->
+          <div>
+            <label class="block text-sm font-semibold text-sf-blue mb-2">Data Governance Maturity</label>
+            <div class="flex flex-wrap gap-2">
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-data-gov" class="accent-sf-purple" value="none"> <span class="text-sm">🔴 None — no data steward or governance</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-data-gov" class="accent-sf-purple" value="basic"> <span class="text-sm">🟡 Basic — some ownership, no formal program</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-purple-50 transition has-[:checked]:bg-purple-100 has-[:checked]:border-sf-purple">
+                <input type="radio" name="arch-data-gov" class="accent-sf-purple" value="mature"> <span class="text-sm">🟢 Mature — CDO/steward, policies, cataloging</span>
+              </label>
             </div>
           </div>
         </div>
@@ -1572,6 +1623,75 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       </div>
     </div>
 
+    <!-- ═══ AI-POWERED ARCHITECT SECTIONS ═══ -->
+
+    <!-- Data Readiness Scorecard -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">DATA</span>
+        <h2 class="text-2xl font-bold text-sf-blue">Data Readiness Scorecard</h2>
+        <div id="arch-data-status" class="ml-auto text-xs text-sf-muted">📊 Scored on form inputs</div>
+      </div>
+      <div id="arch-data-readiness" class="text-sm text-sf-muted">
+        <div class="text-center text-sf-muted py-8">Complete the form and click Generate to see your Data Readiness Score</div>
+      </div>
+    </div>
+
+    <!-- Implementation Roadmap -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">ROADMAP</span>
+        <h2 class="text-2xl font-bold text-sf-blue">Implementation Roadmap</h2>
+      </div>
+      <div id="arch-roadmap" class="text-sm text-sf-muted">
+        <div class="animate-pulse space-y-3"><div class="h-4 bg-gray-200 rounded w-full"></div><div class="h-4 bg-gray-200 rounded w-5/6"></div></div>
+      </div>
+    </div>
+
+    <!-- Data Cloud Blueprint -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">BLUEPRINT</span>
+        <h2 class="text-2xl font-bold text-sf-blue">Data Cloud Configuration Blueprint</h2>
+      </div>
+      <div id="arch-dc-blueprint" class="text-sm text-sf-muted">
+        <div class="animate-pulse space-y-3"><div class="h-4 bg-gray-200 rounded w-full"></div><div class="h-4 bg-gray-200 rounded w-4/6"></div></div>
+      </div>
+    </div>
+
+    <!-- Agent Topic & Action Blueprint -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="bg-green-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">AGENT</span>
+        <h2 class="text-2xl font-bold text-sf-blue">Agent Topic & Action Blueprint</h2>
+      </div>
+      <div id="arch-agent-blueprint" class="text-sm text-sf-muted">
+        <div class="animate-pulse space-y-3"><div class="h-4 bg-gray-200 rounded w-full"></div><div class="h-4 bg-gray-200 rounded w-5/6"></div></div>
+      </div>
+    </div>
+
+    <!-- Trust & Compliance Matrix -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">TRUST</span>
+        <h2 class="text-2xl font-bold text-sf-blue">Trust & Compliance Matrix</h2>
+      </div>
+      <div id="arch-compliance-matrix" class="text-sm text-sf-muted">
+        <div class="animate-pulse space-y-3"><div class="h-4 bg-gray-200 rounded w-full"></div><div class="h-4 bg-gray-200 rounded w-3/4"></div></div>
+      </div>
+    </div>
+
+    <!-- ROI Business Case -->
+    <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded-full">ROI</span>
+        <h2 class="text-2xl font-bold text-sf-blue">ROI & Business Case</h2>
+      </div>
+      <div id="arch-roi-case" class="text-sm text-sf-muted">
+        <div class="animate-pulse space-y-3"><div class="h-4 bg-gray-200 rounded w-full"></div><div class="h-4 bg-gray-200 rounded w-5/6"></div></div>
+      </div>
+    </div>
+
     <!-- Pricing -->
     <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
       <h2 class="text-2xl font-bold text-sf-blue mb-4">Pricing Structure</h2>
@@ -1964,6 +2084,20 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
     </div>
   </div>
 
+  <!-- Tabs -->
+  <div class="bg-white border-b">
+    <div class="max-w-7xl mx-auto px-6 flex gap-1 overflow-x-auto">
+      <button onclick="switchSETab('overview')" id="se-tab-overview" class="py-4 px-4 text-sm font-semibold tab-active cursor-pointer whitespace-nowrap">📊 Overview</button>
+      <button onclick="switchSETab('opportunity')" id="se-tab-opportunity" class="py-4 px-4 text-sm tab-inactive cursor-pointer whitespace-nowrap">🎯 Opportunity</button>
+      <button onclick="switchSETab('competitive')" id="se-tab-competitive" class="py-4 px-4 text-sm tab-inactive cursor-pointer whitespace-nowrap">⚔️ Competitive</button>
+      <button onclick="switchSETab('narrative')" id="se-tab-narrative" class="py-4 px-4 text-sm tab-inactive cursor-pointer whitespace-nowrap">📖 Narrative</button>
+      <button onclick="switchSETab('scoring')" id="se-tab-scoring" class="py-4 px-4 text-sm tab-inactive cursor-pointer whitespace-nowrap">📈 Deal Score</button>
+      <button onclick="switchSETab('talktrack')" id="se-tab-talktrack" class="py-4 px-4 text-sm tab-inactive cursor-pointer whitespace-nowrap">🎤 Talk Track</button>
+      <button onclick="switchSETab('email')" id="se-tab-email" class="py-4 px-4 text-sm tab-inactive cursor-pointer whitespace-nowrap">📧 Follow-Up</button>
+      <button onclick="switchSETab('architect')" id="se-tab-architect" class="py-4 px-4 text-sm tab-inactive cursor-pointer whitespace-nowrap">🏗️ Architect</button>
+    </div>
+  </div>
+
   <div class="max-w-7xl mx-auto px-6 py-8">
     <!-- Header -->
     <div class="bg-gradient-to-r from-amber-600 to-orange-700 rounded-2xl p-10 text-white mb-8">
@@ -1971,33 +2105,188 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         <div>
           <div class="text-sm font-medium opacity-80 mb-2">AGENTFORCE OPPORTUNITY ASSESSMENT</div>
           <h1 class="text-4xl font-black mb-3" id="se-customer-name">Customer</h1>
-          <p class="text-xl text-amber-100" id="se-assessment-subtitle">Discovery Summary & Recommendations</p>
+          <p class="text-xl text-amber-100" id="se-assessment-subtitle">AI-Powered Discovery Summary & Recommendations</p>
         </div>
         <div class="text-6xl opacity-30">🔍</div>
       </div>
     </div>
 
     <!-- Summary cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-      <div class="bg-white rounded-2xl shadow-md p-6">
-        <div class="text-3xl mb-3">🎯</div>
-        <h3 class="font-bold text-sf-blue mb-2">Recommended Agents</h3>
-        <div class="text-sm text-sf-muted" id="se-recommended-agents">Customer Service Agent, Sales Agent</div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-white rounded-2xl shadow-md p-5">
+        <div class="text-2xl mb-2">🎯</div>
+        <h3 class="font-bold text-sf-blue text-sm mb-1">Recommended Agents</h3>
+        <div class="text-sm text-sf-muted" id="se-recommended-agents">—</div>
       </div>
-      <div class="bg-white rounded-2xl shadow-md p-6">
-        <div class="text-3xl mb-3">🌐</div>
-        <h3 class="font-bold text-sf-blue mb-2">Channels</h3>
-        <div class="text-sm text-sf-muted" id="se-recommended-channels">Web, Mobile, Slack</div>
+      <div class="bg-white rounded-2xl shadow-md p-5">
+        <div class="text-2xl mb-2">🌐</div>
+        <h3 class="font-bold text-sf-blue text-sm mb-1">Channels</h3>
+        <div class="text-sm text-sf-muted" id="se-recommended-channels">—</div>
       </div>
-      <div class="bg-white rounded-2xl shadow-md p-6">
-        <div class="text-3xl mb-3">⏱️</div>
-        <h3 class="font-bold text-sf-blue mb-2">Timeline</h3>
-        <div class="text-sm text-sf-muted" id="se-recommended-timeline">Immediate</div>
+      <div class="bg-white rounded-2xl shadow-md p-5">
+        <div class="text-2xl mb-2">⏱️</div>
+        <h3 class="font-bold text-sf-blue text-sm mb-1">Timeline</h3>
+        <div class="text-sm text-sf-muted" id="se-recommended-timeline">—</div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-md p-5">
+        <div class="text-2xl mb-2">💰</div>
+        <h3 class="font-bold text-sf-blue text-sm mb-1">Deal Score</h3>
+        <div class="text-sm font-bold" id="se-deal-score-badge">—</div>
       </div>
     </div>
 
-    <!-- Dynamic Detail Area (populated by generateSEOutput) -->
-    <div id="se-detail-area"></div>
+    <!-- ═══ TAB: OVERVIEW — AI Opportunity Assessment + Discovery Gap Analysis ═══ -->
+    <div id="se-panel-overview">
+      <!-- AI Opportunity Assessment -->
+      <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">AI</span>
+          <h2 class="text-xl font-bold text-sf-blue">Opportunity Assessment</h2>
+          <div id="se-ai-status" class="ml-auto text-xs text-sf-muted">⏳ Generating...</div>
+        </div>
+        <div id="se-ai-assessment" class="prose text-sm text-sf-muted leading-relaxed">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+            <div class="h-4 bg-gray-200 rounded w-4/6"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discovery Gap Analysis -->
+      <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">GAPS</span>
+          <h2 class="text-xl font-bold text-sf-blue">Discovery Gap Analysis</h2>
+        </div>
+        <div id="se-gap-analysis" class="text-sm text-sf-muted">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Detail Area (original SE data mirror) -->
+      <div id="se-detail-area"></div>
+    </div>
+
+    <!-- ═══ TAB: OPPORTUNITY — Deep-dive AI agent recommendations ═══ -->
+    <div id="se-panel-opportunity" class="hidden">
+      <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">AGENTS</span>
+          <h2 class="text-xl font-bold text-sf-blue">Agent Recommendations & ROI</h2>
+        </div>
+        <div id="se-agent-recommendations" class="text-sm text-sf-muted">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: COMPETITIVE — Competitive Positioning Brief ═══ -->
+    <div id="se-panel-competitive" class="hidden">
+      <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-purple-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">VS</span>
+          <h2 class="text-xl font-bold text-sf-blue">Competitive Positioning Brief</h2>
+        </div>
+        <div id="se-competitive-brief" class="text-sm text-sf-muted">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-4/6"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: NARRATIVE — POV Narrative / Demo Story Arc ═══ -->
+    <div id="se-panel-narrative" class="hidden">
+      <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-indigo-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">STORY</span>
+          <h2 class="text-xl font-bold text-sf-blue">POV Narrative & Demo Story Arc</h2>
+        </div>
+        <div id="se-narrative" class="text-sm text-sf-muted">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: SCORING — Deal Scoring / Qualification Matrix ═══ -->
+    <div id="se-panel-scoring" class="hidden">
+      <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-blue-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">SCORE</span>
+          <h2 class="text-xl font-bold text-sf-blue">Deal Scoring & Qualification Matrix</h2>
+        </div>
+        <div id="se-deal-scoring" class="text-sm text-sf-muted">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-4/6"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: TALKTRACK — Stakeholder Talk Tracks ═══ -->
+    <div id="se-panel-talktrack" class="hidden">
+      <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-teal-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">TALK</span>
+          <h2 class="text-xl font-bold text-sf-blue">Stakeholder Talk Tracks</h2>
+        </div>
+        <div id="se-talk-tracks" class="text-sm text-sf-muted">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: EMAIL — Follow-Up Email Draft ═══ -->
+    <div id="se-panel-email" class="hidden">
+      <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">EMAIL</span>
+          <h2 class="text-xl font-bold text-sf-blue">Follow-Up Email Draft</h2>
+          <button onclick="copyEmailDraft()" class="ml-auto text-xs bg-gray-100 hover:bg-gray-200 text-sf-blue px-3 py-1.5 rounded-lg font-semibold cursor-pointer transition">📋 Copy</button>
+        </div>
+        <div id="se-email-draft" class="text-sm text-sf-muted">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: ARCHITECT — Pre-populated Architect Flow Data ═══ -->
+    <div id="se-panel-architect" class="hidden">
+      <div class="bg-white rounded-2xl shadow-md p-8 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-sf-purple text-white text-xs font-bold px-2.5 py-1 rounded-full">ARCH</span>
+          <h2 class="text-xl font-bold text-sf-blue">Architecture Pre-Population</h2>
+        </div>
+        <p class="text-sm text-sf-muted mb-4">Based on discovery inputs, the Architect flow can be pre-filled with this customer's context.</p>
+        <div id="se-arch-prepop" class="text-sm text-sf-muted mb-6">
+          <div class="animate-pulse space-y-3">
+            <div class="h-4 bg-gray-200 rounded w-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+          </div>
+        </div>
+        <button onclick="preFillArchitectFromSE()" class="bg-sf-purple text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition cursor-pointer">
+          🏗️ Open Architect Flow (Pre-filled)
+        </button>
+      </div>
+    </div>
 
     <!-- Next Steps -->
     <div class="bg-sf-blue rounded-2xl p-8 text-white mb-6">
@@ -3905,6 +4194,15 @@ function generateArchOutput() {
       attachedContext: archAttachedContext,
       createdAt: new Date().toISOString()
     });
+
+    // ═══ Architect AI Engine: generate advanced sections ═══
+    try {
+      const archFormData = gatherArchData();
+      generateDataReadiness(archFormData);
+      generateArchAISections(archFormData);
+    } catch(e) {
+      console.warn('Architect AI sections error:', e);
+    }
   });
 }
 
@@ -4095,103 +4393,863 @@ function showGeneratingModal(callback) {
   }, 600);
 }
 
-// Generate SE output
-function generateSEOutput() {
-  if (!validateRequired([
-    { id: 'se-customer', label: 'Customer Name' }
-  ])) return;
-  const customer = document.getElementById('se-customer').value.trim();
+// ═══ SE Tab Switching ═══
+const SE_TABS = ['overview','opportunity','competitive','narrative','scoring','talktrack','email','architect'];
+function switchSETab(tab) {
+  SE_TABS.forEach(t => {
+    const panel = document.getElementById(`se-panel-${t}`);
+    const btn = document.getElementById(`se-tab-${t}`);
+    if (panel) panel.classList.toggle('hidden', t !== tab);
+    if (btn) btn.className = t === tab
+      ? 'py-4 px-4 text-sm font-semibold tab-active cursor-pointer whitespace-nowrap'
+      : 'py-4 px-4 text-sm tab-inactive cursor-pointer whitespace-nowrap';
+  });
+}
 
-  // Gather selected agents
+// ═══ Copy email draft ═══
+function copyEmailDraft() {
+  const el = document.getElementById('se-email-draft');
+  if (!el) return;
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.closest('.bg-white').querySelector('button');
+    if (btn) { const orig = btn.innerHTML; btn.innerHTML = '✅ Copied!'; setTimeout(() => btn.innerHTML = orig, 2000); }
+  });
+}
+
+// ═══ Pre-fill Architect flow from SE discovery ═══
+let lastSEData = null;
+function preFillArchitectFromSE() {
+  if (!lastSEData) return;
+  const d = lastSEData;
+  // Fill architect form fields
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  set('arch-customer', d.customer);
+  set('arch-name', d.seName);
+  // Set industry
+  const indSel = document.getElementById('arch-industry');
+  if (indSel && d.industry) { for (let o of indSel.options) { if (o.value === d.industry || o.text === d.industry) { indSel.value = o.value; break; } } }
+  // Paste context with all discovery info
+  const ctx = `SE Discovery for ${d.customer}\nIndustry: ${d.industry}\nBusiness: ${d.business}\nPain Points: ${d.painPoints}\nFootprint: ${d.footprint.join(', ')}\nAgents: ${d.agents.join(', ')}\nChannels: ${d.channels.join(', ')}\nBudget: ${d.budget}\nCompetitors: ${d.competitors}\nTimeline: ${d.timeline}\nIntegrations: ${d.integrations}\nHeadless: ${d.headless} - ${d.headlessUC}\nNotes: ${d.notes}`;
+  set('arch-paste-input', ctx);
+  pasteTextCache['arch-paste-input'] = ctx;
+  // Check matching footprint checkboxes
+  document.querySelectorAll('#screen-architect-form input[type="checkbox"]').forEach(cb => {
+    const label = cb.closest('label')?.querySelector('span.text-sm')?.textContent?.trim();
+    if (label && d.footprint.includes(label)) cb.checked = true;
+  });
+  showScreen('screen-architect-form');
+}
+
+// ═══ Gather all SE form data into a structured object ═══
+function gatherSEData() {
+  const customer = document.getElementById('se-customer').value.trim();
   const agentChecks = document.querySelectorAll('input[name="se-agents"]:checked');
   const agents = Array.from(agentChecks).map(cb => cb.closest('label').querySelector('span.text-sm').textContent.replace(/^[^\s]+\s/, ''));
-
-  // Gather selected channels
   const channelChecks = document.querySelectorAll('input[name="se-channels"]:checked');
   const channels = Array.from(channelChecks).map(cb => cb.closest('label').querySelector('span.text-sm').textContent.replace(/^[^\s]+\s/, ''));
-
-  // Get timeline
   const timelineRadio = document.querySelector('input[name="se-timeline"]:checked');
   const timeline = timelineRadio ? timelineRadio.closest('label').querySelector('span.text-sm').textContent.replace(/^[^\s]+\s/, '') : 'Exploring';
-
-  // Gather all additional fields
-  const industry = document.getElementById('se-industry') ? document.getElementById('se-industry').value : '';
-  const business = document.getElementById('se-business') ? document.getElementById('se-business').value.trim() : '';
-  const painPoints = document.getElementById('se-pain') ? document.getElementById('se-pain').value.trim() : '';
-  const integrations = document.getElementById('se-integrations') ? document.getElementById('se-integrations').value.trim() : '';
-  const budget = document.getElementById('se-budget') ? document.getElementById('se-budget').value : '';
-  const competitors = document.getElementById('se-competitors') ? document.getElementById('se-competitors').value.trim() : '';
+  const industry = document.getElementById('se-industry')?.value || '';
+  const business = document.getElementById('se-business')?.value.trim() || '';
+  const painPoints = document.getElementById('se-pain')?.value.trim() || '';
+  const integrations = document.getElementById('se-integrations')?.value.trim() || '';
+  const budget = document.getElementById('se-budget')?.value || '';
+  const competitors = document.getElementById('se-competitors')?.value.trim() || '';
   const footprintChecks = document.querySelectorAll('input[name="se-footprint"]:checked');
   const footprint = Array.from(footprintChecks).map(cb => cb.closest('label').querySelector('span.text-sm').textContent.trim());
   const headlessRadio = document.querySelector('input[name="se-headless"]:checked');
   const headless = headlessRadio ? headlessRadio.value : '';
-  const headlessUC = document.getElementById('se-headless-uc') ? document.getElementById('se-headless-uc').value.trim() : '';
-  const seName = document.getElementById('se-name') ? document.getElementById('se-name').value.trim() : '';
-  const seAE = document.getElementById('se-ae') ? document.getElementById('se-ae').value.trim() : '';
-  const notes = document.getElementById('se-notes') ? document.getElementById('se-notes').value.trim() : '';
+  const headlessUC = document.getElementById('se-headless-uc')?.value.trim() || '';
+  const seName = document.getElementById('se-name')?.value.trim() || '';
+  const seAE = document.getElementById('se-ae')?.value.trim() || '';
+  const notes = document.getElementById('se-notes')?.value.trim() || '';
+  const attachedContext = getAttachedContext('se-file-input');
+  return { customer, agents, channels, timeline, industry, business, painPoints, integrations, budget, competitors, footprint, headless, headlessUC, seName, seAE, notes, attachedContext };
+}
+
+// ═══ Build AI prompt from SE discovery data ═══
+function buildSEAIPrompt(d, section) {
+  const base = `You are a Salesforce Solution Engineer AI assistant. Analyze this customer discovery data and provide insights.
+
+CUSTOMER: ${d.customer}
+INDUSTRY: ${d.industry}
+BUSINESS: ${d.business}
+SALESFORCE FOOTPRINT: ${d.footprint.join(', ') || 'None specified'}
+PAIN POINTS: ${d.painPoints || 'Not specified'}
+KEY INTEGRATIONS: ${d.integrations || 'Not specified'}
+SELECTED AGENTS: ${d.agents.join(', ') || 'None selected'}
+CHANNELS: ${d.channels.join(', ') || 'Not specified'}
+BUDGET: ${d.budget || 'Not specified'}
+COMPETITORS: ${d.competitors || 'Not specified'}
+HEADLESS INTEREST: ${d.headless || 'Not specified'}
+HEADLESS USE CASES: ${d.headlessUC || 'Not specified'}
+TIMELINE: ${d.timeline}
+NOTES: ${d.notes || 'None'}
+${d.attachedContext ? `ATTACHED CONTEXT: ${d.attachedContext}` : ''}`;
+
+  const prompts = {
+    assessment: `${base}\n\nProvide a comprehensive Agentforce opportunity assessment in 3-4 paragraphs. Cover:
+1. Why Agentforce is a strong fit for this customer based on their pain points and current state
+2. Which agents would create the most immediate value and why
+3. The Headless 360 opportunity if applicable
+4. Key risks or blockers to address
+Format with clear paragraphs. Be specific to this customer, not generic.`,
+
+    gaps: `${base}\n\nAnalyze the discovery data and identify GAPS - information that's missing or needs deeper investigation. Return as a structured analysis:
+- List 3-5 critical gaps that could derail the deal if not addressed
+- For each gap, explain WHY it matters and WHAT question to ask
+- Rate each gap as Critical, Important, or Nice-to-have
+Format as clear sections with headers.`,
+
+    agentRecs: `${base}\n\nProvide detailed agent recommendations:
+1. For each selected agent type, explain the specific use case for THIS customer
+2. Estimate potential ROI (cost savings, efficiency gains, revenue impact)
+3. Suggest implementation priority order with reasoning
+4. Recommend additional agents they haven't considered based on their pain points
+Format with clear sections per agent.`,
+
+    competitive: `${base}\n\nCreate a competitive positioning brief against: ${d.competitors || 'generic AI competitors'}
+1. Key differentiators of Agentforce vs each competitor
+2. Where Agentforce wins (trust, grounding, CRM-native, Einstein Trust Layer)
+3. Potential objections and counter-arguments
+4. Landmine questions to plant in competitive evaluations
+Format as a structured battle card.`,
+
+    narrative: `${base}\n\nCreate a compelling POV narrative and demo story arc for ${d.customer}:
+1. Opening hook - why AI agents matter for ${d.industry} RIGHT NOW
+2. Pain → Solution flow - connect their specific pain points to Agentforce capabilities
+3. Demo story arc - a concrete scenario showing the agent in action (with dialogue)
+4. "Wow moment" - the key inflection point that sells the vision
+5. Closing - business impact summary and call to action
+Format as a presentation-ready narrative with clear sections.`,
+
+    scoring: `${base}\n\nCreate a deal scoring and qualification matrix. Score each dimension 1-5 and provide reasoning:
+
+MEDDPICC Analysis:
+- Metrics: Do they have defined success metrics? (score + reasoning)
+- Economic Buyer: Is budget holder identified? (score + reasoning)
+- Decision Criteria: What are they evaluating on? (score + reasoning)
+- Decision Process: How do they make technology decisions? (score + reasoning)
+- Paper Process: Procurement complexity? (score + reasoning)
+- Identify Pain: How acute is the pain? (score + reasoning)
+- Champion: Do we have an internal champion? (score + reasoning)
+- Competition: How strong is competitive pressure? (score + reasoning)
+
+End with an OVERALL DEAL SCORE (out of 40) and a verdict (Strong, Moderate, Needs Work, At Risk).`,
+
+    talkTrack: `${base}\n\nGenerate stakeholder-specific talk tracks for ${d.customer}:
+
+1. CIO / CTO Talk Track:
+   - Lead with: architecture, security, trust, scalability
+   - Key message in 2 sentences
+   - 3 conversation starters
+
+2. VP of Customer Experience / COO Talk Track:
+   - Lead with: customer satisfaction, operational efficiency, deflection
+   - Key message in 2 sentences
+   - 3 conversation starters
+
+3. VP of Sales / Revenue Talk Track:
+   - Lead with: pipeline acceleration, revenue per conversation, conversion
+   - Key message in 2 sentences
+   - 3 conversation starters
+
+4. CFO Talk Track:
+   - Lead with: ROI, cost reduction, payback period
+   - Key message in 2 sentences
+   - 3 conversation starters
+
+Format each as a clear section with the role as header.`,
+
+    email: `${base}\n\nDraft a professional follow-up email for ${d.customer} after an Agentforce discovery call.
+
+Structure:
+- Subject line (compelling, specific to their situation)
+- Greeting (use customer name)
+- 2-3 sentence recap of key pain points discussed
+- 2-3 bullet points on how Agentforce addresses their specific needs
+- Mention of competitive advantage vs ${d.competitors || 'alternatives'}
+- Proposed next steps (POV demo, architecture review, etc.)
+- Professional close
+
+Tone: confident but consultative, not salesy. Reference specific details from the discovery.
+From: ${d.seName || 'Your SE'}, Salesforce`,
+
+    archPrepop: `${base}\n\nBased on this SE discovery, recommend the following for the Architecture flow:
+1. Recommended Agent Architecture Pattern (Single, Multi-Topic, Multi-Agent, or Headless)
+2. Key data sources to connect
+3. Integration architecture approach
+4. Suggested channels and escalation strategy
+5. Compliance requirements to consider
+Format as a clear summary that an architect can use to pre-fill their deep-dive form.`
+  };
+  return prompts[section] || base;
+}
+
+// ═══ AI Content Generator (uses SCRT2 live agent) ═══
+const SE_SCRT2_BASE = 'https://trailsignup-d7fd90d7f30b8a.my.salesforce-scrt.com';
+const SE_ORG_ID = '00Dbm00000jtzs9';
+const SE_ES_DEV_NAME = 'Sales_Assistant_Teams_API';
+
+async function generateSEAIContent(prompt, targetElId, onComplete) {
+  const el = document.getElementById(targetElId);
+  if (!el) return;
+  try {
+    // Get token
+    const tokenResp = await fetch(`${SE_SCRT2_BASE}/iamessage/api/v2/authorization/unauthenticated/access-token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orgId: SE_ORG_ID, esDeveloperName: SE_ES_DEV_NAME, capabilitiesVersion: '1', platform: 'Web' })
+    });
+    if (!tokenResp.ok) throw new Error('Token failed');
+    const { accessToken: token } = await tokenResp.json();
+
+    // Create conversation
+    const convId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    const convResp = await fetch(`${SE_SCRT2_BASE}/iamessage/api/v2/conversation`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'X-Org-Id': SE_ORG_ID },
+      body: JSON.stringify({ conversationId: convId, esDeveloperName: SE_ES_DEV_NAME })
+    });
+    if (!convResp.ok) throw new Error('Conversation failed');
+
+    // Connect SSE
+    const sseResp = await fetch(`${SE_SCRT2_BASE}/eventrouter/v1/sse`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'X-Org-Id': SE_ORG_ID, 'Accept': 'text/event-stream' }
+    });
+    const reader = sseResp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '', collectedText = '', welcomeSkipped = false;
+
+    // Start reading SSE in background
+    const readSSE = (async () => {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+        let currentEvent = null;
+        for (const line of lines) {
+          if (line.startsWith('event:')) currentEvent = line.slice(6).trim();
+          else if (line.startsWith('data:') && currentEvent === 'CONVERSATION_MESSAGE') {
+            try {
+              const data = JSON.parse(line.slice(5).trim());
+              const entry = data.conversationEntry;
+              if (!entry || entry.sender?.role === 'EndUser') continue;
+              let payload = entry.entryPayload;
+              if (typeof payload === 'string') payload = JSON.parse(payload);
+              const text = payload?.abstractMessage?.staticContent?.text || payload?.staticContent?.text || payload?.text || '';
+              if (text) {
+                // Skip welcome message
+                if (!welcomeSkipped) { welcomeSkipped = true; continue; }
+                collectedText += text + '\n';
+                el.innerHTML = formatAIContent(collectedText);
+              }
+            } catch(e) {}
+          }
+        }
+      }
+    })();
+
+    // Send the prompt
+    await fetch(`${SE_SCRT2_BASE}/iamessage/api/v2/conversation/${convId}/message`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'X-Org-Id': SE_ORG_ID },
+      body: JSON.stringify({
+        message: { id: convId.replace(/-/g,'').slice(0,20) + Date.now(), messageType: 'StaticContentMessage', staticContent: { formatType: 'Text', text: prompt } },
+        esDeveloperName: SE_ES_DEV_NAME, isNewMessagingSession: true, routingAttributes: {}, language: 'en'
+      })
+    });
+
+    // Wait for response with timeout
+    await Promise.race([readSSE, new Promise(r => setTimeout(r, 30000))]);
+    reader.cancel().catch(() => {});
+
+    if (collectedText.trim()) {
+      el.innerHTML = formatAIContent(collectedText);
+      if (onComplete) onComplete(collectedText);
+    } else {
+      throw new Error('No response');
+    }
+  } catch (err) {
+    console.error(`AI generation failed for ${targetElId}:`, err);
+    // Fallback: generate locally
+    el.innerHTML = generateLocalSEContent(targetElId, lastSEData);
+    if (onComplete) onComplete('');
+  }
+}
+
+// ═══ Format AI content with basic markdown-to-HTML ═══
+function formatAIContent(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong class="text-sf-blue">$1</strong>')
+    .replace(/^### (.+)$/gm, '<h4 class="font-bold text-sf-blue text-base mt-4 mb-2">$1</h4>')
+    .replace(/^## (.+)$/gm, '<h3 class="font-bold text-sf-blue text-lg mt-5 mb-2">$1</h3>')
+    .replace(/^# (.+)$/gm, '<h2 class="font-bold text-sf-blue text-xl mt-6 mb-3">$1</h2>')
+    .replace(/^- (.+)$/gm, '<div class="flex gap-2 ml-4 mb-1"><span class="text-sf-accent">•</span><span>$1</span></div>')
+    .replace(/^\d+\. (.+)$/gm, '<div class="flex gap-2 ml-4 mb-1"><span class="text-sf-accent font-semibold">$&</span></div>')
+    .replace(/\n{2,}/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+// ═══ Local fallback SE content generation ═══
+function generateLocalSEContent(section, d) {
+  if (!d) return '<div class="text-sf-muted italic">No data available. Please complete the discovery form.</div>';
+  const templates = {
+    'se-ai-assessment': `<div class="space-y-4">
+      <p><strong class="text-sf-blue">Agentforce Opportunity for ${d.customer}</strong></p>
+      <p>${d.customer} operates in the ${d.industry} space${d.business ? ` — ${d.business}` : ''}. ${d.painPoints ? `Their key pain points around "${d.painPoints.split('\n')[0]}" present a strong opportunity for Agentforce automation.` : 'Further discovery is needed to identify specific pain points.'}</p>
+      <p>${d.agents.length ? `The selected agent types (${d.agents.join(', ')}) align well with ${d.industry} use cases.` : 'No agent types selected yet — consider recommending based on their pain points.'} ${d.footprint.length ? `Their existing Salesforce footprint (${d.footprint.join(', ')}) provides a solid foundation.` : 'No existing Salesforce products identified — this may be a greenfield opportunity.'}</p>
+      ${d.headless === 'yes' ? `<p><strong class="text-sf-blue">Headless 360 Opportunity:</strong> Strong interest in API-first architecture. ${d.headlessUC ? `Specific use cases: ${d.headlessUC}` : 'Explore specific headless use cases in follow-up.'}</p>` : ''}
+      <p><strong class="text-sf-blue">Next Steps:</strong> ${d.timeline === 'Immediate (this quarter)' ? 'Urgent timeline — prioritize POV demo and architecture review this week.' : d.timeline === 'Next quarter' ? 'Moderate timeline — schedule architecture deep-dive within 2 weeks.' : 'Exploratory phase — focus on education and building the business case.'}</p>
+    </div>`,
+    'se-gap-analysis': `<div class="space-y-3">
+      ${!d.painPoints ? '<div class="flex gap-3 bg-red-50 rounded-xl p-4"><span class="text-red-500 font-bold">🔴 Critical</span><div><strong class="text-sf-blue">Pain Points Not Documented</strong><br>No pain points captured. Ask: "What are the top 3 things keeping your CX team up at night?"</div></div>' : ''}
+      ${!d.budget ? '<div class="flex gap-3 bg-red-50 rounded-xl p-4"><span class="text-red-500 font-bold">🔴 Critical</span><div><strong class="text-sf-blue">Budget Not Identified</strong><br>No budget range selected. Ask: "Is there allocated budget for this initiative, and what is the decision process?"</div></div>' : ''}
+      ${d.agents.length === 0 ? '<div class="flex gap-3 bg-orange-50 rounded-xl p-4"><span class="text-orange-500 font-bold">🟡 Important</span><div><strong class="text-sf-blue">No Agent Types Selected</strong><br>Need to identify which agent use cases resonate. Ask: "Where do you see the biggest opportunity for AI automation?"</div></div>' : ''}
+      ${!d.competitors ? '<div class="flex gap-3 bg-orange-50 rounded-xl p-4"><span class="text-orange-500 font-bold">🟡 Important</span><div><strong class="text-sf-blue">Competitive Landscape Unknown</strong><br>No competitors identified. Ask: "Are you evaluating other AI platforms? What is your evaluation criteria?"</div></div>' : ''}
+      ${!d.integrations ? '<div class="flex gap-3 bg-blue-50 rounded-xl p-4"><span class="text-blue-500 font-bold">🔵 Nice-to-have</span><div><strong class="text-sf-blue">Integration Landscape Unknown</strong><br>No external systems documented. Ask: "What key systems would the agent need to connect to?"</div></div>' : ''}
+      ${d.painPoints && d.budget && d.agents.length > 0 && d.competitors ? '<div class="flex gap-3 bg-green-50 rounded-xl p-4"><span class="text-green-500 font-bold">✅ Strong</span><div><strong class="text-sf-blue">Discovery is Comprehensive</strong><br>Key dimensions are well-covered. Focus on deepening the technical architecture discussion.</div></div>' : ''}
+    </div>`,
+    'se-agent-recommendations': `<div class="space-y-4">
+      ${d.agents.map(a => `<div class="bg-blue-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">🤖 ${a}</h4><p class="text-sm text-sf-muted">Recommended for ${d.customer} based on ${d.industry} industry patterns. ${d.painPoints ? `Addresses pain point: "${d.painPoints.split('\n')[0]?.substring(0,80)}..."` : ''}</p><div class="mt-2 flex gap-3"><span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Priority: High</span><span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Est. ROI: 3-6 months</span></div></div>`).join('') || '<p class="text-sf-muted">No agents selected. Return to discovery form to select agent types.</p>'}
+    </div>`,
+    'se-competitive-brief': `<div class="space-y-4">
+      <div class="bg-green-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">✅ Agentforce Advantages</h4><div class="text-sm text-sf-muted space-y-1"><div>• <strong>CRM-Native:</strong> Built into Salesforce — no data extraction or sync needed</div><div>• <strong>Einstein Trust Layer:</strong> PII masking, toxicity detection, zero data retention</div><div>• <strong>Grounded in YOUR Data:</strong> Agents reference real CRM records, not hallucinated responses</div><div>• <strong>Multi-Channel:</strong> Same agent across Web, Mobile, Slack, SMS, WhatsApp, Voice</div></div></div>
+      ${d.competitors ? `<div class="bg-orange-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">⚔️ vs ${d.competitors}</h4><p class="text-sm text-sf-muted">Key differentiators: Agentforce actions run WITH your CRM context (no API round-trips), Einstein Trust Layer for enterprise compliance, and native Salesforce data grounding vs generic LLM responses.</p></div>` : ''}
+      <div class="bg-blue-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">💣 Landmine Questions</h4><div class="text-sm text-sf-muted space-y-1"><div>• "How does your solution handle PII in prompts? Does data leave your trust boundary?"</div><div>• "Can your agent take action on CRM records or just answer questions?"</div><div>• "How do you handle audit trails for every agent interaction?"</div><div>• "What happens when the agent can't answer — is there seamless human handoff?"</div></div></div>
+    </div>`,
+    'se-narrative': `<div class="space-y-4">
+      <div class="bg-indigo-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">🎬 Opening Hook</h4><p class="text-sm text-sf-muted">"${d.customer} handles ${d.painPoints ? d.painPoints.split('\n')[0] : 'thousands of customer interactions daily'}. What if an AI agent could resolve 60% of those autonomously — with full context from your CRM?"</p></div>
+      <div class="bg-blue-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">🔄 Pain → Solution</h4><p class="text-sm text-sf-muted">Current state: ${d.painPoints || 'Manual processes, disconnected systems'}. → Agentforce solution: ${d.agents.length ? d.agents.join(', ') : 'AI agents'} handling the most repetitive, high-volume interactions while humans focus on complex, high-value work.</p></div>
+      <div class="bg-purple-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">⭐ Demo Wow Moment</h4><p class="text-sm text-sf-muted">Show the agent resolving a real ${d.industry} scenario — pulling live CRM data, taking action, and updating records — all in under 30 seconds. Then show how the Trust Layer protected PII throughout.</p></div>
+      <div class="bg-green-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">🎯 Closing Impact</h4><p class="text-sm text-sf-muted">"With Agentforce, ${d.customer} can deploy autonomous AI agents that are grounded in your data, protected by enterprise trust, and live in ${d.timeline === 'Immediate (this quarter)' ? 'weeks, not months' : 'a phased rollout starting with quick wins'}."</p></div>
+    </div>`,
+    'se-deal-scoring': (() => {
+      const scores = {
+        metrics: d.painPoints ? 3 : 1,
+        buyer: d.budget ? (d.budget.includes('1m') ? 5 : d.budget.includes('500k') ? 4 : 3) : 1,
+        criteria: d.competitors ? 4 : 2,
+        process: d.timeline === 'Immediate (this quarter)' ? 4 : d.timeline === 'Next quarter' ? 3 : 2,
+        pain: d.painPoints ? 4 : 1,
+        champion: d.notes?.toLowerCase().includes('champion') || d.notes?.toLowerCase().includes('sponsor') ? 4 : 2,
+        competition: d.competitors ? 3 : 2
+      };
+      const total = Object.values(scores).reduce((a,b) => a+b, 0);
+      const max = 35;
+      const pct = Math.round(total/max*100);
+      const verdict = pct >= 75 ? '🟢 Strong' : pct >= 50 ? '🟡 Moderate' : '🔴 Needs Work';
+      return `<div class="space-y-4">
+        <div class="bg-gray-50 rounded-xl p-5 mb-4"><div class="flex items-center justify-between mb-3"><span class="font-bold text-sf-blue text-lg">Overall Score: ${total}/${max}</span><span class="font-bold text-lg">${verdict}</span></div><div class="w-full bg-gray-200 rounded-full h-4"><div class="h-4 rounded-full transition-all duration-700 ${pct >= 75 ? 'bg-green-500' : pct >= 50 ? 'bg-yellow-500' : 'bg-red-500'}" style="width:${pct}%"></div></div></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          ${Object.entries({Metrics:scores.metrics,'Economic Buyer':scores.buyer,'Decision Criteria':scores.criteria,'Decision Process':scores.process,'Identified Pain':scores.pain,Champion:scores.champion,Competition:scores.competition}).map(([k,v]) => `<div class="flex items-center justify-between bg-white border rounded-xl p-3"><span class="text-sm font-semibold text-sf-blue">${k}</span><div class="flex gap-1">${[1,2,3,4,5].map(i=>`<div class="w-5 h-5 rounded-full ${i<=v?'bg-sf-accent':'bg-gray-200'}"></div>`).join('')}</div></div>`).join('')}
+        </div>
+      </div>`;
+    })(),
+    'se-talk-tracks': `<div class="space-y-4">
+      <div class="bg-blue-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">👔 CIO / CTO</h4><p class="text-sm text-sf-muted mb-2"><strong>Key Message:</strong> "Agentforce gives you enterprise AI with full data governance — no shadow AI, no data leaks, complete audit trail."</p><div class="text-xs text-sf-muted space-y-1"><div>💬 "How are you governing AI usage across your organization today?"</div><div>💬 "What's your biggest concern about deploying autonomous AI agents?"</div><div>💬 "How important is it that AI stays within your data trust boundary?"</div></div></div>
+      <div class="bg-green-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">🎯 VP Customer Experience</h4><p class="text-sm text-sf-muted mb-2"><strong>Key Message:</strong> "Resolve ${d.painPoints?.split('\n')[0] || 'routine inquiries'} instantly while your team focuses on complex, high-value interactions."</p><div class="text-xs text-sf-muted space-y-1"><div>💬 "What percentage of your interactions are routine vs. complex?"</div><div>💬 "How would your team's morale change if AI handled the repetitive 60%?"</div><div>💬 "What's your current CSAT and what would a 15-point improvement mean?"</div></div></div>
+      <div class="bg-orange-50 rounded-xl p-5"><h4 class="font-bold text-sf-blue mb-2">💰 CFO</h4><p class="text-sm text-sf-muted mb-2"><strong>Key Message:</strong> "Reduce cost-per-interaction by 60-80% while improving customer satisfaction — payback in ${d.budget?.includes('1m') ? '3-6' : '6-12'} months."</p><div class="text-xs text-sf-muted space-y-1"><div>💬 "What's your current cost per customer interaction?"</div><div>💬 "How much does agent attrition cost you annually in hiring and training?"</div><div>💬 "What would it mean to handle 3x volume without adding headcount?"</div></div></div>
+    </div>`,
+    'se-email-draft': `<div class="bg-gray-50 rounded-xl p-6 font-mono text-sm leading-relaxed">
+      <p class="mb-1"><strong>Subject:</strong> ${d.customer} × Agentforce — Follow-Up & Next Steps</p>
+      <hr class="my-3 border-gray-300">
+      <p class="mb-3">Hi ${d.customer} Team,</p>
+      <p class="mb-3">Thank you for the productive conversation today about how Agentforce can help ${d.customer} ${d.painPoints ? `address ${d.painPoints.split('\n')[0]?.substring(0,80)}` : 'transform customer engagement'}.</p>
+      <p class="mb-2">Key takeaways from our discussion:</p>
+      <div class="ml-4 mb-3 space-y-1">
+        ${d.agents.length ? `<div>• <strong>${d.agents.join(', ')}</strong> — aligned to your highest-impact use cases</div>` : ''}
+        ${d.footprint.length ? `<div>• Your existing <strong>${d.footprint.join(', ')}</strong> investment provides a strong foundation</div>` : ''}
+        ${d.headless === 'yes' ? '<div>• Headless 360 architecture opens up API-first agent deployment across all your channels</div>' : ''}
+        <div>• Einstein Trust Layer ensures enterprise-grade security with zero data retention</div>
+      </div>
+      <p class="mb-3">Recommended next steps:</p>
+      <div class="ml-4 mb-3 space-y-1">
+        <div>1. <strong>Custom POV Demo</strong> — We'll build a branded ${d.customer} agent demo you can share internally</div>
+        <div>2. <strong>Architecture Review</strong> — Deep-dive into data strategy, integration, and agent design</div>
+        <div>3. <strong>Executive Briefing</strong> — Bring in ${d.industry} Field CTO for a strategic conversation</div>
+      </div>
+      <p class="mb-3">${d.timeline === 'Immediate (this quarter)' ? 'Given your timeline, I would like to get the POV demo in front of your team by end of next week.' : 'I will follow up next week to schedule the architecture review.'}</p>
+      <p class="mb-1">Best,</p>
+      <p>${d.seName || '[Your Name]'}</p>
+      <p class="text-sf-muted">Solution Engineer, Salesforce</p>
+    </div>`,
+    'se-arch-prepop': `<div class="space-y-3">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="bg-blue-50 rounded-xl p-4"><span class="text-xs font-bold text-sf-accent">PATTERN</span><div class="text-sm font-semibold text-sf-blue mt-1">${d.agents.length > 3 ? 'Multi-Agent Orchestration' : d.headless === 'yes' ? 'Headless 360 (API-First)' : d.agents.length > 1 ? 'Multi-Topic Agent' : 'Single Agent'}</div></div>
+        <div class="bg-purple-50 rounded-xl p-4"><span class="text-xs font-bold text-sf-purple">DATA CLOUD</span><div class="text-sm font-semibold text-sf-blue mt-1">${d.footprint.includes('Data Cloud') ? 'Active — leverage existing' : 'Provision needed'}</div></div>
+        <div class="bg-green-50 rounded-xl p-4"><span class="text-xs font-bold text-green-600">INTEGRATION</span><div class="text-sm font-semibold text-sf-blue mt-1">${d.integrations ? d.integrations.substring(0,50) : 'TBD — needs discovery'}</div></div>
+        <div class="bg-orange-50 rounded-xl p-4"><span class="text-xs font-bold text-orange-600">CHANNELS</span><div class="text-sm font-semibold text-sf-blue mt-1">${d.channels.join(', ') || 'Not specified'}</div></div>
+      </div>
+      <p class="text-xs text-sf-muted mt-2">Click below to open the Architect flow with these values pre-filled.</p>
+    </div>`
+  };
+  return templates[section] || '<div class="text-sf-muted italic">Content generation in progress...</div>';
+}
+
+// ═══ Generate SE output — the main function ═══
+function generateSEOutput() {
+  if (!validateRequired([{ id: 'se-customer', label: 'Customer Name' }])) return;
+
+  const d = gatherSEData();
+  lastSEData = d;
 
   showGeneratingModal(() => {
-    document.getElementById('se-output-title').textContent = `${customer} | Agentforce Opportunity Assessment`;
-    document.getElementById('se-customer-name').textContent = customer;
-    document.getElementById('se-recommended-agents').textContent = agents.length ? agents.join(', ') : 'No agents selected yet';
-    document.getElementById('se-recommended-channels').textContent = channels.length ? channels.join(', ') : 'No channels selected yet';
-    document.getElementById('se-recommended-timeline').textContent = timeline;
+    // Update header
+    document.getElementById('se-output-title').textContent = `${d.customer} | Agentforce Opportunity Assessment`;
+    document.getElementById('se-customer-name').textContent = d.customer;
+    document.getElementById('se-recommended-agents').textContent = d.agents.length ? d.agents.join(', ') : '—';
+    document.getElementById('se-recommended-channels').textContent = d.channels.length ? d.channels.join(', ') : '—';
+    document.getElementById('se-recommended-timeline').textContent = d.timeline;
 
-    // Render expanded detail sections
-    const detailArea = document.getElementById('se-detail-area');
-    if (detailArea) {
-      let html = '';
-      if (business || industry) {
-        html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">Customer Context</h3>`;
-        if (industry) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Industry:</span> ${industry}</div>`;
-        if (business) html += `<div class="text-sm text-sf-muted"><span class="font-semibold text-sf-blue">Business:</span> ${business}</div>`;
-        html += `</div>`;
-      }
-      if (painPoints || integrations || footprint.length) {
-        html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">Current State</h3>`;
-        if (footprint.length) html += `<div class="text-sm text-sf-muted mb-3"><span class="font-semibold text-sf-blue">Salesforce Footprint:</span> ${footprint.join(', ')}</div>`;
-        if (painPoints) html += `<div class="text-sm text-sf-muted mb-3"><span class="font-semibold text-sf-blue">Pain Points:</span><div class="mt-1 whitespace-pre-line">${painPoints}</div></div>`;
-        if (integrations) html += `<div class="text-sm text-sf-muted"><span class="font-semibold text-sf-blue">Key Integrations:</span> ${integrations}</div>`;
-        html += `</div>`;
-      }
-      if (budget || competitors || headless) {
-        html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">Opportunity Details</h3>`;
-        if (budget) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Budget Range:</span> ${budget.replace('-', ' - ').replace('under-', '< ').replace('over-', '> ')}</div>`;
-        if (competitors) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Competitors:</span> ${competitors}</div>`;
-        if (headless) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Headless Interest:</span> ${headless}</div>`;
-        if (headlessUC) html += `<div class="text-sm text-sf-muted"><span class="font-semibold text-sf-blue">Headless Use Cases:</span> ${headlessUC}</div>`;
-        html += `</div>`;
-      }
-      if (notes) {
-        html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">Additional Notes</h3><div class="text-sm text-sf-muted whitespace-pre-line">${notes}</div></div>`;
-      }
-      if (seName || seAE) {
-        html += `<div class="bg-gray-50 rounded-xl p-4 mb-6 text-sm text-sf-muted">`;
-        if (seName) html += `<span class="font-semibold text-sf-blue">SE:</span> ${seName} `;
-        if (seAE) html += `<span class="font-semibold text-sf-blue ml-4">AE:</span> ${seAE}`;
-        html += `</div>`;
-      }
-      detailArea.innerHTML = html;
-    }
-
+    // Show first tab
+    switchSETab('overview');
     showScreen('screen-se-output');
 
+    // Render original detail area (static data mirror)
+    renderSEDetailArea(d);
+
+    // Generate all AI sections (attempt SCRT2, fallback to local)
+    const sections = [
+      { id: 'se-ai-assessment', section: 'assessment' },
+      { id: 'se-gap-analysis', section: 'gaps' },
+      { id: 'se-agent-recommendations', section: 'agentRecs' },
+      { id: 'se-competitive-brief', section: 'competitive' },
+      { id: 'se-narrative', section: 'narrative' },
+      { id: 'se-deal-scoring', section: 'scoring' },
+      { id: 'se-talk-tracks', section: 'talkTrack' },
+      { id: 'se-email-draft', section: 'email' },
+      { id: 'se-arch-prepop', section: 'archPrepop' }
+    ];
+
+    // Try SCRT2 for first section; if it fails, fall back to local for all
+    generateSEAIContent(buildSEAIPrompt(d, 'assessment'), 'se-ai-assessment', (result) => {
+      const statusEl = document.getElementById('se-ai-status');
+      if (result) {
+        // SCRT2 worked! Generate remaining sections via SCRT2
+        if (statusEl) statusEl.innerHTML = '<span class="text-green-600">✅ AI-Generated</span>';
+        sections.slice(1).forEach(s => {
+          // Stagger requests to avoid rate limiting
+          setTimeout(() => generateSEAIContent(buildSEAIPrompt(d, s.section), s.id), 0);
+        });
+      } else {
+        // Fallback: generate all locally
+        if (statusEl) statusEl.innerHTML = '<span class="text-amber-600">📊 Locally Generated</span>';
+        sections.forEach(s => {
+          const el = document.getElementById(s.id);
+          if (el) el.innerHTML = generateLocalSEContent(s.id, d);
+        });
+      }
+      // Update deal score badge
+      updateDealScoreBadge(d);
+    });
+
     // Save POV
-    const seAttachedContext = getAttachedContext('se-file-input');
     savePOV({
-      id: `se-${customer.toLowerCase().replace(/[^a-z0-9]/g,'-')}-${Date.now()}`,
-      type: 'se',
-      customer: customer,
-      agents: agents.join(', '),
-      channels: channels.join(', '),
-      timeline: timeline,
-      industry: industry,
-      archetype: 'Agentforce Discovery',
-      attachedContext: seAttachedContext,
-      createdAt: new Date().toISOString()
+      id: `se-${d.customer.toLowerCase().replace(/[^a-z0-9]/g,'-')}-${Date.now()}`,
+      type: 'se', customer: d.customer, agents: d.agents.join(', '), channels: d.channels.join(', '),
+      timeline: d.timeline, industry: d.industry, archetype: 'Agentforce Discovery',
+      attachedContext: d.attachedContext, createdAt: new Date().toISOString()
     });
   });
 }
+
+// ═══ Render the static detail area (data mirror) ═══
+function renderSEDetailArea(d) {
+  const detailArea = document.getElementById('se-detail-area');
+  if (!detailArea) return;
+  let html = '';
+  if (d.business || d.industry) {
+    html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">📋 Customer Context</h3>`;
+    if (d.industry) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Industry:</span> ${d.industry}</div>`;
+    if (d.business) html += `<div class="text-sm text-sf-muted"><span class="font-semibold text-sf-blue">Business:</span> ${d.business}</div>`;
+    html += `</div>`;
+  }
+  if (d.painPoints || d.integrations || d.footprint.length) {
+    html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">🏢 Current State</h3>`;
+    if (d.footprint.length) html += `<div class="text-sm text-sf-muted mb-3"><span class="font-semibold text-sf-blue">Salesforce Footprint:</span> ${d.footprint.join(', ')}</div>`;
+    if (d.painPoints) html += `<div class="text-sm text-sf-muted mb-3"><span class="font-semibold text-sf-blue">Pain Points:</span><div class="mt-1 whitespace-pre-line">${d.painPoints}</div></div>`;
+    if (d.integrations) html += `<div class="text-sm text-sf-muted"><span class="font-semibold text-sf-blue">Key Integrations:</span> ${d.integrations}</div>`;
+    html += `</div>`;
+  }
+  if (d.budget || d.competitors || d.headless) {
+    html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">💼 Opportunity Details</h3>`;
+    if (d.budget) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Budget Range:</span> ${d.budget.replace(/-/g,' - ').replace('under ', '< ').replace('over ', '> ')}</div>`;
+    if (d.competitors) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Competitors:</span> ${d.competitors}</div>`;
+    if (d.headless) html += `<div class="text-sm text-sf-muted mb-2"><span class="font-semibold text-sf-blue">Headless Interest:</span> ${d.headless}</div>`;
+    if (d.headlessUC) html += `<div class="text-sm text-sf-muted"><span class="font-semibold text-sf-blue">Headless Use Cases:</span> ${d.headlessUC}</div>`;
+    html += `</div>`;
+  }
+  if (d.notes) html += `<div class="bg-white rounded-2xl shadow-md p-6 mb-6"><h3 class="font-bold text-sf-blue text-lg mb-3">📝 Additional Notes</h3><div class="text-sm text-sf-muted whitespace-pre-line">${d.notes}</div></div>`;
+  if (d.seName || d.seAE) {
+    html += `<div class="bg-gray-50 rounded-xl p-4 mb-6 text-sm text-sf-muted">`;
+    if (d.seName) html += `<span class="font-semibold text-sf-blue">SE:</span> ${d.seName} `;
+    if (d.seAE) html += `<span class="font-semibold text-sf-blue ml-4">AE:</span> ${d.seAE}`;
+    html += `</div>`;
+  }
+  detailArea.innerHTML = html;
+}
+
+// ═══ Update deal score badge ═══
+function updateDealScoreBadge(d) {
+  const el = document.getElementById('se-deal-score-badge');
+  if (!el) return;
+  const scores = {
+    metrics: d.painPoints ? 3 : 1,
+    buyer: d.budget ? (d.budget.includes('1m') ? 5 : d.budget.includes('500k') ? 4 : 3) : 1,
+    criteria: d.competitors ? 4 : 2,
+    process: d.timeline === 'Immediate (this quarter)' ? 4 : d.timeline === 'Next quarter' ? 3 : 2,
+    pain: d.painPoints ? 4 : 1,
+    champion: d.notes?.toLowerCase().includes('champion') || d.notes?.toLowerCase().includes('sponsor') ? 4 : 2,
+    competition: d.competitors ? 3 : 2
+  };
+  const total = Object.values(scores).reduce((a,b) => a+b, 0);
+  const pct = Math.round(total/35*100);
+  el.className = `text-sm font-bold ${pct >= 75 ? 'text-green-600' : pct >= 50 ? 'text-amber-600' : 'text-red-600'}`;
+  el.textContent = pct >= 75 ? `🟢 ${pct}%` : pct >= 50 ? `🟡 ${pct}%` : `🔴 ${pct}%`;
+}
+
+// ═══ ARCHITECT AI ENGINE ═══
+
+// Gather all architect form data
+function gatherArchData() {
+  const customer = document.getElementById('arch-customer')?.value.trim() || '';
+  const website = document.getElementById('arch-website')?.value.trim() || '';
+  const archName = document.getElementById('arch-name')?.value.trim() || '';
+  const industry = document.getElementById('arch-industry')?.value || '';
+
+  // Readiness scores
+  const readyData = document.querySelector('input[name="ready-data"]:checked')?.value || '0';
+  const readyProcess = document.querySelector('input[name="ready-process"]:checked')?.value || '0';
+  const readyAI = document.querySelector('input[name="ready-ai"]:checked')?.value || '0';
+  const readySponsor = document.querySelector('input[name="ready-sponsor"]:checked')?.value || '0';
+
+  // Salesforce footprint
+  const footprintChecks = document.querySelectorAll('#screen-architect-form input[type="checkbox"]:checked');
+  const allChecks = Array.from(footprintChecks).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+  const footprint = allChecks.filter(t => ['Sales Cloud','Service Cloud','Marketing Cloud','Data Cloud','Experience Cloud','Commerce Cloud','MuleSoft','Tableau','Slack'].includes(t));
+
+  // Use cases
+  const selectedUseCases = typeof getSelectedUseCases === 'function' ? getSelectedUseCases() : { primary: null, secondary: [] };
+
+  // Channels
+  const channelChecks = document.querySelectorAll('#screen-architect-form input[name="arch-channels"]:checked, #screen-architect-form .space-y-6 input[type="checkbox"]:checked');
+  const channels = [];
+  document.querySelectorAll('#screen-architect-form input[type="checkbox"]:checked').forEach(cb => {
+    const label = cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim() || '';
+    if (['🌐 Web','📱 Mobile','💬 Slack','📲 SMS','📞 WhatsApp','🎙️ Voice'].some(c => label.includes(c.split(' ')[1]))) channels.push(label);
+  });
+
+  // Data Cloud status
+  const dataCloud = document.querySelector('input[name="arch-datacloud"]:checked')?.value || '';
+
+  // Structured/unstructured data
+  const structured = Array.from(document.querySelectorAll('input[name="arch-structured"]:checked')).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+  const unstructured = Array.from(document.querySelectorAll('input[name="arch-unstructured"]:checked')).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+
+  // Identity
+  const identity = Array.from(document.querySelectorAll('input[name="arch-identity"]:checked')).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+
+  // Volume & Freshness
+  const volume = document.getElementById('arch-data-volume')?.value || '';
+  const freshness = document.getElementById('arch-data-freshness')?.value || '';
+
+  // NEW fields
+  const dataQuality = document.querySelector('input[name="arch-data-quality"]:checked')?.value || '';
+  const intLayer = Array.from(document.querySelectorAll('input[name="arch-int-layer"]:checked')).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+  const dataGov = document.querySelector('input[name="arch-data-gov"]:checked')?.value || '';
+
+  // Architecture pattern
+  const archPattern = document.querySelector('input[name="arch-pattern"]:checked')?.value || '';
+
+  // Integration architecture
+  const integration = Array.from(document.querySelectorAll('input[name="arch-integration"]:checked')).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+
+  // Escalation
+  const escalation = Array.from(document.querySelectorAll('input[name="arch-escalation"]:checked')).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+
+  // Guardrails
+  const guardrails = Array.from(document.querySelectorAll('input[name="arch-guardrails"]:checked')).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+
+  // External systems
+  const externalSystems = document.getElementById('arch-external-systems')?.value.trim() || '';
+
+  // Maturity
+  const maturity = document.querySelector('input[name="arch-maturity"]:checked')?.value || '';
+
+  // Agent volume
+  const agentVolume = document.getElementById('arch-volume')?.value || '';
+
+  // Compliance
+  const compliance = Array.from(document.querySelectorAll('input[name="arch-compliance"]:checked')).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+
+  // Success metrics
+  const successMetrics = Array.from(document.querySelectorAll('input[name="arch-success"]:checked')).map(cb => cb.closest('label')?.querySelector('span.text-sm')?.textContent.trim()).filter(Boolean);
+
+  return { customer, website, archName, industry, readyData: +readyData, readyProcess: +readyProcess, readyAI: +readyAI, readySponsor: +readySponsor,
+    footprint, selectedUseCases, channels, dataCloud, structured, unstructured, identity, volume, freshness, dataQuality, intLayer, dataGov,
+    archPattern, integration, escalation, guardrails, externalSystems, maturity, agentVolume, compliance, successMetrics };
+}
+
+// ═══ Data Readiness Scorecard Generator ═══
+function generateDataReadiness(d) {
+  const el = document.getElementById('arch-data-readiness');
+  if (!el) return;
+
+  // Score 5 dimensions (each 1-5)
+  const scores = {
+    foundation: Math.min(5, d.readyData + (d.dataCloud === 'mature' ? 2 : d.dataCloud === 'active' ? 1 : 0)),
+    sourceCoverage: Math.min(5, Math.ceil((d.structured.length + d.unstructured.length) / 2)),
+    identityMaturity: Math.min(5, d.identity.length + (d.dataCloud === 'mature' ? 1 : 0) + 1),
+    integrationReady: Math.min(5, d.integration.length > 0 ? Math.ceil(d.integration.length / 1.5) + 1 : 1),
+    volumePerf: (() => {
+      let s = 2;
+      if (d.volume === 'small') s = 4; else if (d.volume === 'medium') s = 3; else if (d.volume === 'large') s = 2; else if (d.volume === 'massive') s = 1;
+      if (d.freshness === 'daily') s += 1; else if (d.freshness === 'realtime' && d.volume === 'massive') s -= 1;
+      return Math.max(1, Math.min(5, s));
+    })()
+  };
+  const total = Object.values(scores).reduce((a,b) => a+b, 0);
+  const maxScore = 25;
+  const pct = Math.round(total/maxScore*100);
+  const verdict = pct >= 75 ? '🟢 Agent-Ready' : pct >= 50 ? '🟡 Quick Win Ready' : '🔴 Foundation Phase';
+
+  // Grounding gap analysis
+  const useCaseLabel = d.selectedUseCases?.primary?.name || 'General';
+  const requiredData = {
+    'Customer Service': { must: ['CRM Objects', 'Knowledge Articles'], nice: ['Conversation History', 'Sentiment'] },
+    'Sales': { must: ['CRM Objects', 'Order & Transaction'], nice: ['Email Activity', 'Competitor Intel'] },
+    'Field Service': { must: ['Work Orders', 'Assets'], nice: ['IoT Sensor Data', 'Route History'] },
+    'Commerce': { must: ['Product Catalog', 'Orders'], nice: ['Browse History', 'Reviews'] }
+  };
+  const matchedReqs = requiredData[useCaseLabel] || { must: ['CRM Objects'], nice: ['Knowledge Articles'] };
+  const allData = [...d.structured, ...d.unstructured].map(s => s.replace(/^[^\s]+\s/, ''));
+
+  // Data Cloud Blueprint
+  const connectors = [];
+  if (d.footprint.includes('Sales Cloud') || d.footprint.includes('Service Cloud')) connectors.push('Salesforce CRM Connector');
+  if (d.externalSystems.toLowerCase().includes('sap')) connectors.push('SAP ERP Connector (MuleSoft)');
+  if (d.externalSystems.toLowerCase().includes('snowflake')) connectors.push('Snowflake Zero-Copy Connector');
+  if (d.externalSystems.toLowerCase().includes('shopify')) connectors.push('Shopify Commerce Connector');
+  if (d.structured.length > 0) connectors.push('S3/Azure Blob Ingestion');
+  if (connectors.length === 0) connectors.push('Salesforce CRM Connector (baseline)');
+
+  el.innerHTML = `
+    <div class="space-y-6">
+      <!-- Overall Score -->
+      <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6">
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-bold text-sf-blue text-xl">Overall Data Readiness: ${total}/${maxScore}</span>
+          <span class="font-bold text-lg">${verdict}</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-5">
+          <div class="h-5 rounded-full transition-all duration-1000 ${pct >= 75 ? 'bg-gradient-to-r from-green-400 to-green-600' : pct >= 50 ? 'bg-gradient-to-r from-yellow-400 to-amber-500' : 'bg-gradient-to-r from-red-400 to-red-600'}" style="width:${pct}%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-sf-muted mt-1"><span>Foundation</span><span>Quick Win</span><span>Agent-Ready</span></div>
+      </div>
+
+      <!-- 5-Dimension Scores -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+        ${Object.entries({ 'Data Foundation': scores.foundation, 'Source Coverage': scores.sourceCoverage, 'Identity Maturity': scores.identityMaturity, 'Integration': scores.integrationReady, 'Volume & Perf': scores.volumePerf }).map(([label, score]) => `
+          <div class="bg-white border rounded-xl p-4 text-center">
+            <div class="text-xs font-semibold text-sf-blue mb-2">${label}</div>
+            <div class="flex justify-center gap-1 mb-1">${[1,2,3,4,5].map(i => `<div class="w-4 h-4 rounded-full ${i <= score ? 'bg-sf-purple' : 'bg-gray-200'}"></div>`).join('')}</div>
+            <div class="text-lg font-bold ${score >= 4 ? 'text-green-600' : score >= 3 ? 'text-amber-600' : 'text-red-600'}">${score}/5</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Grounding Gap Analysis -->
+      <div>
+        <h3 class="font-bold text-sf-blue text-base mb-3">Grounding Gap Analysis for "${useCaseLabel}"</h3>
+        <div class="space-y-2">
+          ${matchedReqs.must.map(req => {
+            const hasIt = allData.some(d => d.toLowerCase().includes(req.toLowerCase().substring(0,4)));
+            return `<div class="flex items-center gap-3 ${hasIt ? 'bg-green-50' : 'bg-red-50'} rounded-lg p-3">
+              <span class="text-lg">${hasIt ? '✅' : '❌'}</span>
+              <div><span class="font-semibold text-sf-blue">${req}</span> <span class="text-xs ${hasIt ? 'text-green-600' : 'text-red-600'}">${hasIt ? 'Available' : 'MISSING — Critical gap'}</span></div>
+            </div>`;
+          }).join('')}
+          ${matchedReqs.nice.map(req => {
+            const hasIt = allData.some(d => d.toLowerCase().includes(req.toLowerCase().substring(0,4)));
+            return `<div class="flex items-center gap-3 ${hasIt ? 'bg-green-50' : 'bg-yellow-50'} rounded-lg p-3">
+              <span class="text-lg">${hasIt ? '✅' : '⚠️'}</span>
+              <div><span class="font-semibold text-sf-blue">${req}</span> <span class="text-xs ${hasIt ? 'text-green-600' : 'text-amber-600'}">${hasIt ? 'Available' : 'Recommended — enhance agent quality'}</span></div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Data Quality & Governance -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white border rounded-xl p-4">
+          <div class="text-xs font-semibold text-sf-purple mb-1">Data Quality</div>
+          <div class="text-sm font-bold ${d.dataQuality === 'good' ? 'text-green-600' : d.dataQuality === 'fair' ? 'text-amber-600' : d.dataQuality === 'poor' ? 'text-red-600' : 'text-sf-muted'}">${d.dataQuality === 'good' ? '🟢 Good' : d.dataQuality === 'fair' ? '🟡 Fair — cleanup recommended before agent deployment' : d.dataQuality === 'poor' ? '🔴 Poor — data foundation work needed first' : 'Not assessed'}</div>
+        </div>
+        <div class="bg-white border rounded-xl p-4">
+          <div class="text-xs font-semibold text-sf-purple mb-1">Data Governance</div>
+          <div class="text-sm font-bold ${d.dataGov === 'mature' ? 'text-green-600' : d.dataGov === 'basic' ? 'text-amber-600' : d.dataGov === 'none' ? 'text-red-600' : 'text-sf-muted'}">${d.dataGov === 'mature' ? '🟢 Mature' : d.dataGov === 'basic' ? '🟡 Basic — formalize before scaling agents' : d.dataGov === 'none' ? '🔴 None — establish governance as Phase 0' : 'Not assessed'}</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const statusEl = document.getElementById('arch-data-status');
+  if (statusEl) statusEl.innerHTML = `<span class="${pct >= 75 ? 'text-green-600' : pct >= 50 ? 'text-amber-600' : 'text-red-600'} font-bold">${verdict} (${pct}%)</span>`;
+}
+
+// ═══ Generate Architect AI Sections ═══
+function generateArchAISections(d) {
+  // Implementation Roadmap
+  const roadmapEl = document.getElementById('arch-roadmap');
+  if (roadmapEl) {
+    const phases = [];
+    if (d.readyData <= 1 || d.dataCloud === 'none' || d.dataCloud === '') {
+      phases.push({ phase: 'Phase 0', title: 'Data Foundation', weeks: '2-4 weeks', color: 'red', items: ['Provision Data Cloud', 'Connect primary data sources', 'Establish data governance baseline', 'Identity resolution setup'] });
+    }
+    if (d.dataQuality === 'poor') {
+      phases.push({ phase: 'Phase 0.5', title: 'Data Cleanup', weeks: '2-3 weeks', color: 'orange', items: ['Data quality audit', 'Deduplication & standardization', 'Missing field enrichment', 'Validation rules'] });
+    }
+    phases.push({ phase: `Phase ${phases.length + 1}`, title: 'Quick Win Agent', weeks: '3-4 weeks', color: 'blue', items: [`Deploy ${d.selectedUseCases?.primary?.name || 'first'} agent`, 'Configure topics & actions', `Connect to ${d.channels[0] || 'Web'} channel`, 'Set up guardrails & Trust Layer'] });
+    if (d.archPattern === 'multi-topic' || d.archPattern === 'multi-agent') {
+      phases.push({ phase: `Phase ${phases.length + 1}`, title: 'Multi-Agent Scale', weeks: '4-6 weeks', color: 'purple', items: ['Additional agent topics/agents', 'Cross-agent orchestration', 'Multi-channel deployment', 'Advanced grounding & knowledge'] });
+    }
+    phases.push({ phase: `Phase ${phases.length + 1}`, title: 'Optimize & Scale', weeks: 'Ongoing', color: 'green', items: ['Performance monitoring & tuning', 'Conversation analytics', 'Continuous guardrail refinement', 'New use case expansion'] });
+
+    roadmapEl.innerHTML = `<div class="space-y-4">
+      ${phases.map(p => `<div class="flex gap-4 items-start">
+        <div class="flex flex-col items-center">
+          <div class="w-10 h-10 rounded-full bg-${p.color}-100 flex items-center justify-center text-${p.color}-600 font-bold text-xs">${p.phase.replace('Phase ','P')}</div>
+          <div class="w-0.5 h-full bg-gray-200 mt-1"></div>
+        </div>
+        <div class="flex-1 bg-${p.color}-50 rounded-xl p-5 mb-2">
+          <div class="flex justify-between items-start"><h4 class="font-bold text-sf-blue">${p.phase}: ${p.title}</h4><span class="text-xs bg-${p.color}-100 text-${p.color}-700 px-2 py-1 rounded-full">${p.weeks}</span></div>
+          <div class="mt-2 space-y-1">${p.items.map(i => `<div class="text-sm text-sf-muted flex gap-2"><span class="text-${p.color}-400">•</span>${i}</div>`).join('')}</div>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  // Data Cloud Blueprint
+  const dcEl = document.getElementById('arch-dc-blueprint');
+  if (dcEl) {
+    const connectors = [];
+    if (d.footprint.includes('Sales Cloud') || d.footprint.includes('Service Cloud')) connectors.push({ name: 'Salesforce CRM', type: 'Native', status: 'ready' });
+    if (d.externalSystems.toLowerCase().includes('sap')) connectors.push({ name: 'SAP ERP', type: 'MuleSoft', status: 'config' });
+    if (d.externalSystems.toLowerCase().includes('snowflake')) connectors.push({ name: 'Snowflake', type: 'Zero-Copy', status: 'config' });
+    if (d.externalSystems.toLowerCase().includes('shopify')) connectors.push({ name: 'Shopify', type: 'API', status: 'config' });
+    if (d.unstructured.length > 0) connectors.push({ name: 'Knowledge Base', type: 'Salesforce Knowledge', status: 'ready' });
+    if (connectors.length === 0) connectors.push({ name: 'Salesforce CRM', type: 'Native', status: 'ready' });
+
+    dcEl.innerHTML = `<div class="space-y-5">
+      <div><h4 class="font-bold text-sf-blue mb-3">Recommended Connectors</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+          ${connectors.map(c => `<div class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+            <div><span class="font-semibold text-sf-blue text-sm">${c.name}</span><span class="text-xs text-sf-muted ml-2">${c.type}</span></div>
+            <span class="text-xs px-2 py-1 rounded-full ${c.status === 'ready' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">${c.status === 'ready' ? '✅ Ready' : '⚙️ Configure'}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div><h4 class="font-bold text-sf-blue mb-3">Recommended DMOs</h4>
+        <div class="flex flex-wrap gap-2">
+          ${['Unified Individual','Unified Account','Sales Order','Case','Product','Engagement Event','Web Session'].map(dmo => `<span class="bg-purple-50 text-sf-purple text-xs px-3 py-1.5 rounded-full font-medium">${dmo}</span>`).join('')}
+        </div>
+      </div>
+      <div><h4 class="font-bold text-sf-blue mb-3">Identity Resolution</h4>
+        <div class="bg-blue-50 rounded-xl p-4 text-sm">
+          ${d.identity.includes('🆔 Unified Customer Profile exists') ? '<span class="text-green-600 font-semibold">✅ Unified profile exists</span> — leverage for agent grounding' : '<span class="text-amber-600 font-semibold">⚠️ Identity resolution needed</span> — configure matching rules (Email, Phone, Account ID) to create unified profiles'}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Agent Topic Blueprint
+  const agentEl = document.getElementById('arch-agent-blueprint');
+  if (agentEl) {
+    const ucName = d.selectedUseCases?.primary?.name || 'Customer Service';
+    const patternLabel = { 'single': 'Single Agent', 'multi-topic': 'Multi-Topic Agent', 'multi-agent': 'Multi-Agent Orchestration', 'headless': 'Headless 360 (API-First)' }[d.archPattern] || 'Single Agent';
+
+    agentEl.innerHTML = `<div class="space-y-4">
+      <div class="bg-blue-50 rounded-xl p-4"><span class="text-xs font-bold text-sf-accent">PATTERN</span><div class="text-lg font-bold text-sf-blue mt-1">${patternLabel}</div></div>
+      <div class="bg-white border rounded-xl overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-sf-blue text-white"><th class="px-4 py-2 text-left">Topic</th><th class="px-4 py-2 text-left">Actions</th><th class="px-4 py-2 text-left">Guardrails</th></tr></thead>
+          <tbody>
+            <tr class="border-b"><td class="px-4 py-3 font-semibold text-sf-blue">Entry / Router</td><td class="text-sf-muted px-4 py-3">Classify intent, route to topic</td><td class="text-sf-muted px-4 py-3">Topic-level guardrails</td></tr>
+            <tr class="border-b bg-gray-50"><td class="px-4 py-3 font-semibold text-sf-blue">${ucName}</td><td class="text-sf-muted px-4 py-3">Query records, take action, update CRM</td><td class="text-sf-muted px-4 py-3">PII masking, allowed topics</td></tr>
+            ${d.escalation.length ? `<tr class="border-b"><td class="px-4 py-3 font-semibold text-sf-blue">Escalation</td><td class="text-sf-muted px-4 py-3">${d.escalation.join(', ')}</td><td class="text-sf-muted px-4 py-3">Sentiment triggers</td></tr>` : ''}
+          </tbody>
+        </table>
+      </div>
+      <div><h4 class="font-bold text-sf-blue mb-2">Recommended Channels</h4><div class="flex flex-wrap gap-2">${d.channels.map(c => `<span class="bg-blue-50 text-sf-accent text-xs px-3 py-1.5 rounded-full font-medium">${c}</span>`).join('') || '<span class="text-sf-muted">No channels selected</span>'}</div></div>
+    </div>`;
+  }
+
+  // Trust & Compliance Matrix
+  const compEl = document.getElementById('arch-compliance-matrix');
+  if (compEl) {
+    const trustFeatures = [
+      { name: 'Einstein Trust Layer', desc: 'PII masking, toxicity detection, zero retention', status: 'included', coverage: 'Out-of-box' },
+      { name: 'Topic Guardrails', desc: 'Allowed/blocked topic configuration', status: d.guardrails.length ? 'configured' : 'needed', coverage: d.guardrails.length ? 'Selected' : 'Configure' },
+      { name: 'Audit Trail', desc: 'Conversation logging & replay', status: 'included', coverage: 'Out-of-box' },
+      { name: 'Human Approval', desc: 'Approval step for high-risk actions', status: d.guardrails.some(g => g.includes('approval')) ? 'configured' : 'optional', coverage: 'Optional' }
+    ];
+
+    compEl.innerHTML = `<div class="space-y-4">
+      <div class="bg-white border rounded-xl overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-sf-blue text-white"><th class="px-4 py-2 text-left">Capability</th><th class="px-4 py-2 text-left">Description</th><th class="px-4 py-2 text-left">Status</th></tr></thead>
+          <tbody>
+            ${trustFeatures.map((f,i) => `<tr class="${i%2?'bg-gray-50':''}"><td class="px-4 py-3 font-semibold text-sf-blue">${f.name}</td><td class="text-sf-muted px-4 py-3">${f.desc}</td><td class="px-4 py-3"><span class="text-xs px-2 py-1 rounded-full ${f.status === 'included' ? 'bg-green-100 text-green-700' : f.status === 'configured' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'}">${f.coverage}</span></td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      ${d.compliance.length ? `<div><h4 class="font-bold text-sf-blue mb-2">Compliance Requirements</h4><div class="flex flex-wrap gap-2">${d.compliance.map(c => `<span class="bg-red-50 text-red-700 text-xs px-3 py-1.5 rounded-full font-medium">${c}</span>`).join('')}</div></div>` : ''}
+    </div>`;
+  }
+
+  // ROI Business Case
+  const roiEl = document.getElementById('arch-roi-case');
+  if (roiEl) {
+    const volLabel = { 'low': '< 1K', 'medium': '1K-10K', 'high': '10K-100K', 'enterprise': '100K+' }[d.agentVolume] || 'TBD';
+    const costPerInteraction = 8; // industry avg
+    const deflectionRate = d.readyData >= 2 ? 0.65 : 0.45;
+    const volNum = { 'low': 500, 'medium': 5000, 'high': 50000, 'enterprise': 200000 }[d.agentVolume] || 5000;
+    const monthlySavings = Math.round(volNum * deflectionRate * costPerInteraction);
+    const annualSavings = monthlySavings * 12;
+
+    roiEl.innerHTML = `<div class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-green-50 rounded-xl p-5 text-center">
+          <div class="text-xs font-semibold text-green-600 mb-1">Est. Monthly Savings</div>
+          <div class="text-2xl font-black text-green-700">$${monthlySavings.toLocaleString()}</div>
+          <div class="text-xs text-sf-muted mt-1">${Math.round(deflectionRate*100)}% deflection × ${volLabel} conv/mo</div>
+        </div>
+        <div class="bg-blue-50 rounded-xl p-5 text-center">
+          <div class="text-xs font-semibold text-blue-600 mb-1">Est. Annual Savings</div>
+          <div class="text-2xl font-black text-blue-700">$${annualSavings.toLocaleString()}</div>
+          <div class="text-xs text-sf-muted mt-1">Based on $${costPerInteraction}/interaction avg</div>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-5 text-center">
+          <div class="text-xs font-semibold text-purple-600 mb-1">Payback Period</div>
+          <div class="text-2xl font-black text-purple-700">${annualSavings > 500000 ? '3-4 mo' : annualSavings > 100000 ? '6-9 mo' : '9-12 mo'}</div>
+          <div class="text-xs text-sf-muted mt-1">Time to positive ROI</div>
+        </div>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-5">
+        <h4 class="font-bold text-sf-blue mb-2">Success Metrics</h4>
+        <div class="flex flex-wrap gap-2">${d.successMetrics.map(m => `<span class="bg-green-50 text-green-700 text-xs px-3 py-1.5 rounded-full font-medium">${m}</span>`).join('') || '<span class="text-sf-muted">Select success metrics in the form</span>'}</div>
+      </div>
+      <p class="text-xs text-sf-muted italic">* Estimates based on industry averages. Actual results will vary based on implementation scope and customer interaction complexity.</p>
+    </div>`;
+  }
+}
+
+// ═══ Architect AI Engine hooked into generateArchOutput() above ═══
 
 // Modify modal
 function showModifyModal() {
