@@ -112,7 +112,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           </div>
           <div class="flex-1 px-5 pb-5 pt-3" style="background: linear-gradient(135deg, #006938 0%, #004d29 100%);">
             <div class="text-white/70 text-xs font-medium mb-2">Retail | QSR</div>
-            <div class="text-sm text-white/90">Architecture Demo & Guest Service Agent</div>
+            <div class="text-sm text-white/90">Solution Architecture & Guest Service Agent</div>
             <div class="text-xs text-white/60 font-medium mt-1">+ Pre-defined Scenarios & Live Demo</div>
             <div class="text-white text-sm font-semibold mt-3 group-hover:underline">View →</div>
           </div>
@@ -397,7 +397,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       <button onclick="showScreen('screen-landing')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
       <div class="flex items-center gap-2">
         <span class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">ARCHITECT</span>
-        <span class="font-bold text-lg">Architecture Demo Builder</span>
+        <span class="font-bold text-lg">Solution Architecture Builder</span>
       </div>
     </div>
   </div>
@@ -1038,7 +1038,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
 
         <!-- Generate Button -->
         <button onclick="generateArchOutput()" class="w-full bg-sf-purple text-white py-4 rounded-xl font-bold text-lg hover:bg-sf-blue transition-all shadow-lg cursor-pointer">
-          🏗️ Generate Architecture Demo
+          🏗️ Generate Solution Architecture
         </button>
       </div>
     </div>
@@ -1414,7 +1414,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
       <div class="flex items-center gap-4">
         <button onclick="showScreen('screen-architect-form')" class="text-blue-200 hover:text-white transition cursor-pointer">← Back</button>
         <span class="bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">ARCHITECT</span>
-        <span class="font-bold" id="arch-output-title">Nordstrom |Architecture Demo</span>
+        <span class="font-bold" id="arch-output-title">Nordstrom | Solution Architecture</span>
       </div>
       <div class="flex items-center gap-3">
         <div class="flex bg-white/10 rounded-lg p-0.5">
@@ -1428,7 +1428,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
   <!-- Tabs -->
   <div class="bg-white border-b">
     <div class="max-w-7xl mx-auto px-6 flex gap-8">
-      <button onclick="switchTab('arch', 'pov')" id="arch-tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">Architecture Demo</button>
+      <button onclick="switchTab('arch', 'pov')" id="arch-tab-pov" class="py-4 px-2 text-sm font-semibold tab-active cursor-pointer">Solution Architecture</button>
       <button onclick="switchTab('arch', 'demo')" id="arch-tab-demo" class="py-4 px-2 text-sm tab-inactive cursor-pointer">Live Demo</button>
     </div>
   </div>
@@ -2316,7 +2316,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
         💼 Build an AE Demo
       </button>
       <button onclick="showScreen('screen-architect-form')" class="bg-white border-2 border-sf-purple text-sf-purple px-8 py-3 rounded-xl font-semibold hover:bg-purple-50 transition cursor-pointer">
-        🏗️ Build Architecture Demo
+        🏗️ Build Solution Architecture
       </button>
     </div>
   </div>
@@ -3202,7 +3202,7 @@ function renderMyPOVs() {
         </div>
         <div class="flex-1 px-5 pb-5 pt-3 relative" style="background: linear-gradient(135deg, ${brandColor} 0%, ${brandColorEnd} 100%);">
           <div class="text-white/70 text-xs font-medium mb-2">${pov.industry || 'Retail'}</div>
-          <div class="text-sm text-white/90">${pov.archetype || 'Architecture Demo'}</div>
+          <div class="text-sm text-white/90">${pov.archetype || 'Solution Architecture'}</div>
           <div class="flex items-center justify-between mt-3">
             <div class="text-white text-sm font-semibold group-hover:underline">View →</div>
             <button onclick="event.stopPropagation();deletePOV('${pov.id}')" class="text-white/50 hover:text-red-300 text-xs px-2 py-1 rounded hover:bg-white/10 transition cursor-pointer" title="Delete this demo">✕</button>
@@ -3268,7 +3268,7 @@ async function pushPOVToGitHub(pov) {
     } catch {}
 
     const body = {
-      message: `POV: ${pov.customer} - ${pov.archetype || 'Architecture Demo'}`,
+      message: `POV: ${pov.customer} - ${pov.archetype || 'Solution Architecture'}`,
       content: content,
       branch: GITHUB_BRANCH
     };
@@ -3364,7 +3364,7 @@ async function loadGeneratedPOVs() {
       'Sales Agent': '💰',
       'Store Ops Agent': '🏪',
       'Employee Ops Agent': '👥',
-      'Architecture Demo': '🏗️',
+      'Solution Architecture': '🏗️',
       'Voice Agent': '🎙️'
     };
 
@@ -4149,7 +4149,7 @@ function generateArchOutput() {
   const usecaseLabel = selectedUseCases.primary ? selectedUseCases.primary.name : '';
 
   showGeneratingModal(() => {
-    document.getElementById('arch-output-title').textContent = `${customer} | Architecture Demo`;
+    document.getElementById('arch-output-title').textContent = `${customer} | Solution Architecture`;
     document.getElementById('arch-pov-customer').textContent = customer;
     document.getElementById('arch-mapped-customer').textContent = customer;
     document.getElementById('arch-demo-brand').textContent = customer;
@@ -4188,7 +4188,7 @@ function generateArchOutput() {
       website: website,
       architectName: archName,
       usecase: usecaseLabel,
-      archetype: 'Architecture Demo',
+      archetype: 'Solution Architecture',
       archetypeKey: 'architecture',
       industry: archIndustry,
       attachedContext: archAttachedContext,
