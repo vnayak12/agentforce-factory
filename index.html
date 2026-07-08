@@ -3037,6 +3037,61 @@ function extractBrandColor(websiteOrName) {
   return { primary, secondary };
 }
 
+// ═══ Auto-populate Website URL from Account Name ═══
+const KNOWN_DOMAINS = {
+  'nike': 'nike.com', 'starbucks': 'starbucks.com', 'wingstop': 'wingstop.com',
+  'nordstrom': 'nordstrom.com', 'lululemon': 'lululemon.com', 'target': 'target.com',
+  'walmart': 'walmart.com', 'costco': 'costco.com', 'pacsun': 'pacsun.com',
+  'hot topic': 'hottopic.com', 'hottopic': 'hottopic.com', 'staples': 'staples.com',
+  'constellation': 'constellationbrands.com', 'autozone': 'autozone.com',
+  'autonation': 'autonation.com', 'penske': 'penske.com', 'lithia': 'lithiamotors.com',
+  'caterpillar': 'caterpillar.com', '3m': '3m.com', 'honeywell': 'honeywell.com',
+  'procter & gamble': 'pg.com', 'p&g': 'pg.com', 'unilever': 'unilever.com',
+  'nestle': 'nestle.com', 'nestlé': 'nestle.com', 'coca-cola': 'coca-cola.com',
+  'coca cola': 'coca-cola.com', 'pepsico': 'pepsico.com', 'mondelez': 'mondelezinternational.com',
+  'baker hughes': 'bakerhughes.com', 'duke energy': 'duke-energy.com',
+  'waste management': 'wm.com', 'southern company': 'southerncompany.com',
+  'ge': 'ge.com', 'general electric': 'ge.com', 'siemens': 'siemens.com',
+  'ford': 'ford.com', 'toyota': 'toyota.com', 'bmw': 'bmw.com', 'tesla': 'tesla.com',
+  'mercedes': 'mercedes-benz.com', 'mercedes-benz': 'mercedes-benz.com',
+  'honda': 'honda.com', 'gm': 'gm.com', 'general motors': 'gm.com',
+  'cummins': 'cummins.com', 'deere': 'deere.com', 'john deere': 'deere.com',
+  'bosch': 'bosch.com', 'emerson': 'emerson.com', 'rockwell': 'rockwellautomation.com',
+  'shell': 'shell.com', 'bp': 'bp.com', 'exxon': 'exxonmobil.com', 'chevron': 'chevron.com',
+  'schneider': 'se.com', 'schneider electric': 'se.com', 'abb': 'abb.com'
+};
+function guessWebsiteUrl(accountName) {
+  if (!accountName) return '';
+  const name = accountName.toLowerCase().trim();
+  if (KNOWN_DOMAINS[name]) return KNOWN_DOMAINS[name];
+  for (const [brand, domain] of Object.entries(KNOWN_DOMAINS)) {
+    if (name.includes(brand) || brand.includes(name)) return domain;
+  }
+  // Fallback: guess domain from company name
+  const slug = name.replace(/\s*(inc|llc|corp|ltd|co|group|holdings|enterprises|international)\s*\.?$/i, '')
+    .replace(/[^a-z0-9]/g, '').trim();
+  return slug ? slug + '.com' : '';
+}
+function autoPopulateWebsite(accountInputId, websiteInputId) {
+  const acctEl = document.getElementById(accountInputId);
+  const webEl = document.getElementById(websiteInputId);
+  if (!acctEl || !webEl) return;
+  acctEl.addEventListener('blur', () => {
+    if (webEl.value.trim()) return; // Don't overwrite if user already typed
+    const guess = guessWebsiteUrl(acctEl.value);
+    if (guess) webEl.value = guess;
+  });
+}
+// Wire up all form pairs on load
+document.addEventListener('DOMContentLoaded', () => {
+  autoPopulateWebsite('ae-account', 'ae-website');
+  autoPopulateWebsite('arch-customer', 'arch-website');
+  autoPopulateWebsite('eu-account', 'eu-website');
+  autoPopulateWebsite('cg-account', 'cg-website');
+  autoPopulateWebsite('mfg-account', 'mfg-website');
+  autoPopulateWebsite('auto-account', 'auto-website');
+});
+
 // Extract dominant color from a logo image (canvas-based, works cross-origin with uplead)
 function extractColorFromLogo(logoUrl) {
   return new Promise((resolve) => {
