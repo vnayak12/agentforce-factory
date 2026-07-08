@@ -3100,7 +3100,13 @@ function autoPopulateWebsite(accountInputId, websiteInputId) {
 // ═══ Remember & Auto-fill "Your Name" across all forms ═══
 const NAME_FIELDS = ['ae-name', 'arch-name', 'se-name', 'eu-name', 'cg-name', 'mfg-name', 'auto-name'];
 function rememberUserName() {
-  const savedName = localStorage.getItem('studio-user-name') || '';
+  // Check URL parameter first: ?name=Vandana+Nayak
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlName = urlParams.get('name');
+  if (urlName) {
+    localStorage.setItem('studio-user-name', urlName);
+  }
+  const savedName = urlName || localStorage.getItem('studio-user-name') || '';
   NAME_FIELDS.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
