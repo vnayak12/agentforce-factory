@@ -3082,7 +3082,29 @@ function autoPopulateWebsite(accountInputId, websiteInputId) {
     if (guess) webEl.value = guess;
   });
 }
-// Wire up all form pairs on load
+// ═══ Remember & Auto-fill "Your Name" across all forms ═══
+const NAME_FIELDS = ['ae-name', 'arch-name', 'se-name', 'eu-name', 'cg-name', 'mfg-name', 'auto-name'];
+function rememberUserName() {
+  const savedName = localStorage.getItem('studio-user-name') || '';
+  NAME_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (savedName && !el.value.trim()) el.value = savedName;
+    el.addEventListener('blur', () => {
+      const v = el.value.trim();
+      if (v) {
+        localStorage.setItem('studio-user-name', v);
+        // Sync to other empty name fields
+        NAME_FIELDS.forEach(otherId => {
+          const other = document.getElementById(otherId);
+          if (other && !other.value.trim()) other.value = v;
+        });
+      }
+    });
+  });
+}
+
+// Wire up all auto-populate on load
 document.addEventListener('DOMContentLoaded', () => {
   autoPopulateWebsite('ae-account', 'ae-website');
   autoPopulateWebsite('arch-customer', 'arch-website');
@@ -3090,6 +3112,7 @@ document.addEventListener('DOMContentLoaded', () => {
   autoPopulateWebsite('cg-account', 'cg-website');
   autoPopulateWebsite('mfg-account', 'mfg-website');
   autoPopulateWebsite('auto-account', 'auto-website');
+  rememberUserName();
 });
 
 // Extract dominant color from a logo image (canvas-based, works cross-origin with uplead)
