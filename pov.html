@@ -25,26 +25,9 @@
 .tab-active { border-bottom: 3px solid #0176D3; color: #032D60; }
 .tab-inactive { color: #706E6B; border-bottom: 3px solid transparent; }
 .tab-inactive:hover { color: #032D60; }
-/* Channel tab styles */
-.channel-tab-active { background: #EBF5FF; color: #0176D3; font-weight: 700; }
-.channel-tab-active.ch-teams { background: #ECEAFC; color: #5B5FC7; }
-.channel-tab-active.ch-chatgpt { background: #E6F7EF; color: #10A37F; }
-.channel-tab-active.ch-gemini { background: #EAF1FE; color: #4285F4; }
-.channel-tab-active.ch-claude { background: #FDF0EA; color: #D97757; }
-.channel-tab-active.ch-custom { background: #F0F0F0; color: #333333; }
-/* Teams dark sidebar chrome */
-.teams-chrome { background: #292929; }
-.teams-chat-bg { background: #F5F5F5; }
-.teams-compose { background: #fff; border: 1px solid #E0E0E0; border-radius: 8px; }
-/* ChatGPT chrome */
-.chatgpt-chrome { background: #343541; }
-.chatgpt-chat-bg { background: #343541; }
-/* Gemini chrome */
-.gemini-chrome { background: #1A1A2E; }
-.gemini-chat-bg { background: #FFFFFF; }
-/* Claude chrome */
-.claude-chrome { background: #2D2B28; }
-.claude-chat-bg { background: #2D2B28; }
+/* Channel card active ring pulse */
+.channel-card { position: relative; }
+.channel-card:hover { transform: translateY(-1px); }
 /* NGA Widget z-index overrides (used by non-voice archetypes) */
 .embeddedMessagingTopContainer { z-index: 10000 !important; }
 .embeddedMessagingFrame[name*="ChatWindow"] { z-index: 10000 !important; }
@@ -347,32 +330,70 @@
       </div>
     </div>
 
-    <!-- ═══ Multi-Channel Tabs ═══ -->
-    <div class="mb-4">
-      <div class="flex items-center gap-1 bg-white rounded-xl shadow-md p-1.5 overflow-x-auto">
-        <button onclick="switchChannel('agentforce')" id="ch-tab-agentforce" class="channel-tab channel-tab-active flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap cursor-pointer transition-all">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-          Agentforce
+    <!-- ═══ Multi-Channel Selector ═══ -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+      <h3 class="text-lg font-bold text-sf-blue mb-1">Agent Channel</h3>
+      <p class="text-sm text-sf-muted mb-4">Same agent, different surface — click to switch the experience</p>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <!-- Agentforce -->
+        <button onclick="switchChannel('agentforce')" id="ch-tab-agentforce" class="channel-card cursor-pointer border-2 border-sf-accent bg-blue-50 rounded-xl p-4 hover:shadow-md transition-all text-left">
+          <div class="flex items-center gap-2.5 mb-2">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #0176D3, #032D60);">
+              <span class="text-white text-lg">⚡</span>
+            </div>
+            <div class="font-semibold text-sf-blue text-sm leading-tight">Agentforce</div>
+          </div>
+          <div class="text-xs text-sf-muted">Salesforce native</div>
         </button>
-        <button onclick="switchChannel('teams')" id="ch-tab-teams" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.3 8.9h-4.2V6.6c0-.9.7-1.6 1.6-1.6h1c.9 0 1.6.7 1.6 1.6v2.3zm-1.6-5.9c1 0 1.8.8 1.8 1.8S18.7 6.6 17.7 6.6s-1.8-.8-1.8-1.8.8-1.8 1.8-1.8zM14 7.4c1.2 0 2.1-1 2.1-2.1 0-1.2-1-2.1-2.1-2.1-1.2 0-2.1 1-2.1 2.1 0 1.2.9 2.1 2.1 2.1zm1.5 1.5h-5.4c-.7 0-1.3.6-1.3 1.3v5.3c0 2.1 1.7 3.8 3.8 3.8h.4c2.1 0 3.8-1.7 3.8-3.8v-5.3c0-.7-.6-1.3-1.3-1.3z" fill="#5B5FC7"/></svg>
-          Teams
+        <!-- Teams -->
+        <button onclick="switchChannel('teams')" id="ch-tab-teams" class="channel-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:border-purple-400 hover:shadow-md transition-all text-left">
+          <div class="flex items-center gap-2.5 mb-2">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: #5B5FC7;">
+              <span class="text-white text-lg">🟣</span>
+            </div>
+            <div class="font-semibold text-sf-blue text-sm leading-tight">Teams</div>
+          </div>
+          <div class="text-xs text-sf-muted">Microsoft Teams</div>
         </button>
-        <button onclick="switchChannel('chatgpt')" id="ch-tab-chatgpt" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
-          <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.28 14.05a5.23 5.23 0 00-.45-4.28 5.28 5.28 0 00-5.7-2.53A5.27 5.27 0 0012.2 2a5.3 5.3 0 00-5.06 3.7 5.23 5.23 0 00-3.5 2.54 5.28 5.28 0 00.65 6.19 5.23 5.23 0 00.44 4.28A5.28 5.28 0 0010.44 21.24 5.27 5.27 0 0014.37 22a5.3 5.3 0 005.06-3.7 5.23 5.23 0 003.5-2.54 5.19 5.19 0 00-.65-1.71z" fill="#10A37F"/></svg>
-          ChatGPT
+        <!-- ChatGPT -->
+        <button onclick="switchChannel('chatgpt')" id="ch-tab-chatgpt" class="channel-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:border-green-400 hover:shadow-md transition-all text-left">
+          <div class="flex items-center gap-2.5 mb-2">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: #10A37F;">
+              <span class="text-white text-lg">🤖</span>
+            </div>
+            <div class="font-semibold text-sf-blue text-sm leading-tight">ChatGPT</div>
+          </div>
+          <div class="text-xs text-sf-muted">OpenAI</div>
         </button>
-        <button onclick="switchChannel('gemini')" id="ch-tab-gemini" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
-          <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="url(#gemGrad)"/><defs><linearGradient id="gemGrad" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#4285F4"/><stop offset="25%" stop-color="#9B72CB"/><stop offset="50%" stop-color="#D96570"/><stop offset="75%" stop-color="#D96570"/><stop offset="100%" stop-color="#FCC934"/></linearGradient></defs><path d="M12 6c0 3.31-2.69 6-6 6 3.31 0 6 2.69 6 6 0-3.31 2.69-6 6-6-3.31 0-6-2.69-6-6z" fill="white"/></svg>
-          Gemini
+        <!-- Gemini -->
+        <button onclick="switchChannel('gemini')" id="ch-tab-gemini" class="channel-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:border-blue-400 hover:shadow-md transition-all text-left">
+          <div class="flex items-center gap-2.5 mb-2">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #4285F4, #9B72CB, #D96570);">
+              <span class="text-white text-lg">✨</span>
+            </div>
+            <div class="font-semibold text-sf-blue text-sm leading-tight">Gemini</div>
+          </div>
+          <div class="text-xs text-sf-muted">Google AI</div>
         </button>
-        <button onclick="switchChannel('claude')" id="ch-tab-claude" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
-          <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#D97757"/><path d="M15.3 8.3l-4.8 7.4h-1L14.3 8.3h1zm-3.6 0l-4.8 7.4h-1l4.8-7.4h1z" fill="white"/></svg>
-          Claude
+        <!-- Claude -->
+        <button onclick="switchChannel('claude')" id="ch-tab-claude" class="channel-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:border-orange-400 hover:shadow-md transition-all text-left">
+          <div class="flex items-center gap-2.5 mb-2">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: #D97757;">
+              <span class="text-white text-lg">◈</span>
+            </div>
+            <div class="font-semibold text-sf-blue text-sm leading-tight">Claude</div>
+          </div>
+          <div class="text-xs text-sf-muted">Anthropic</div>
         </button>
-        <button onclick="switchChannel('custom')" id="ch-tab-custom" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-          Custom App
+        <!-- Custom App -->
+        <button onclick="switchChannel('custom')" id="ch-tab-custom" class="channel-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:border-gray-400 hover:shadow-md transition-all text-left">
+          <div class="flex items-center gap-2.5 mb-2">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: #1E1E2E;">
+              <span class="text-white text-lg">🌐</span>
+            </div>
+            <div class="font-semibold text-sf-blue text-sm leading-tight">Custom App</div>
+          </div>
+          <div class="text-xs text-sf-muted">Your platform</div>
         </button>
       </div>
     </div>
@@ -649,13 +670,22 @@ const CHANNEL_THEMES = {
 function switchChannel(channel) {
   currentChannel = channel;
   const theme = CHANNEL_THEMES[channel];
-  const tabs = document.querySelectorAll('.channel-tab');
-  tabs.forEach(t => {
-    t.className = 'channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100';
+  // Channel card highlighting
+  const channelBorderColors = {
+    agentforce: 'border-sf-accent bg-blue-50',
+    teams: 'border-purple-400 bg-purple-50',
+    chatgpt: 'border-green-400 bg-green-50',
+    gemini: 'border-blue-400 bg-blue-50',
+    claude: 'border-orange-400 bg-orange-50',
+    custom: 'border-gray-400 bg-gray-50'
+  };
+  document.querySelectorAll('.channel-card').forEach(c => {
+    c.className = 'channel-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:shadow-md transition-all text-left';
   });
-  const activeTab = document.getElementById('ch-tab-' + channel);
-  if (activeTab) {
-    activeTab.className = 'channel-tab channel-tab-active ' + (theme.tabClass || '') + ' flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap cursor-pointer transition-all';
+  const activeCard = document.getElementById('ch-tab-' + channel);
+  if (activeCard) {
+    const border = channelBorderColors[channel] || 'border-sf-accent bg-blue-50';
+    activeCard.className = 'channel-card cursor-pointer border-2 ' + border + ' rounded-xl p-4 shadow-md transition-all text-left';
   }
 
   // Header
