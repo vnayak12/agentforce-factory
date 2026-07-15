@@ -25,6 +25,26 @@
 .tab-active { border-bottom: 3px solid #0176D3; color: #032D60; }
 .tab-inactive { color: #706E6B; border-bottom: 3px solid transparent; }
 .tab-inactive:hover { color: #032D60; }
+/* Channel tab styles */
+.channel-tab-active { background: #EBF5FF; color: #0176D3; font-weight: 700; }
+.channel-tab-active.ch-teams { background: #ECEAFC; color: #5B5FC7; }
+.channel-tab-active.ch-chatgpt { background: #E6F7EF; color: #10A37F; }
+.channel-tab-active.ch-gemini { background: #EAF1FE; color: #4285F4; }
+.channel-tab-active.ch-claude { background: #FDF0EA; color: #D97757; }
+.channel-tab-active.ch-custom { background: #F0F0F0; color: #333333; }
+/* Teams dark sidebar chrome */
+.teams-chrome { background: #292929; }
+.teams-chat-bg { background: #F5F5F5; }
+.teams-compose { background: #fff; border: 1px solid #E0E0E0; border-radius: 8px; }
+/* ChatGPT chrome */
+.chatgpt-chrome { background: #343541; }
+.chatgpt-chat-bg { background: #343541; }
+/* Gemini chrome */
+.gemini-chrome { background: #1A1A2E; }
+.gemini-chat-bg { background: #FFFFFF; }
+/* Claude chrome */
+.claude-chrome { background: #2D2B28; }
+.claude-chat-bg { background: #2D2B28; }
 /* NGA Widget z-index overrides (used by non-voice archetypes) */
 .embeddedMessagingTopContainer { z-index: 10000 !important; }
 .embeddedMessagingFrame[name*="ChatWindow"] { z-index: 10000 !important; }
@@ -327,6 +347,36 @@
       </div>
     </div>
 
+    <!-- ═══ Multi-Channel Tabs ═══ -->
+    <div class="mb-4">
+      <div class="flex items-center gap-1 bg-white rounded-xl shadow-md p-1.5 overflow-x-auto">
+        <button onclick="switchChannel('agentforce')" id="ch-tab-agentforce" class="channel-tab channel-tab-active flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap cursor-pointer transition-all">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          Agentforce
+        </button>
+        <button onclick="switchChannel('teams')" id="ch-tab-teams" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.3 8.9h-4.2V6.6c0-.9.7-1.6 1.6-1.6h1c.9 0 1.6.7 1.6 1.6v2.3zm-1.6-5.9c1 0 1.8.8 1.8 1.8S18.7 6.6 17.7 6.6s-1.8-.8-1.8-1.8.8-1.8 1.8-1.8zM14 7.4c1.2 0 2.1-1 2.1-2.1 0-1.2-1-2.1-2.1-2.1-1.2 0-2.1 1-2.1 2.1 0 1.2.9 2.1 2.1 2.1zm1.5 1.5h-5.4c-.7 0-1.3.6-1.3 1.3v5.3c0 2.1 1.7 3.8 3.8 3.8h.4c2.1 0 3.8-1.7 3.8-3.8v-5.3c0-.7-.6-1.3-1.3-1.3z" fill="#5B5FC7"/></svg>
+          Teams
+        </button>
+        <button onclick="switchChannel('chatgpt')" id="ch-tab-chatgpt" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
+          <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.28 14.05a5.23 5.23 0 00-.45-4.28 5.28 5.28 0 00-5.7-2.53A5.27 5.27 0 0012.2 2a5.3 5.3 0 00-5.06 3.7 5.23 5.23 0 00-3.5 2.54 5.28 5.28 0 00.65 6.19 5.23 5.23 0 00.44 4.28A5.28 5.28 0 0010.44 21.24 5.27 5.27 0 0014.37 22a5.3 5.3 0 005.06-3.7 5.23 5.23 0 003.5-2.54 5.19 5.19 0 00-.65-1.71z" fill="#10A37F"/></svg>
+          ChatGPT
+        </button>
+        <button onclick="switchChannel('gemini')" id="ch-tab-gemini" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
+          <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="url(#gemGrad)"/><defs><linearGradient id="gemGrad" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#4285F4"/><stop offset="25%" stop-color="#9B72CB"/><stop offset="50%" stop-color="#D96570"/><stop offset="75%" stop-color="#D96570"/><stop offset="100%" stop-color="#FCC934"/></linearGradient></defs><path d="M12 6c0 3.31-2.69 6-6 6 3.31 0 6 2.69 6 6 0-3.31 2.69-6 6-6-3.31 0-6-2.69-6-6z" fill="white"/></svg>
+          Gemini
+        </button>
+        <button onclick="switchChannel('claude')" id="ch-tab-claude" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
+          <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="#D97757"/><path d="M15.3 8.3l-4.8 7.4h-1L14.3 8.3h1zm-3.6 0l-4.8 7.4h-1l4.8-7.4h1z" fill="white"/></svg>
+          Claude
+        </button>
+        <button onclick="switchChannel('custom')" id="ch-tab-custom" class="channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          Custom App
+        </button>
+      </div>
+    </div>
+
     <!-- Live Agent Chat -->
     <div id="demo-container" class="rounded-2xl overflow-hidden shadow-xl">
       <div id="demo-header" class="bg-gradient-to-r from-sf-accent to-sf-blue p-5 flex items-center justify-between">
@@ -353,7 +403,7 @@
         <div id="demo-chat" class="flex-1 p-5 space-y-4 overflow-y-auto" style="min-height: 380px;"></div>
         <div class="border-t p-4 flex gap-3">
           <input type="text" id="demo-input" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2.5 text-sm focus:border-sf-accent focus:ring-1 focus:ring-sf-accent outline-none" onkeydown="if(event.key==='Enter')sendMessage()">
-          <button onclick="sendMessage()" class="bg-sf-accent text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-blue-700 transition cursor-pointer">Send</button>
+          <button onclick="sendMessage()" id="demo-send-btn" class="bg-sf-accent text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-blue-700 transition cursor-pointer">Send</button>
         </div>
       </div>
     </div>
@@ -464,6 +514,291 @@ function setViewMode(mode) {
     }
   }
 }
+
+// ═══ Multi-Channel Switcher ═══
+let currentChannel = 'agentforce';
+const CHANNEL_THEMES = {
+  agentforce: {
+    headerBg: null, // uses brand color from POV
+    headerLabel: 'Agentforce',
+    headerSub: 'Powered by Salesforce',
+    chatBg: '#FFFFFF',
+    userBubbleBg: null, // uses brand color
+    userBubbleText: '#FFFFFF',
+    botBubbleBg: '#F3F3F3',
+    botBubbleText: '#1C1C1C',
+    botAvatar: '⚡',
+    botAvatarBg: '#EBF5FF',
+    inputBorder: '#D8D8D8',
+    inputPlaceholder: 'Type a message...',
+    sendBg: null, // uses brand
+    sendText: '#FFFFFF',
+    borderRadius: '1rem',
+    headerPadding: 'p-5',
+    tabClass: '',
+    statusLabel: 'Agentforce',
+    fontFamily: ''
+  },
+  teams: {
+    headerBg: 'linear-gradient(135deg, #5B5FC7 0%, #464EB8 100%)',
+    headerLabel: 'Teams',
+    headerSub: 'Microsoft Teams',
+    chatBg: '#F5F5F5',
+    userBubbleBg: '#5B5FC7',
+    userBubbleText: '#FFFFFF',
+    botBubbleBg: '#FFFFFF',
+    botBubbleText: '#242424',
+    botAvatar: '🤖',
+    botAvatarBg: '#ECEAFC',
+    inputBorder: '#E0E0E0',
+    inputPlaceholder: 'Type a message',
+    sendBg: '#5B5FC7',
+    sendText: '#FFFFFF',
+    borderRadius: '0.5rem',
+    headerPadding: 'p-4',
+    tabClass: 'ch-teams',
+    statusLabel: 'Teams Bot',
+    fontFamily: "'Segoe UI', sans-serif"
+  },
+  chatgpt: {
+    headerBg: 'linear-gradient(135deg, #10A37F 0%, #0D8A6A 100%)',
+    headerLabel: 'ChatGPT',
+    headerSub: 'OpenAI',
+    chatBg: '#343541',
+    userBubbleBg: '#2A2B32',
+    userBubbleText: '#ECECF1',
+    botBubbleBg: '#444654',
+    botBubbleText: '#D1D5DB',
+    botAvatar: '✨',
+    botAvatarBg: '#10A37F',
+    inputBorder: '#40414F',
+    inputPlaceholder: 'Send a message...',
+    sendBg: '#10A37F',
+    sendText: '#FFFFFF',
+    borderRadius: '0.75rem',
+    headerPadding: 'p-4',
+    tabClass: 'ch-chatgpt',
+    statusLabel: 'GPT Agent',
+    fontFamily: "'Soehne', sans-serif"
+  },
+  gemini: {
+    headerBg: 'linear-gradient(135deg, #4285F4 0%, #9B72CB 50%, #D96570 100%)',
+    headerLabel: 'Gemini',
+    headerSub: 'Google AI',
+    chatBg: '#FFFFFF',
+    userBubbleBg: '#E8F0FE',
+    userBubbleText: '#1A73E8',
+    botBubbleBg: '#F8F9FA',
+    botBubbleText: '#202124',
+    botAvatar: '✦',
+    botAvatarBg: 'linear-gradient(135deg, #4285F4, #9B72CB, #D96570)',
+    inputBorder: '#DADCE0',
+    inputPlaceholder: 'Ask Gemini...',
+    sendBg: '#1A73E8',
+    sendText: '#FFFFFF',
+    borderRadius: '1.5rem',
+    headerPadding: 'p-4',
+    tabClass: 'ch-gemini',
+    statusLabel: 'Gemini Agent',
+    fontFamily: "'Google Sans', 'Roboto', sans-serif"
+  },
+  claude: {
+    headerBg: 'linear-gradient(135deg, #D97757 0%, #C4623F 100%)',
+    headerLabel: 'Claude',
+    headerSub: 'Anthropic',
+    chatBg: '#2D2B28',
+    userBubbleBg: '#D97757',
+    userBubbleText: '#FFFFFF',
+    botBubbleBg: '#3D3B38',
+    botBubbleText: '#E8E4DF',
+    botAvatar: '◈',
+    botAvatarBg: '#D97757',
+    inputBorder: '#4D4B48',
+    inputPlaceholder: 'Reply to Claude...',
+    sendBg: '#D97757',
+    sendText: '#FFFFFF',
+    borderRadius: '1rem',
+    headerPadding: 'p-4',
+    tabClass: 'ch-claude',
+    statusLabel: 'Claude Agent',
+    fontFamily: "'Styrene A', 'Inter', sans-serif"
+  },
+  custom: {
+    headerBg: 'linear-gradient(135deg, #1E1E2E 0%, #2D2D3D 100%)',
+    headerLabel: 'Custom App',
+    headerSub: 'Your Platform',
+    chatBg: '#FAFAFA',
+    userBubbleBg: '#1E1E2E',
+    userBubbleText: '#FFFFFF',
+    botBubbleBg: '#FFFFFF',
+    botBubbleText: '#1E1E2E',
+    botAvatar: '🌐',
+    botAvatarBg: '#E8E8F0',
+    inputBorder: '#D0D0D0',
+    inputPlaceholder: 'Ask the agent...',
+    sendBg: '#1E1E2E',
+    sendText: '#FFFFFF',
+    borderRadius: '1rem',
+    headerPadding: 'p-4',
+    tabClass: 'ch-custom',
+    statusLabel: 'Custom Agent',
+    fontFamily: ""
+  }
+};
+
+function switchChannel(channel) {
+  currentChannel = channel;
+  const theme = CHANNEL_THEMES[channel];
+  const tabs = document.querySelectorAll('.channel-tab');
+  tabs.forEach(t => {
+    t.className = 'channel-tab flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap cursor-pointer transition-all text-gray-500 hover:bg-gray-100';
+  });
+  const activeTab = document.getElementById('ch-tab-' + channel);
+  if (activeTab) {
+    activeTab.className = 'channel-tab channel-tab-active ' + (theme.tabClass || '') + ' flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap cursor-pointer transition-all';
+  }
+
+  // Header
+  const header = document.getElementById('demo-header');
+  const brandEl = document.getElementById('demo-brand');
+  const subtitleEl = document.getElementById('demo-subtitle');
+  const statusText = document.getElementById('status-text');
+  const logoImg = document.getElementById('demo-logo-img');
+  const iconFallback = document.getElementById('demo-icon-fallback');
+  const iconWrap = document.getElementById('demo-icon-wrap');
+
+  if (channel === 'agentforce') {
+    // Restore original brand-colored header
+    if (currentPOV && currentPOV.brandColor) {
+      header.style.background = 'linear-gradient(135deg, ' + currentPOV.brandColor + ' 0%, ' + (currentPOV.brandColorEnd || currentPOV.brandColor) + ' 100%)';
+    } else {
+      header.style.background = '';
+      const cfg = currentPOVConfig || ARCHETYPES['order-returns'];
+      header.className = 'bg-gradient-to-r ' + cfg.gradient + ' ' + theme.headerPadding + ' flex items-center justify-between';
+    }
+    if (brandEl) brandEl.textContent = currentPOVName || 'Customer';
+    if (subtitleEl) subtitleEl.textContent = (currentPOVConfig || {}).subtitle || 'Agent Assistant';
+    if (logoImg) { logoImg.style.display = ''; }
+    if (iconFallback) iconFallback.style.display = 'none';
+    if (iconWrap) { iconWrap.className = 'w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden'; }
+  } else {
+    header.style.background = theme.headerBg;
+    header.className = theme.headerPadding + ' flex items-center justify-between';
+
+    // Show channel platform logo, hide brand logo
+    if (logoImg) logoImg.style.display = 'none';
+    if (iconFallback) {
+      iconFallback.style.display = 'flex';
+      iconFallback.textContent = getChannelIcon(channel);
+      iconFallback.className = 'w-10 h-10 rounded-lg flex items-center justify-center text-xl';
+      iconFallback.style.background = channel === 'chatgpt' ? '#10A37F' : channel === 'gemini' ? 'linear-gradient(135deg,#4285F4,#D96570)' : channel === 'claude' ? '#D97757' : channel === 'teams' ? '#5B5FC7' : '#1E1E2E';
+      iconFallback.style.color = '#fff';
+    }
+
+    const customerName = currentPOVName || 'Customer';
+    if (brandEl) brandEl.textContent = customerName + ' Agent';
+    if (subtitleEl) subtitleEl.textContent = 'via ' + theme.headerLabel;
+  }
+  if (statusText) statusText.textContent = theme.statusLabel;
+
+  // Chat area
+  const chatArea = document.getElementById('demo-sim-area');
+  const chatDiv = document.getElementById('demo-chat');
+  if (chatArea) chatArea.style.background = theme.chatBg;
+  if (chatDiv) chatDiv.style.background = theme.chatBg;
+
+  // Restyle existing messages
+  restyleMessages(theme);
+
+  // Input area
+  const input = document.getElementById('demo-input');
+  const sendBtn = document.getElementById('demo-send-btn');
+  if (input) {
+    input.placeholder = theme.inputPlaceholder;
+    input.style.borderColor = theme.inputBorder;
+    input.style.borderRadius = theme.borderRadius;
+    if (theme.chatBg !== '#FFFFFF' && theme.chatBg !== '#F5F5F5' && theme.chatBg !== '#FAFAFA') {
+      // Dark background inputs
+      input.style.background = theme.botBubbleBg;
+      input.style.color = theme.botBubbleText;
+    } else {
+      input.style.background = '#FFFFFF';
+      input.style.color = '#1C1C1C';
+    }
+  }
+  if (sendBtn) {
+    sendBtn.style.background = theme.sendBg || (currentPOV && currentPOV.brandColor) || '#0176D3';
+    sendBtn.style.color = theme.sendText;
+    sendBtn.style.borderRadius = theme.borderRadius;
+  }
+
+  // Input container border (for dark themes)
+  const inputContainer = input ? input.closest('.border-t') : null;
+  if (inputContainer) {
+    if (theme.chatBg !== '#FFFFFF' && theme.chatBg !== '#F5F5F5' && theme.chatBg !== '#FAFAFA') {
+      inputContainer.style.borderColor = theme.inputBorder;
+      inputContainer.style.background = theme.chatBg;
+    } else {
+      inputContainer.style.borderColor = '';
+      inputContainer.style.background = '';
+    }
+  }
+
+  // Font override
+  const container = document.getElementById('demo-container');
+  if (container && theme.fontFamily) {
+    container.style.fontFamily = theme.fontFamily;
+  } else if (container) {
+    container.style.fontFamily = '';
+  }
+
+  // Re-render greeting with new channel theme
+  if (typeof showGreeting === 'function' && currentPOVConfig) {
+    showGreeting();
+  }
+}
+
+function getChannelIcon(ch) {
+  const icons = { teams: '🟣', chatgpt: '✨', gemini: '✦', claude: '◈', custom: '🌐' };
+  return icons[ch] || '🤖';
+}
+
+function restyleMessages(theme) {
+  const chat = document.getElementById('demo-chat');
+  if (!chat) return;
+  // User messages
+  chat.querySelectorAll('.flex.justify-end > div').forEach(el => {
+    el.style.background = theme.userBubbleBg || (currentPOV && currentPOV.brandColor) || '#0176D3';
+    el.style.color = theme.userBubbleText;
+    el.style.borderRadius = theme.borderRadius;
+  });
+  // Bot messages (bubble)
+  chat.querySelectorAll('.flex.gap-3:not(.justify-end) > div:last-child').forEach(el => {
+    if (el.id === 'typing-indicator') return;
+    if (!el.querySelector || el.querySelector('.animate-bounce')) return;
+    el.style.background = theme.botBubbleBg;
+    el.style.color = theme.botBubbleText;
+    el.style.borderRadius = theme.borderRadius;
+    el.querySelectorAll('p').forEach(p => p.style.color = theme.botBubbleText);
+  });
+  // Bot avatars
+  chat.querySelectorAll('.flex.gap-3:not(.justify-end) > div:first-child').forEach(el => {
+    if (el.classList.contains('w-8')) {
+      el.textContent = currentChannel === 'agentforce' ? '🤖' : CHANNEL_THEMES[currentChannel].botAvatar;
+      const bgVal = CHANNEL_THEMES[currentChannel].botAvatarBg;
+      if (bgVal && bgVal.includes('gradient')) {
+        el.style.background = bgVal;
+        el.style.color = '#fff';
+      } else {
+        el.style.background = bgVal || '#EBF5FF';
+        el.style.color = (currentChannel === 'chatgpt' || currentChannel === 'claude') ? '#fff' : '';
+      }
+    }
+  });
+}
+
+// When channel switches, re-render greeting to show new theme from scratch
+// (preserves conversation state conceptually but resets visual for clean demo)
 
 // ─── Share Link ───
 function copyCurrentShareLink() {
@@ -1099,17 +1434,29 @@ function appendMessage(role, text) {
   const chat = document.getElementById('demo-chat');
   if (!chat) return;
   removeTypingIndicator();
+  const theme = (typeof CHANNEL_THEMES !== 'undefined' && typeof currentChannel !== 'undefined') ? CHANNEL_THEMES[currentChannel] : null;
+  const brandColor = (currentPOV && currentPOV.brandColor) || '#0176D3';
   if (role === 'user') {
+    const ubg = (theme && theme.userBubbleBg) ? theme.userBubbleBg : brandColor;
+    const utx = (theme && theme.userBubbleText) ? theme.userBubbleText : '#FFFFFF';
+    const ubr = (theme && theme.borderRadius) ? theme.borderRadius : '1rem';
     chat.innerHTML += `<div class="flex gap-3 justify-end fade-in">
-      <div class="bg-sf-accent text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-md">
-        <p class="text-sm">${escapeHtml(text)}</p>
+      <div style="background:${ubg};color:${utx};border-radius:${ubr};" class="px-4 py-3 max-w-md">
+        <p class="text-sm" style="color:${utx};">${escapeHtml(text)}</p>
       </div>
     </div>`;
   } else {
+    const bbg = (theme && theme.botBubbleBg) ? theme.botBubbleBg : '#F3F3F3';
+    const btx = (theme && theme.botBubbleText) ? theme.botBubbleText : '#1C1C1C';
+    const bbr = (theme && theme.borderRadius) ? theme.borderRadius : '1rem';
+    const avatar = (theme && currentChannel !== 'agentforce') ? theme.botAvatar : '🤖';
+    const avatarBg = (theme && theme.botAvatarBg) ? theme.botAvatarBg : '#EBF5FF';
+    const isGrad = avatarBg.includes && avatarBg.includes('gradient');
+    const avatarStyle = isGrad ? `background:${avatarBg};color:#fff;` : `background:${avatarBg};` + ((currentChannel === 'chatgpt' || currentChannel === 'claude') ? 'color:#fff;' : '');
     chat.innerHTML += `<div class="flex gap-3 fade-in">
-      <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
-      <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
-        <p class="text-sm text-gray-800">${text}</p>
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm" style="${avatarStyle}">${avatar}</div>
+      <div style="background:${bbg};color:${btx};border-radius:${bbr};" class="px-4 py-3 max-w-md">
+        <p class="text-sm" style="color:${btx};">${text}</p>
       </div>
     </div>`;
   }
@@ -1128,10 +1475,17 @@ function showTypingIndicator() {
   typingIndicatorActive = true;
   const chat = document.getElementById('demo-chat');
   if (!chat) return;
+  const theme = (typeof CHANNEL_THEMES !== 'undefined' && typeof currentChannel !== 'undefined') ? CHANNEL_THEMES[currentChannel] : null;
+  const bbg = (theme && theme.botBubbleBg) ? theme.botBubbleBg : '#F3F3F3';
+  const avatarBg = (theme && theme.botAvatarBg) ? theme.botAvatarBg : '#EBF5FF';
+  const avatar = (theme && currentChannel !== 'agentforce') ? theme.botAvatar : '🤖';
+  const isGrad = avatarBg.includes && avatarBg.includes('gradient');
+  const avatarStyle = isGrad ? `background:${avatarBg};color:#fff;` : `background:${avatarBg};` + ((currentChannel === 'chatgpt' || currentChannel === 'claude') ? 'color:#fff;' : '');
+  const dotColor = (bbg === '#F3F3F3' || bbg === '#FFFFFF' || bbg === '#F8F9FA') ? '#9CA3AF' : '#888';
   chat.innerHTML += `<div id="typing-indicator" class="flex gap-3 fade-in">
-    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
-    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
-      <div class="flex gap-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.1s"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.2s"></div></div>
+    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm" style="${avatarStyle}">${avatar}</div>
+    <div style="background:${bbg};border-radius:1rem;" class="px-4 py-3">
+      <div class="flex gap-1"><div class="w-2 h-2 rounded-full animate-bounce" style="background:${dotColor}"></div><div class="w-2 h-2 rounded-full animate-bounce" style="background:${dotColor};animation-delay:0.1s"></div><div class="w-2 h-2 rounded-full animate-bounce" style="background:${dotColor};animation-delay:0.2s"></div></div>
     </div>
   </div>`;
   chat.scrollTop = chat.scrollHeight;
@@ -1383,21 +1737,7 @@ async function initLiveAgent() {
       if (simArea) { simArea.style.display = 'flex'; }
 
       // Show archetype-appropriate welcome message in the chat
-      const chat = document.getElementById('demo-chat');
-      if (chat && currentPOVConfig) {
-        const name = currentPOVName || 'Customer';
-        const config = currentPOVConfig;
-        const greeting = config.demoGreeting ? config.demoGreeting(name) : `👋 I'm your ${name} assistant powered by Agentforce.`;
-        const capabilities = config.demoCapabilities || [];
-        chat.innerHTML = `<div class="flex gap-3 fade-in">
-          <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">${config.emoji || '🤖'}</div>
-          <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
-            <p class="text-sm text-gray-800">${greeting}</p>
-            ${capabilities.length ? `<div class="mt-2 space-y-1 text-sm text-gray-600">${capabilities.map(c => `<div>${c}</div>`).join('')}</div>` : ''}
-            <p class="text-sm text-gray-800 mt-2">How can I help you today?</p>
-          </div>
-        </div>`;
-      }
+      showGreeting();
     } catch (err) {
       console.error('SCRT2 init failed:', err);
       isLiveAgent = false;
@@ -1414,17 +1754,25 @@ function showGreeting() {
   if (!config) return;
   const chat = document.getElementById('demo-chat');
   if (!chat) return;
+  const theme = (typeof CHANNEL_THEMES !== 'undefined' && typeof currentChannel !== 'undefined') ? CHANNEL_THEMES[currentChannel] : null;
+  const bbg = (theme && theme.botBubbleBg) ? theme.botBubbleBg : '#F3F3F3';
+  const btx = (theme && theme.botBubbleText) ? theme.botBubbleText : '#1C1C1C';
+  const bbr = (theme && theme.borderRadius) ? theme.borderRadius : '1rem';
+  const avatar = (theme && currentChannel !== 'agentforce') ? theme.botAvatar : '🤖';
+  const avatarBg = (theme && theme.botAvatarBg) ? theme.botAvatarBg : '#EBF5FF';
+  const isGrad = avatarBg.includes && avatarBg.includes('gradient');
+  const avatarStyle = isGrad ? `background:${avatarBg};color:#fff;` : `background:${avatarBg};` + ((currentChannel === 'chatgpt' || currentChannel === 'claude') ? 'color:#fff;' : '');
   const hasContext = currentPOV && currentPOV.attachedContext;
   const contextBadge = hasContext ? `<div class="mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-xs text-blue-700">📄 Account context loaded from uploaded document</div>` : '';
   let html = `<div class="flex gap-3 fade-in">
-    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm">🤖</div>
-    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-md">
-      <p class="text-sm text-gray-800">${config.demoGreeting(name)}</p>
-      <div class="mt-2 space-y-1 text-sm text-gray-600">
+    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm" style="${avatarStyle}">${avatar}</div>
+    <div style="background:${bbg};color:${btx};border-radius:${bbr};" class="px-4 py-3 max-w-md">
+      <p class="text-sm" style="color:${btx};">${config.demoGreeting(name)}</p>
+      <div class="mt-2 space-y-1 text-sm" style="color:${btx};opacity:0.7;">
         ${config.demoCapabilities.map(c => `<div>${c}</div>`).join('')}
       </div>
       ${contextBadge}
-      <p class="text-sm text-gray-800 mt-2">How can I help you today?</p>
+      <p class="text-sm mt-2" style="color:${btx};">How can I help you today?</p>
     </div>
   </div>`;
   chat.innerHTML = html;
