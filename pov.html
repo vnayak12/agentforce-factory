@@ -389,7 +389,7 @@
         <button onclick="switchChannel('claude')" id="ch-tab-claude" class="channel-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:border-orange-400 hover:shadow-md transition-all text-left">
           <div class="flex items-center gap-2.5 mb-2">
             <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: #D97757;">
-              <span class="text-white text-lg">◈</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M16.98 5.52L12 2L7.02 5.52L1.2 4.8L3.6 10.44L0 15.6L5.88 15.96L9 21.6L12 16.8L15 21.6L18.12 15.96L24 15.6L20.4 10.44L22.8 4.8L16.98 5.52Z" fill="white"/></svg>
             </div>
             <div class="font-semibold text-sf-blue text-sm leading-tight">Claude</div>
           </div>
@@ -1476,8 +1476,10 @@ function attachLogoFallback(imgEl, websiteOrName, emojiEl) {
 function renderScenarios(config) {
   const el = document.getElementById('demo-scenarios');
   if (!el || !config.scenarios) return;
-  el.innerHTML = config.scenarios.map(s => `
-    <div onclick="triggerScenario(\`${s.prompt.replace(/`/g, '\\`')}\`)" class="bg-gray-50 rounded-xl p-5 border-2 border-gray-100 hover:border-sf-accent hover:shadow-md transition-all cursor-pointer group">
+  // Store prompts in array, use index to avoid escaping issues in onclick
+  window._scenarioPrompts = config.scenarios.map(s => s.prompt);
+  el.innerHTML = config.scenarios.map((s, i) => `
+    <div onclick="triggerScenario(window._scenarioPrompts[${i}])" class="bg-gray-50 rounded-xl p-5 border-2 border-gray-100 hover:border-sf-accent hover:shadow-md transition-all cursor-pointer group">
       <div class="text-2xl mb-2">${s.icon}</div>
       <div class="font-semibold text-sf-blue text-sm mb-1 group-hover:text-sf-accent transition">${s.title}</div>
       <div class="text-xs text-sf-muted leading-relaxed">${s.desc}</div>
@@ -1489,14 +1491,17 @@ function renderScenarios(config) {
 function renderQuickPrompts(config) {
   const el = document.getElementById('demo-prompts');
   if (!el) return;
-  // Use quickPrompts (label → real prompt) if available, else fall back to demoCapabilities
+  // Store prompts in array, use index to avoid escaping issues in onclick
+  window._quickPrompts = [];
   if (config.quickPrompts && config.quickPrompts.length) {
+    config.quickPrompts.forEach((qp, i) => { window._quickPrompts.push(qp.prompt); });
     el.innerHTML = config.quickPrompts
-      .map(qp => `<div onclick="triggerScenario(\`${qp.prompt.replace(/`/g, '\\`').replace(/\\/g, '\\\\')}\`)" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${qp.label}</div>`)
+      .map((qp, i) => `<div onclick="triggerScenario(window._quickPrompts[${i}])" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${qp.label}</div>`)
       .join('');
   } else if (config.demoCapabilities) {
+    config.demoCapabilities.forEach((p, i) => { window._quickPrompts.push(p); });
     el.innerHTML = config.demoCapabilities
-      .map(p => `<div onclick="triggerScenario(\`${p.replace(/`/g, '\\`')}\`)" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
+      .map((p, i) => `<div onclick="triggerScenario(window._quickPrompts[${i}])" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${p}</div>`)
       .join('');
   }
 }
@@ -1881,12 +1886,13 @@ function showGreeting() {
   const avatarStyle = isGrad ? `background:${avatarBg};color:#fff;` : `background:${avatarBg};` + ((currentChannel === 'chatgpt' || currentChannel === 'claude') ? 'color:#fff;' : '');
   const hasContext = currentPOV && currentPOV.attachedContext;
   const contextBadge = hasContext ? `<div class="mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-xs text-blue-700">📄 Account context loaded from uploaded document</div>` : '';
-  // Build clickable capability chips — map to quickPrompts if available
+  // Build clickable capability chips — store prompts in array to avoid escaping issues
   const qp = config.quickPrompts || [];
+  window._greetingPrompts = config.demoCapabilities.map((c, i) => {
+    return (qp[i] && qp[i].prompt) ? qp[i].prompt : c;
+  });
   const capabilityItems = config.demoCapabilities.map((c, i) => {
-    const prompt = (qp[i] && qp[i].prompt) ? qp[i].prompt : c;
-    const escapedPrompt = prompt.replace(/'/g, "\\'").replace(/`/g, '\\`');
-    return `<div onclick="triggerScenario('${escapedPrompt}')" style="cursor:pointer;padding:4px 0;border-radius:4px;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">${c}</div>`;
+    return `<div onclick="triggerScenario(window._greetingPrompts[${i}])" style="cursor:pointer;padding:4px 0;border-radius:4px;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">${c}</div>`;
   }).join('');
   let html = `<div class="flex gap-3 fade-in">
     <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm" style="${avatarStyle}">${avatar}</div>
