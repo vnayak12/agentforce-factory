@@ -334,7 +334,7 @@
     <div class="bg-white rounded-xl shadow-md p-6 mb-6">
       <h3 class="text-lg font-bold text-sf-blue mb-1">Agent Channel</h3>
       <p class="text-sm text-sf-muted mb-4">Same agent, different surface — click to switch the experience</p>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
         <!-- Agentforce -->
         <button onclick="switchChannel('agentforce')" id="ch-tab-agentforce" class="channel-card cursor-pointer border-2 border-sf-accent bg-blue-50 rounded-xl p-4 hover:shadow-md transition-all text-left">
           <div class="flex items-center gap-2.5 mb-2">
@@ -375,6 +375,16 @@
           </div>
           <div class="text-xs text-sf-muted">Google AI</div>
         </button>
+        <!-- Slack -->
+        <button onclick="switchChannel('slack')" id="ch-tab-slack" class="channel-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:border-pink-400 hover:shadow-md transition-all text-left">
+          <div class="flex items-center gap-2.5 mb-2">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: #4A154B;">
+              <span class="text-white text-lg">💬</span>
+            </div>
+            <div class="font-semibold text-sf-blue text-sm leading-tight">Slack</div>
+          </div>
+          <div class="text-xs text-sf-muted">Salesforce Slack</div>
+        </button>
         <!-- Claude -->
         <button onclick="switchChannel('claude')" id="ch-tab-claude" class="channel-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:border-orange-400 hover:shadow-md transition-all text-left">
           <div class="flex items-center gap-2.5 mb-2">
@@ -398,35 +408,10 @@
       </div>
     </div>
 
-    <!-- Live Agent Chat -->
+    <!-- Live Agent Chat — wrapped in platform shell -->
     <div id="demo-container" class="rounded-2xl overflow-hidden shadow-xl">
-      <div id="demo-header" class="bg-gradient-to-r from-sf-accent to-sf-blue p-5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden" id="demo-icon-wrap">
-            <img id="demo-logo-img" src="" alt="" class="w-8 h-8 object-contain" onerror="this.style.display='none';document.getElementById('demo-icon-fallback').style.display='flex';">
-            <div id="demo-icon-fallback" class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-xl" style="display:none;">🤖</div>
-          </div>
-          <div>
-            <div class="text-white font-bold text-lg" id="demo-brand">Customer</div>
-            <div class="text-blue-200 text-sm" id="demo-subtitle">Agent Assistant</div>
-          </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <div id="agent-status" class="flex items-center gap-1.5">
-            <div class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" id="status-dot"></div>
-            <span class="text-blue-200 text-xs" id="status-text">Connecting...</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Chat area (SCRT2 live agent or simulated fallback) -->
-      <div id="demo-sim-area" class="bg-white" style="min-height: 450px; max-height: 550px; display: flex; flex-direction: column;">
-        <div id="demo-chat" class="flex-1 p-5 space-y-4 overflow-y-auto" style="min-height: 380px;"></div>
-        <div class="border-t p-4 flex gap-3">
-          <input type="text" id="demo-input" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-full px-4 py-2.5 text-sm focus:border-sf-accent focus:ring-1 focus:ring-sf-accent outline-none" onkeydown="if(event.key==='Enter')sendMessage()">
-          <button onclick="sendMessage()" id="demo-send-btn" class="bg-sf-accent text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-blue-700 transition cursor-pointer">Send</button>
-        </div>
-      </div>
+      <!-- Channel Shell: injected by switchChannel() -->
+      <div id="channel-shell"></div>
     </div>
 
     <!-- Quick Prompts -->
@@ -536,144 +521,240 @@ function setViewMode(mode) {
   }
 }
 
-// ═══ Multi-Channel Switcher ═══
+// ═══ Multi-Channel Switcher — Full Platform Shell Rendering ═══
 let currentChannel = 'agentforce';
+
 const CHANNEL_THEMES = {
-  agentforce: {
-    headerBg: null, // uses brand color from POV
-    headerLabel: 'Agentforce',
-    headerSub: 'Powered by Salesforce',
-    chatBg: '#FFFFFF',
-    userBubbleBg: null, // uses brand color
-    userBubbleText: '#FFFFFF',
-    botBubbleBg: '#F3F3F3',
-    botBubbleText: '#1C1C1C',
-    botAvatar: '⚡',
-    botAvatarBg: '#EBF5FF',
-    inputBorder: '#D8D8D8',
-    inputPlaceholder: 'Type a message...',
-    sendBg: null, // uses brand
-    sendText: '#FFFFFF',
-    borderRadius: '1rem',
-    headerPadding: 'p-5',
-    tabClass: '',
-    statusLabel: 'Agentforce',
-    fontFamily: ''
-  },
-  teams: {
-    headerBg: 'linear-gradient(135deg, #5B5FC7 0%, #464EB8 100%)',
-    headerLabel: 'Teams',
-    headerSub: 'Microsoft Teams',
-    chatBg: '#F5F5F5',
-    userBubbleBg: '#5B5FC7',
-    userBubbleText: '#FFFFFF',
-    botBubbleBg: '#FFFFFF',
-    botBubbleText: '#242424',
-    botAvatar: '🤖',
-    botAvatarBg: '#ECEAFC',
-    inputBorder: '#E0E0E0',
-    inputPlaceholder: 'Type a message',
-    sendBg: '#5B5FC7',
-    sendText: '#FFFFFF',
-    borderRadius: '0.5rem',
-    headerPadding: 'p-4',
-    tabClass: 'ch-teams',
-    statusLabel: 'Teams Bot',
-    fontFamily: "'Segoe UI', sans-serif"
-  },
-  chatgpt: {
-    headerBg: 'linear-gradient(135deg, #10A37F 0%, #0D8A6A 100%)',
-    headerLabel: 'ChatGPT',
-    headerSub: 'OpenAI',
-    chatBg: '#343541',
-    userBubbleBg: '#2A2B32',
-    userBubbleText: '#ECECF1',
-    botBubbleBg: '#444654',
-    botBubbleText: '#D1D5DB',
-    botAvatar: '✨',
-    botAvatarBg: '#10A37F',
-    inputBorder: '#40414F',
-    inputPlaceholder: 'Send a message...',
-    sendBg: '#10A37F',
-    sendText: '#FFFFFF',
-    borderRadius: '0.75rem',
-    headerPadding: 'p-4',
-    tabClass: 'ch-chatgpt',
-    statusLabel: 'GPT Agent',
-    fontFamily: "'Soehne', sans-serif"
-  },
-  gemini: {
-    headerBg: 'linear-gradient(135deg, #4285F4 0%, #9B72CB 50%, #D96570 100%)',
-    headerLabel: 'Gemini',
-    headerSub: 'Google AI',
-    chatBg: '#FFFFFF',
-    userBubbleBg: '#E8F0FE',
-    userBubbleText: '#1A73E8',
-    botBubbleBg: '#F8F9FA',
-    botBubbleText: '#202124',
-    botAvatar: '✦',
-    botAvatarBg: 'linear-gradient(135deg, #4285F4, #9B72CB, #D96570)',
-    inputBorder: '#DADCE0',
-    inputPlaceholder: 'Ask Gemini...',
-    sendBg: '#1A73E8',
-    sendText: '#FFFFFF',
-    borderRadius: '1.5rem',
-    headerPadding: 'p-4',
-    tabClass: 'ch-gemini',
-    statusLabel: 'Gemini Agent',
-    fontFamily: "'Google Sans', 'Roboto', sans-serif"
-  },
-  claude: {
-    headerBg: 'linear-gradient(135deg, #D97757 0%, #C4623F 100%)',
-    headerLabel: 'Claude',
-    headerSub: 'Anthropic',
-    chatBg: '#2D2B28',
-    userBubbleBg: '#D97757',
-    userBubbleText: '#FFFFFF',
-    botBubbleBg: '#3D3B38',
-    botBubbleText: '#E8E4DF',
-    botAvatar: '◈',
-    botAvatarBg: '#D97757',
-    inputBorder: '#4D4B48',
-    inputPlaceholder: 'Reply to Claude...',
-    sendBg: '#D97757',
-    sendText: '#FFFFFF',
-    borderRadius: '1rem',
-    headerPadding: 'p-4',
-    tabClass: 'ch-claude',
-    statusLabel: 'Claude Agent',
-    fontFamily: "'Styrene A', 'Inter', sans-serif"
-  },
-  custom: {
-    headerBg: 'linear-gradient(135deg, #1E1E2E 0%, #2D2D3D 100%)',
-    headerLabel: 'Custom App',
-    headerSub: 'Your Platform',
-    chatBg: '#FAFAFA',
-    userBubbleBg: '#1E1E2E',
-    userBubbleText: '#FFFFFF',
-    botBubbleBg: '#FFFFFF',
-    botBubbleText: '#1E1E2E',
-    botAvatar: '🌐',
-    botAvatarBg: '#E8E8F0',
-    inputBorder: '#D0D0D0',
-    inputPlaceholder: 'Ask the agent...',
-    sendBg: '#1E1E2E',
-    sendText: '#FFFFFF',
-    borderRadius: '1rem',
-    headerPadding: 'p-4',
-    tabClass: 'ch-custom',
-    statusLabel: 'Custom Agent',
-    fontFamily: ""
-  }
+  agentforce: { botAvatar: '🤖', botAvatarBg: '#EBF5FF', botBubbleBg: '#F3F3F3', botBubbleText: '#1C1C1C', userBubbleBg: null, userBubbleText: '#fff', borderRadius: '1rem' },
+  teams:      { botAvatar: '🤖', botAvatarBg: '#ECEAFC', botBubbleBg: '#FFFFFF', botBubbleText: '#242424', userBubbleBg: '#5B5FC7', userBubbleText: '#fff', borderRadius: '0.5rem' },
+  slack:      { botAvatar: '🤖', botAvatarBg: '#F8F0FF', botBubbleBg: '#FFFFFF', botBubbleText: '#1D1C1D', userBubbleBg: '#007A5A', userBubbleText: '#fff', borderRadius: '0.5rem' },
+  chatgpt:    { botAvatar: '✨', botAvatarBg: '#10A37F', botBubbleBg: '#444654', botBubbleText: '#D1D5DB', userBubbleBg: '#2A2B32', userBubbleText: '#ECECF1', borderRadius: '0.75rem' },
+  gemini:     { botAvatar: '✦', botAvatarBg: 'linear-gradient(135deg,#4285F4,#9B72CB,#D96570)', botBubbleBg: '#F8F9FA', botBubbleText: '#202124', userBubbleBg: '#E8F0FE', userBubbleText: '#1A73E8', borderRadius: '1.5rem' },
+  claude:     { botAvatar: '◈', botAvatarBg: '#D97757', botBubbleBg: '#3D3B38', botBubbleText: '#E8E4DF', userBubbleBg: '#D97757', userBubbleText: '#fff', borderRadius: '1rem' },
+  custom:     { botAvatar: '🌐', botAvatarBg: '#E8E8F0', botBubbleBg: '#FFFFFF', botBubbleText: '#1E1E2E', userBubbleBg: '#1E1E2E', userBubbleText: '#fff', borderRadius: '1rem' }
 };
+
+function getShellHTML(channel) {
+  const name = currentPOVName || 'Customer';
+  const config = currentPOVConfig || {};
+  const brandColor = (currentPOV && currentPOV.brandColor) || '#0176D3';
+  const brandEnd = (currentPOV && currentPOV.brandColorEnd) || brandColor;
+  const subtitle = config.subtitle || 'Agent Assistant';
+
+  // Common chat + input (reused in all shells)
+  const chatArea = `<div id="demo-sim-area" style="display:flex;flex-direction:column;min-height:420px;max-height:520px;">
+    <div id="demo-chat" class="flex-1 p-4 space-y-3 overflow-y-auto" style="min-height:360px;"></div>
+    <div id="demo-compose"></div>
+  </div>`;
+
+  if (channel === 'agentforce') {
+    return `<div style="background:linear-gradient(135deg,${brandColor},${brandEnd});" class="p-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl" id="demo-icon-wrap">
+          <img id="demo-logo-img" src="" alt="${name}" class="w-8 h-8 object-contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div id="demo-icon-fallback" class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-xl" style="display:none;">⚡</div>
+        </div>
+        <div>
+          <div class="text-white font-bold text-lg" id="demo-brand">${name}</div>
+          <div class="text-white/60 text-sm" id="demo-subtitle">${subtitle}</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="w-2 h-2 rounded-full bg-green-400" id="status-dot"></div>
+        <span class="text-white/60 text-xs" id="status-text">Agentforce</span>
+      </div>
+    </div>
+    <div style="background:#fff;">${chatArea}</div>`;
+  }
+
+  if (channel === 'teams') {
+    return `<div style="display:flex;height:520px;font-family:'Segoe UI',sans-serif;">
+      <!-- Teams sidebar -->
+      <div style="width:68px;background:#292929;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:16px;">
+        <div style="width:36px;height:36px;background:#5B5FC7;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;">💬</div>
+        <div style="width:36px;height:36px;background:#3D3D3D;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#999;font-size:16px;">📅</div>
+        <div style="width:36px;height:36px;background:#3D3D3D;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#999;font-size:16px;">📞</div>
+        <div style="width:36px;height:36px;background:#3D3D3D;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#999;font-size:16px;">📁</div>
+        <div style="flex:1;"></div>
+        <div style="width:32px;height:32px;background:#5B5FC7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;">VN</div>
+      </div>
+      <!-- Teams main -->
+      <div style="flex:1;display:flex;flex-direction:column;background:#fff;">
+        <div style="background:#F5F5F5;padding:12px 16px;border-bottom:1px solid #E0E0E0;display:flex;align-items:center;gap:10px;">
+          <div style="width:32px;height:32px;background:#5B5FC7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;">🤖</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;color:#242424;">${name} Agent</div>
+            <div style="font-size:11px;color:#616161;">Bot &middot; Active</div>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="display:flex;gap:12px;color:#616161;font-size:16px;">📹 📞 👥</div>
+        </div>
+        <div style="flex:1;background:#F5F5F5;overflow:hidden;">${chatArea}</div>
+      </div>
+    </div>`;
+  }
+
+  if (channel === 'slack') {
+    return `<div style="display:flex;height:520px;font-family:'Lato','Helvetica Neue',sans-serif;">
+      <!-- Slack sidebar -->
+      <div style="width:220px;background:#3F0E40;flex-shrink:0;display:flex;flex-direction:column;padding:0;">
+        <div style="padding:14px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #522653;">
+          <div style="width:28px;height:28px;background:#1264A3;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;">S</div>
+          <div style="font-weight:700;font-size:15px;color:#fff;">Salesforce HQ</div>
+        </div>
+        <div style="padding:12px 12px 4px 12px;">
+          <div style="font-size:13px;color:#C4B5C7;padding:6px 8px;border-radius:6px;cursor:pointer;">🧵 Threads</div>
+          <div style="font-size:13px;color:#C4B5C7;padding:6px 8px;border-radius:6px;cursor:pointer;">💬 DMs</div>
+          <div style="font-size:13px;color:#C4B5C7;padding:6px 8px;border-radius:6px;cursor:pointer;">📣 Activity</div>
+        </div>
+        <div style="padding:4px 12px;margin-top:8px;">
+          <div style="font-size:11px;color:#AB9BAE;font-weight:700;letter-spacing:0.5px;padding:0 8px 6px;">CHANNELS</div>
+          <div style="font-size:13px;color:#C4B5C7;padding:5px 8px;border-radius:6px;"># general</div>
+          <div style="font-size:13px;color:#C4B5C7;padding:5px 8px;border-radius:6px;"># sales-team</div>
+          <div style="font-size:13px;color:#fff;padding:5px 8px;border-radius:6px;background:#1264A3;"># ${name.toLowerCase().replace(/\\s+/g,'-')}-agent</div>
+          <div style="font-size:13px;color:#C4B5C7;padding:5px 8px;border-radius:6px;"># support</div>
+        </div>
+        <div style="flex:1;"></div>
+        <div style="padding:12px 16px;border-top:1px solid #522653;display:flex;align-items:center;gap:8px;">
+          <div style="width:28px;height:28px;background:#2BAC76;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">VN</div>
+          <div style="font-size:13px;color:#fff;">Vandana N.</div>
+        </div>
+      </div>
+      <!-- Slack main -->
+      <div style="flex:1;display:flex;flex-direction:column;background:#fff;">
+        <div style="padding:10px 16px;border-bottom:1px solid #E8E8E8;display:flex;align-items:center;gap:8px;">
+          <span style="font-weight:700;font-size:15px;color:#1D1C1D;"># ${name.toLowerCase().replace(/\\s+/g,'-')}-agent</span>
+          <div style="flex:1;"></div>
+          <div style="display:flex;gap:10px;color:#616061;font-size:14px;">🔍 📌 👥</div>
+        </div>
+        <div style="flex:1;background:#FFFFFF;overflow:hidden;">${chatArea}</div>
+      </div>
+    </div>`;
+  }
+
+  if (channel === 'chatgpt') {
+    return `<div style="display:flex;height:520px;font-family:'Soehne','Inter',sans-serif;">
+      <!-- ChatGPT sidebar -->
+      <div style="width:200px;background:#202123;flex-shrink:0;display:flex;flex-direction:column;padding:8px;">
+        <div style="padding:10px;border:1px solid #4D4D4F;border-radius:8px;color:#fff;font-size:13px;margin-bottom:12px;cursor:pointer;">+ New chat</div>
+        <div style="padding:8px 10px;border-radius:8px;background:#343541;color:#fff;font-size:13px;margin-bottom:4px;">🤖 ${name} Agent</div>
+        <div style="padding:8px 10px;border-radius:8px;color:#999;font-size:13px;">💬 Previous chat</div>
+        <div style="padding:8px 10px;border-radius:8px;color:#999;font-size:13px;">💬 Another thread</div>
+        <div style="flex:1;"></div>
+        <div style="padding:10px;border-top:1px solid #4D4D4F;display:flex;align-items:center;gap:8px;color:#fff;font-size:13px;">
+          <div style="width:28px;height:28px;background:#10A37F;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">VN</div>
+          Vandana N.
+        </div>
+      </div>
+      <!-- ChatGPT main -->
+      <div style="flex:1;display:flex;flex-direction:column;background:#343541;">
+        <div style="padding:10px 16px;border-bottom:1px solid #40414F;display:flex;align-items:center;gap:8px;">
+          <span style="font-weight:600;font-size:14px;color:#ECECF1;">${name} Agent</span>
+          <span style="font-size:11px;color:#8E8EA0;background:#40414F;padding:2px 8px;border-radius:10px;">GPT-4o</span>
+        </div>
+        <div style="flex:1;background:#343541;overflow:hidden;">${chatArea}</div>
+      </div>
+    </div>`;
+  }
+
+  if (channel === 'gemini') {
+    return `<div style="display:flex;height:520px;font-family:'Google Sans','Roboto',sans-serif;">
+      <!-- Gemini sidebar -->
+      <div style="width:200px;background:#F0F4F9;flex-shrink:0;display:flex;flex-direction:column;padding:8px;">
+        <div style="padding:10px 12px;border-radius:20px;background:#D3E3FD;color:#1A73E8;font-size:13px;font-weight:600;margin-bottom:12px;cursor:pointer;text-align:center;">+ New chat</div>
+        <div style="padding:10px 12px;border-radius:12px;background:#fff;color:#1A73E8;font-size:13px;font-weight:500;margin-bottom:4px;">✦ ${name} Agent</div>
+        <div style="padding:10px 12px;border-radius:12px;color:#444;font-size:13px;">Recent chats</div>
+        <div style="flex:1;"></div>
+        <div style="padding:10px;display:flex;align-items:center;gap:8px;color:#444;font-size:13px;">
+          <div style="width:28px;height:28px;background:linear-gradient(135deg,#4285F4,#D96570);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">VN</div>
+          Vandana N.
+        </div>
+      </div>
+      <!-- Gemini main -->
+      <div style="flex:1;display:flex;flex-direction:column;background:#fff;">
+        <div style="padding:12px 16px;border-bottom:1px solid #DADCE0;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;background:linear-gradient(135deg,#4285F4,#9B72CB,#D96570);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">✦</span>
+          <span style="font-weight:600;font-size:14px;color:#202124;">Gemini</span>
+          <span style="font-size:11px;color:#5F6368;background:#F1F3F4;padding:2px 8px;border-radius:10px;">1.5 Pro</span>
+        </div>
+        <div style="flex:1;background:#fff;overflow:hidden;">${chatArea}</div>
+      </div>
+    </div>`;
+  }
+
+  if (channel === 'claude') {
+    return `<div style="display:flex;height:520px;font-family:'Inter',sans-serif;">
+      <!-- Claude sidebar -->
+      <div style="width:200px;background:#1A1915;flex-shrink:0;display:flex;flex-direction:column;padding:8px;">
+        <div style="padding:10px 12px;border-radius:8px;border:1px solid #4D4B48;color:#E8E4DF;font-size:13px;margin-bottom:12px;cursor:pointer;">+ New chat</div>
+        <div style="padding:8px 12px;border-radius:8px;background:#2D2B28;color:#E8E4DF;font-size:13px;margin-bottom:4px;">◈ ${name} Agent</div>
+        <div style="padding:8px 12px;border-radius:8px;color:#8B8680;font-size:13px;">Previous conversation</div>
+        <div style="flex:1;"></div>
+        <div style="padding:10px;border-top:1px solid #3D3B38;display:flex;align-items:center;gap:8px;color:#E8E4DF;font-size:13px;">
+          <div style="width:28px;height:28px;background:#D97757;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">VN</div>
+          Vandana N.
+        </div>
+      </div>
+      <!-- Claude main -->
+      <div style="flex:1;display:flex;flex-direction:column;background:#2D2B28;">
+        <div style="padding:12px 16px;border-bottom:1px solid #3D3B38;display:flex;align-items:center;gap:8px;">
+          <span style="color:#D97757;font-size:16px;">◈</span>
+          <span style="font-weight:600;font-size:14px;color:#E8E4DF;">Claude</span>
+          <span style="font-size:11px;color:#8B8680;background:#3D3B38;padding:2px 8px;border-radius:10px;">Sonnet</span>
+        </div>
+        <div style="flex:1;background:#2D2B28;overflow:hidden;">${chatArea}</div>
+      </div>
+    </div>`;
+  }
+
+  // custom
+  return `<div style="display:flex;height:520px;">
+    <!-- Custom sidebar -->
+    <div style="width:200px;background:#1E1E2E;flex-shrink:0;display:flex;flex-direction:column;padding:8px;">
+      <div style="padding:12px;color:#fff;font-weight:700;font-size:14px;border-bottom:1px solid #2D2D3D;margin-bottom:8px;">🌐 ${name}</div>
+      <div style="padding:8px 12px;border-radius:8px;background:#2D2D3D;color:#fff;font-size:13px;margin-bottom:4px;">💬 Agent Chat</div>
+      <div style="padding:8px 12px;border-radius:8px;color:#888;font-size:13px;">📊 Dashboard</div>
+      <div style="padding:8px 12px;border-radius:8px;color:#888;font-size:13px;">⚙️ Settings</div>
+      <div style="flex:1;"></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;background:#FAFAFA;">
+      <div style="padding:12px 16px;border-bottom:1px solid #E0E0E0;display:flex;align-items:center;gap:8px;">
+        <span style="font-weight:600;font-size:14px;color:#1E1E2E;">${name} Agent</span>
+        <div style="flex:1;"></div>
+        <div style="width:8px;height:8px;background:#2BAC76;border-radius:50%;"></div>
+        <span style="font-size:11px;color:#666;">Online</span>
+      </div>
+      <div style="flex:1;background:#FAFAFA;overflow:hidden;">${chatArea}</div>
+    </div>
+  </div>`;
+}
+
+function getComposeHTML(channel) {
+  const brandColor = (currentPOV && currentPOV.brandColor) || '#0176D3';
+  const themes = {
+    agentforce: { bg: '#fff', inputBg: '#fff', inputColor: '#1C1C1C', inputBorder: '#D8D8D8', placeholder: 'Type a message...', sendBg: brandColor, sendColor: '#fff', radius: '9999px' },
+    teams: { bg: '#fff', inputBg: '#fff', inputColor: '#242424', inputBorder: '#E0E0E0', placeholder: 'Type a message', sendBg: '#5B5FC7', sendColor: '#fff', radius: '8px' },
+    slack: { bg: '#fff', inputBg: '#fff', inputColor: '#1D1C1D', inputBorder: '#DDDDDD', placeholder: 'Message #agent', sendBg: '#007A5A', sendColor: '#fff', radius: '8px' },
+    chatgpt: { bg: '#343541', inputBg: '#40414F', inputColor: '#ECECF1', inputBorder: '#565869', placeholder: 'Send a message...', sendBg: '#10A37F', sendColor: '#fff', radius: '12px' },
+    gemini: { bg: '#fff', inputBg: '#F8F9FA', inputColor: '#202124', inputBorder: '#DADCE0', placeholder: 'Ask Gemini...', sendBg: '#1A73E8', sendColor: '#fff', radius: '24px' },
+    claude: { bg: '#2D2B28', inputBg: '#3D3B38', inputColor: '#E8E4DF', inputBorder: '#4D4B48', placeholder: 'Reply to Claude...', sendBg: '#D97757', sendColor: '#fff', radius: '12px' },
+    custom: { bg: '#FAFAFA', inputBg: '#fff', inputColor: '#1E1E2E', inputBorder: '#D0D0D0', placeholder: 'Ask the agent...', sendBg: '#1E1E2E', sendColor: '#fff', radius: '12px' }
+  };
+  const t = themes[channel] || themes.agentforce;
+  return `<div style="padding:12px 16px;border-top:1px solid ${t.inputBorder};background:${t.bg};display:flex;gap:8px;align-items:center;">
+    <input type="text" id="demo-input" placeholder="${t.placeholder}" style="flex:1;border:1px solid ${t.inputBorder};border-radius:${t.radius};padding:10px 16px;font-size:14px;outline:none;background:${t.inputBg};color:${t.inputColor};" onkeydown="if(event.key==='Enter')sendMessage()">
+    <button onclick="sendMessage()" id="demo-send-btn" style="background:${t.sendBg};color:${t.sendColor};border:none;padding:10px 20px;border-radius:${t.radius};font-size:13px;font-weight:600;cursor:pointer;">Send</button>
+  </div>`;
+}
 
 function switchChannel(channel) {
   currentChannel = channel;
-  const theme = CHANNEL_THEMES[channel];
-  // Channel card highlighting
-  const channelBorderColors = {
+
+  // Highlight active card
+  const borderMap = {
     agentforce: 'border-sf-accent bg-blue-50',
     teams: 'border-purple-400 bg-purple-50',
+    slack: 'border-pink-400 bg-pink-50',
     chatgpt: 'border-green-400 bg-green-50',
     gemini: 'border-blue-400 bg-blue-50',
     claude: 'border-orange-400 bg-orange-50',
@@ -684,151 +765,43 @@ function switchChannel(channel) {
   });
   const activeCard = document.getElementById('ch-tab-' + channel);
   if (activeCard) {
-    const border = channelBorderColors[channel] || 'border-sf-accent bg-blue-50';
-    activeCard.className = 'channel-card cursor-pointer border-2 ' + border + ' rounded-xl p-4 shadow-md transition-all text-left';
+    activeCard.className = 'channel-card cursor-pointer border-2 ' + (borderMap[channel] || 'border-sf-accent bg-blue-50') + ' rounded-xl p-4 shadow-md transition-all text-left';
   }
 
-  // Header
-  const header = document.getElementById('demo-header');
-  const brandEl = document.getElementById('demo-brand');
-  const subtitleEl = document.getElementById('demo-subtitle');
-  const statusText = document.getElementById('status-text');
-  const logoImg = document.getElementById('demo-logo-img');
-  const iconFallback = document.getElementById('demo-icon-fallback');
-  const iconWrap = document.getElementById('demo-icon-wrap');
-
-  if (channel === 'agentforce') {
-    // Restore original brand-colored header
-    if (currentPOV && currentPOV.brandColor) {
-      header.style.background = 'linear-gradient(135deg, ' + currentPOV.brandColor + ' 0%, ' + (currentPOV.brandColorEnd || currentPOV.brandColor) + ' 100%)';
-    } else {
-      header.style.background = '';
-      const cfg = currentPOVConfig || ARCHETYPES['order-returns'];
-      header.className = 'bg-gradient-to-r ' + cfg.gradient + ' ' + theme.headerPadding + ' flex items-center justify-between';
-    }
-    if (brandEl) brandEl.textContent = currentPOVName || 'Customer';
-    if (subtitleEl) subtitleEl.textContent = (currentPOVConfig || {}).subtitle || 'Agent Assistant';
-    if (logoImg) { logoImg.style.display = ''; }
-    if (iconFallback) iconFallback.style.display = 'none';
-    if (iconWrap) { iconWrap.className = 'w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden'; }
-  } else {
-    header.style.background = theme.headerBg;
-    header.className = theme.headerPadding + ' flex items-center justify-between';
-
-    // Show channel platform logo, hide brand logo
-    if (logoImg) logoImg.style.display = 'none';
-    if (iconFallback) {
-      iconFallback.style.display = 'flex';
-      iconFallback.textContent = getChannelIcon(channel);
-      iconFallback.className = 'w-10 h-10 rounded-lg flex items-center justify-center text-xl';
-      iconFallback.style.background = channel === 'chatgpt' ? '#10A37F' : channel === 'gemini' ? 'linear-gradient(135deg,#4285F4,#D96570)' : channel === 'claude' ? '#D97757' : channel === 'teams' ? '#5B5FC7' : '#1E1E2E';
-      iconFallback.style.color = '#fff';
-    }
-
-    const customerName = currentPOVName || 'Customer';
-    if (brandEl) brandEl.textContent = customerName + ' Agent';
-    if (subtitleEl) subtitleEl.textContent = 'via ' + theme.headerLabel;
-  }
-  if (statusText) statusText.textContent = theme.statusLabel;
-
-  // Chat area
-  const chatArea = document.getElementById('demo-sim-area');
-  const chatDiv = document.getElementById('demo-chat');
-  if (chatArea) chatArea.style.background = theme.chatBg;
-  if (chatDiv) chatDiv.style.background = theme.chatBg;
-
-  // Restyle existing messages
-  restyleMessages(theme);
-
-  // Input area
-  const input = document.getElementById('demo-input');
-  const sendBtn = document.getElementById('demo-send-btn');
-  if (input) {
-    input.placeholder = theme.inputPlaceholder;
-    input.style.borderColor = theme.inputBorder;
-    input.style.borderRadius = theme.borderRadius;
-    if (theme.chatBg !== '#FFFFFF' && theme.chatBg !== '#F5F5F5' && theme.chatBg !== '#FAFAFA') {
-      // Dark background inputs
-      input.style.background = theme.botBubbleBg;
-      input.style.color = theme.botBubbleText;
-    } else {
-      input.style.background = '#FFFFFF';
-      input.style.color = '#1C1C1C';
-    }
-  }
-  if (sendBtn) {
-    sendBtn.style.background = theme.sendBg || (currentPOV && currentPOV.brandColor) || '#0176D3';
-    sendBtn.style.color = theme.sendText;
-    sendBtn.style.borderRadius = theme.borderRadius;
-  }
-
-  // Input container border (for dark themes)
-  const inputContainer = input ? input.closest('.border-t') : null;
-  if (inputContainer) {
-    if (theme.chatBg !== '#FFFFFF' && theme.chatBg !== '#F5F5F5' && theme.chatBg !== '#FAFAFA') {
-      inputContainer.style.borderColor = theme.inputBorder;
-      inputContainer.style.background = theme.chatBg;
-    } else {
-      inputContainer.style.borderColor = '';
-      inputContainer.style.background = '';
-    }
-  }
-
-  // Font override
-  const container = document.getElementById('demo-container');
-  if (container && theme.fontFamily) {
-    container.style.fontFamily = theme.fontFamily;
-  } else if (container) {
-    container.style.fontFamily = '';
-  }
-
-  // Re-render greeting with new channel theme
-  if (typeof showGreeting === 'function' && currentPOVConfig) {
-    showGreeting();
-  }
-}
-
-function getChannelIcon(ch) {
-  const icons = { teams: '🟣', chatgpt: '✨', gemini: '✦', claude: '◈', custom: '🌐' };
-  return icons[ch] || '🤖';
-}
-
-function restyleMessages(theme) {
-  const chat = document.getElementById('demo-chat');
-  if (!chat) return;
-  // User messages
-  chat.querySelectorAll('.flex.justify-end > div').forEach(el => {
-    el.style.background = theme.userBubbleBg || (currentPOV && currentPOV.brandColor) || '#0176D3';
-    el.style.color = theme.userBubbleText;
-    el.style.borderRadius = theme.borderRadius;
-  });
-  // Bot messages (bubble)
-  chat.querySelectorAll('.flex.gap-3:not(.justify-end) > div:last-child').forEach(el => {
-    if (el.id === 'typing-indicator') return;
-    if (!el.querySelector || el.querySelector('.animate-bounce')) return;
-    el.style.background = theme.botBubbleBg;
-    el.style.color = theme.botBubbleText;
-    el.style.borderRadius = theme.borderRadius;
-    el.querySelectorAll('p').forEach(p => p.style.color = theme.botBubbleText);
-  });
-  // Bot avatars
-  chat.querySelectorAll('.flex.gap-3:not(.justify-end) > div:first-child').forEach(el => {
-    if (el.classList.contains('w-8')) {
-      el.textContent = currentChannel === 'agentforce' ? '🤖' : CHANNEL_THEMES[currentChannel].botAvatar;
-      const bgVal = CHANNEL_THEMES[currentChannel].botAvatarBg;
-      if (bgVal && bgVal.includes('gradient')) {
-        el.style.background = bgVal;
-        el.style.color = '#fff';
-      } else {
-        el.style.background = bgVal || '#EBF5FF';
-        el.style.color = (currentChannel === 'chatgpt' || currentChannel === 'claude') ? '#fff' : '';
+  // Render full platform shell
+  const shell = document.getElementById('channel-shell');
+  if (shell) {
+    shell.innerHTML = getShellHTML(channel);
+    // Inject compose bar
+    const compose = document.getElementById('demo-compose');
+    if (compose) compose.innerHTML = getComposeHTML(channel);
+    // Set chat background
+    const chatDiv = document.getElementById('demo-chat');
+    const simArea = document.getElementById('demo-sim-area');
+    const chatBgs = { agentforce:'#fff', teams:'#F5F5F5', slack:'#fff', chatgpt:'#343541', gemini:'#fff', claude:'#2D2B28', custom:'#FAFAFA' };
+    if (chatDiv) chatDiv.style.background = chatBgs[channel] || '#fff';
+    if (simArea) simArea.style.background = chatBgs[channel] || '#fff';
+    // Set brand logo for agentforce with fallback chain
+    if (channel === 'agentforce') {
+      const logoImg = document.getElementById('demo-logo-img');
+      const demoIconFallback = document.getElementById('demo-icon-fallback');
+      if (logoImg && currentPOV) {
+        const logoUrl = currentPOV.logoUrl || getBrandLogoUrl(currentPOV.website || currentPOV.customer);
+        logoImg.src = logoUrl;
+        logoImg.alt = currentPOVName || '';
+        logoImg.style.display = '';
+        if (demoIconFallback) demoIconFallback.style.display = 'none';
+        if (typeof attachLogoFallback === 'function') {
+          attachLogoFallback(logoImg, currentPOV.website || currentPOV.customer, demoIconFallback);
+        }
       }
     }
-  });
+    // Show greeting
+    if (typeof showGreeting === 'function' && currentPOVConfig) {
+      showGreeting();
+    }
+  }
 }
-
-// When channel switches, re-render greeting to show new theme from scratch
-// (preserves conversation state conceptually but resets visual for clean demo)
 
 // ─── Share Link ───
 function copyCurrentShareLink() {
@@ -1987,29 +1960,8 @@ function renderPOV(pov) {
       <div class="text-xs text-sf-muted">${i.label}</div>
     </div>`).join('');
 
-  // Demo tab -use brand logo and brand color
-  document.getElementById('demo-brand').textContent = name;
-  document.getElementById('demo-subtitle').textContent = config.subtitle;
-  // Set brand logo with fallback chain
-  const brandLogoUrl = pov.logoUrl || getBrandLogoUrl(pov.website || pov.customer);
-  const logoImg = document.getElementById('demo-logo-img');
-  const demoIconFallback = document.getElementById('demo-icon-fallback');
-  if (logoImg) {
-    logoImg.src = brandLogoUrl;
-    logoImg.alt = name;
-    logoImg.style.display = '';
-    if (demoIconFallback) demoIconFallback.style.display = 'none';
-    attachLogoFallback(logoImg, pov.website || pov.customer, demoIconFallback);
-  }
-  document.getElementById('demo-container').className = `rounded-2xl overflow-hidden shadow-xl`;
-  const demoHeaderEl = document.getElementById('demo-header');
-  if (pov.brandColor) {
-    demoHeaderEl.className = 'p-5 flex items-center justify-between';
-    demoHeaderEl.style.background = `linear-gradient(135deg, ${pov.brandColor} 0%, ${pov.brandColorEnd || pov.brandColor} 100%)`;
-  } else {
-    demoHeaderEl.className = `bg-gradient-to-r ${config.gradient} p-5 flex items-center justify-between`;
-    demoHeaderEl.style.background = '';
-  }
+  // Demo tab — render channel shell (defaults to Agentforce with brand header)
+  switchChannel('agentforce');
   renderScenarios(config);
   renderQuickPrompts(config);
 
