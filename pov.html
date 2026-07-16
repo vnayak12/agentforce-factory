@@ -1504,6 +1504,11 @@ function renderQuickPrompts(config) {
 // ─── Trigger Scenario from card/chip click ───
 function triggerScenario(prompt) {
   switchTab('demo');
+  // Scroll to chat area so user sees the message
+  setTimeout(() => {
+    const container = document.getElementById('demo-container');
+    if (container) container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
   if (isLiveAgent && sessionInitialized) {
     // Send directly to live Agentforce agent via SCRT2
     appendMessage('user', prompt);
