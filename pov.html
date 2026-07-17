@@ -1473,13 +1473,181 @@ function renderScenarios(config) {
   `).join('');
 }
 
-// ─── Render quick prompt chips ───
+// ─── Industry-aware quick prompt templates ───
+const INDUSTRY_PROMPTS = {
+  'Manufacturing': {
+    'order-returns': [
+      { label: '📦 Parts order status', prompt: 'Where is my replacement parts order? I need the status and estimated delivery.' },
+      { label: '↩️ Return defective part', prompt: 'I received a defective component and need to return it under warranty.' },
+      { label: '🔧 Equipment warranty', prompt: 'Is my equipment still under warranty? I need service on a machine.' },
+      { label: '🚚 Expedite shipment', prompt: 'I need to expedite a critical parts shipment. What are my options?' }
+    ],
+    'product-advisor': [
+      { label: '🔧 Equipment diagnostics', prompt: 'My CNC machine is showing error code E-4012. What does it mean and how do I fix it?' },
+      { label: '📋 Maintenance schedule', prompt: 'What preventive maintenance is due on my production equipment this month?' },
+      { label: '⚙️ Parts compatibility', prompt: 'Is part #HX-4500 compatible with my current production line setup?' },
+      { label: '📦 Spare parts lookup', prompt: 'I need replacement filters for my hydraulic press. What do you recommend?' }
+    ],
+    'loyalty': [
+      { label: '⭐ Service credits', prompt: 'How many service credits do I have remaining on my maintenance contract?' },
+      { label: '🎁 Contract rewards', prompt: 'What rewards or discounts am I eligible for based on my service history?' },
+      { label: '🏆 Partnership tier', prompt: 'What tier am I in the partner program and how do I reach the next level?' },
+      { label: '🎯 Available promotions', prompt: 'Are there any current promotions on bulk parts orders or service contracts?' }
+    ],
+    'sales-agent': [
+      { label: '📊 Equipment pipeline', prompt: 'Give me a summary of my open deals and which equipment quotes are pending.' },
+      { label: '🏭 Account health', prompt: 'Show me the service history and satisfaction metrics for my top manufacturing accounts.' },
+      { label: '📅 Site visit prep', prompt: 'Help me prepare for my factory visit this week. What should I know about their setup?' },
+      { label: '🎯 Upsell opportunities', prompt: 'Which accounts are due for equipment upgrades or contract renewals?' }
+    ],
+    'employee-ops': [
+      { label: '📦 Parts inventory', prompt: 'What critical spare parts are running low in the warehouse?' },
+      { label: '📅 Production schedule', prompt: 'Show me the production schedule and any shift changes this week.' },
+      { label: '📋 Safety protocols', prompt: 'What are the safety protocols for operating the new CNC equipment?' },
+      { label: '🔧 Maintenance request', prompt: 'I need to submit a maintenance request for the conveyor belt on Line 3.' }
+    ],
+    'store-locator': [
+      { label: '📍 Service center', prompt: 'Where is the nearest authorized service center for equipment repairs?' },
+      { label: '📦 Parts availability', prompt: 'Which distribution center has the hydraulic parts I need in stock?' },
+      { label: '📊 Facility metrics', prompt: 'Show me the performance metrics for our Austin manufacturing plant.' },
+      { label: '🔄 Inventory transfer', prompt: 'Can we transfer spare parts from the west warehouse to the east facility?' }
+    ]
+  },
+  'Energy & Utilities': {
+    'order-returns': [
+      { label: '⚡ Service request status', prompt: 'What is the status of my service connection request?' },
+      { label: '📋 Billing inquiry', prompt: 'I have a question about my latest utility bill. The charges seem higher than usual.' },
+      { label: '🔧 Report an outage', prompt: 'There is a power outage in my area. When will service be restored?' },
+      { label: '🏠 New service setup', prompt: 'I just moved and need to set up utility service at my new address.' }
+    ],
+    'product-advisor': [
+      { label: '⚡ Rate plan options', prompt: 'What rate plans are available? I want to reduce my monthly energy costs.' },
+      { label: '🌱 Clean energy', prompt: 'What clean energy or solar programs do you offer for residential customers?' },
+      { label: '📊 Usage analysis', prompt: 'Can you analyze my energy usage patterns and suggest ways to save?' },
+      { label: '🔋 EV charging', prompt: 'What EV charging programs or time-of-use rates do you have available?' }
+    ],
+    'loyalty': [
+      { label: '⭐ Rewards balance', prompt: 'How many rewards points do I have from my energy-saving programs?' },
+      { label: '🎁 Rebate programs', prompt: 'What rebates or incentives am I eligible for on energy-efficient upgrades?' },
+      { label: '🏆 Conservation tier', prompt: 'What tier am I in the conservation rewards program?' },
+      { label: '🎯 Smart home offers', prompt: 'Are there any special offers on smart thermostats or home energy monitors?' }
+    ],
+    'sales-agent': [
+      { label: '📊 Account overview', prompt: 'Give me an overview of my top commercial and industrial accounts.' },
+      { label: '🏢 Contract renewals', prompt: 'Which commercial accounts have contracts expiring in the next 90 days?' },
+      { label: '📅 Site assessment', prompt: 'Help me prepare for an energy assessment visit at a commercial facility.' },
+      { label: '🎯 Efficiency proposals', prompt: 'Which accounts would benefit most from an energy efficiency upgrade proposal?' }
+    ],
+    'employee-ops': [
+      { label: '⚡ Grid status', prompt: 'Show me the current grid status and any active outage incidents.' },
+      { label: '📅 Crew scheduling', prompt: 'What field crews are available for emergency dispatch today?' },
+      { label: '📋 Safety compliance', prompt: 'What safety certifications are due for renewal this month?' },
+      { label: '🔧 Work order status', prompt: 'Show me all open work orders for the northwest service territory.' }
+    ],
+    'store-locator': [
+      { label: '📍 Service center', prompt: 'Where is the nearest customer service center for in-person assistance?' },
+      { label: '💡 Payment locations', prompt: 'Where can I make an in-person bill payment near me?' },
+      { label: '📊 Facility metrics', prompt: 'Show me the performance metrics for our northwest service territory.' },
+      { label: '🔧 Outage map', prompt: 'Show me the current outage map and estimated restoration times.' }
+    ]
+  },
+  'Automotive': {
+    'order-returns': [
+      { label: '🚗 Vehicle order status', prompt: 'What is the status of my vehicle order? When will it arrive at the dealership?' },
+      { label: '🔧 Service appointment', prompt: 'I need to schedule a service appointment for my vehicle.' },
+      { label: '📋 Recall check', prompt: 'Are there any open recalls on my vehicle that need to be addressed?' },
+      { label: '↩️ Parts return', prompt: 'I purchased the wrong part and need to return it for the correct one.' }
+    ],
+    'product-advisor': [
+      { label: '🚗 Vehicle comparison', prompt: 'Help me compare the features and pricing of your SUV models.' },
+      { label: '💰 Financing options', prompt: 'What financing and lease options are available for a new vehicle?' },
+      { label: '📅 Test drive', prompt: 'I would like to schedule a test drive this weekend. What is available?' },
+      { label: '🔧 Service packages', prompt: 'What maintenance packages do you offer for new vehicle owners?' }
+    ],
+    'loyalty': [
+      { label: '⭐ Rewards balance', prompt: 'How many loyalty points do I have from service visits and purchases?' },
+      { label: '🎁 Owner benefits', prompt: 'What exclusive benefits do I get as a returning customer?' },
+      { label: '🏆 VIP status', prompt: 'What is my loyalty tier and how close am I to the next level?' },
+      { label: '🎯 Trade-in offers', prompt: 'Are there any special trade-in promotions available right now?' }
+    ],
+    'sales-agent': [
+      { label: '📊 Inventory check', prompt: 'What vehicles do we have in stock that match my customer requirements?' },
+      { label: '🏢 Lead follow-up', prompt: 'Show me my hottest leads and which ones need follow-up today.' },
+      { label: '📅 Showroom prep', prompt: 'Help me prepare for my showroom appointments today with customer context.' },
+      { label: '🎯 Lease renewals', prompt: 'Which customers have leases expiring in the next 60 days?' }
+    ],
+    'employee-ops': [
+      { label: '🚗 Lot inventory', prompt: 'Show me the current lot inventory by model and what needs to be moved.' },
+      { label: '📅 Service bay schedule', prompt: 'What is the service bay schedule for this week? Any openings?' },
+      { label: '📋 Dealer policies', prompt: 'What is the policy on customer vehicle loaners during service?' },
+      { label: '🔧 Parts request', prompt: 'I need to order a replacement transmission for a customer vehicle.' }
+    ],
+    'store-locator': [
+      { label: '📍 Nearest dealer', prompt: 'Where is the nearest dealership with the model I am looking for?' },
+      { label: '🔧 Service center', prompt: 'Find the closest authorized service center for warranty repairs.' },
+      { label: '📊 Dealer metrics', prompt: 'Show me the sales and service performance for our locations this month.' },
+      { label: '🚗 Vehicle availability', prompt: 'Which dealers have the vehicle trim and color I want in stock?' }
+    ]
+  },
+  'Consumer Goods': {
+    'order-returns': [
+      { label: '📦 Order tracking', prompt: 'Where is my order? I need the latest shipping status and tracking info.' },
+      { label: '↩️ Return request', prompt: 'I need to return a product I purchased. How do I start the process?' },
+      { label: '🔁 Exchange item', prompt: 'I want to exchange my purchase for a different size or variant.' },
+      { label: '🚚 Delivery issue', prompt: 'My delivery was damaged during shipping. What are my options?' }
+    ],
+    'product-advisor': [
+      { label: '🛍️ Product recommendations', prompt: 'Can you recommend products based on my purchase history and preferences?' },
+      { label: '📋 Product details', prompt: 'What are the ingredients and nutritional info for this product?' },
+      { label: '🏪 Where to buy', prompt: 'Which retailers near me carry this product in stock?' },
+      { label: '🎯 New arrivals', prompt: 'What new products have launched recently that I might like?' }
+    ],
+    'loyalty': [
+      { label: '⭐ Points balance', prompt: 'How many reward points do I have and what can I redeem them for?' },
+      { label: '🎁 Exclusive offers', prompt: 'What member-exclusive offers or early access deals are available?' },
+      { label: '🏆 Membership tier', prompt: 'What tier am I in and what benefits does my membership include?' },
+      { label: '🎯 Personalized deals', prompt: 'Are there any personalized promotions based on my shopping habits?' }
+    ],
+    'sales-agent': [
+      { label: '📊 Retailer pipeline', prompt: 'Give me a summary of my retail partner pipeline and pending orders.' },
+      { label: '🏢 Account reviews', prompt: 'Show me the top retail accounts and their sell-through performance.' },
+      { label: '📅 Store visit prep', prompt: 'Help me prepare for my retail store visit with planogram and compliance data.' },
+      { label: '🎯 Promo opportunities', prompt: 'Which retailers are good candidates for our upcoming promotion?' }
+    ],
+    'employee-ops': [
+      { label: '📦 Stock levels', prompt: 'What products are running low in the warehouse and need restocking?' },
+      { label: '📅 Production schedule', prompt: 'Show me the production and shipping schedule for this week.' },
+      { label: '📋 Brand guidelines', prompt: 'What are the latest brand guidelines for our product packaging?' },
+      { label: '🔧 Quality report', prompt: 'Submit a quality issue report for a batch from the latest production run.' }
+    ],
+    'store-locator': [
+      { label: '📍 Find retailer', prompt: 'Where can I buy this product near me? Show me nearby retailers.' },
+      { label: '📦 Stock check', prompt: 'Is this product in stock at my nearest store location?' },
+      { label: '📊 Store performance', prompt: 'Show me the sell-through and compliance metrics for our top retail locations.' },
+      { label: '🔄 Distribution', prompt: 'Which distribution center should fulfill orders for the northeast region?' }
+    ]
+  }
+};
+
+// ─── Render quick prompt chips (personalized per archetype + industry + company) ───
 function renderQuickPrompts(config) {
   const el = document.getElementById('demo-prompts');
   if (!el) return;
-  // Store prompts in array, use index to avoid escaping issues in onclick
+  const co = currentPOVName || 'your company';
+  const industry = (currentPOV && currentPOV.industry) || 'Retail';
+  const archKey = (currentPOV && currentPOV.archetypeKey) || 'order-returns';
+
+  // Try industry-specific prompts first, then fall back to archetype defaults
+  const industryPrompts = INDUSTRY_PROMPTS[industry] && INDUSTRY_PROMPTS[industry][archKey];
+
   window._quickPrompts = [];
-  if (config.quickPrompts && config.quickPrompts.length) {
+
+  if (industryPrompts) {
+    industryPrompts.forEach((qp, i) => { window._quickPrompts.push(qp.prompt); });
+    el.innerHTML = industryPrompts
+      .map((qp, i) => `<div onclick="triggerScenario(window._quickPrompts[${i}])" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${qp.label}</div>`)
+      .join('');
+  } else if (config.quickPrompts && config.quickPrompts.length) {
     config.quickPrompts.forEach((qp, i) => { window._quickPrompts.push(qp.prompt); });
     el.innerHTML = config.quickPrompts
       .map((qp, i) => `<div onclick="triggerScenario(window._quickPrompts[${i}])" class="bg-blue-50 text-sf-accent rounded-full px-4 py-2 text-sm cursor-pointer hover:bg-blue-100 transition">${qp.label}</div>`)
