@@ -446,7 +446,7 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
               <option>Energy & Utilities</option>
               <option>Consumer Goods</option>
               <option>Manufacturing</option>
-              <option>Auto</option>
+              <option>Automotive</option>
             </select>
           </div>
         </div>
@@ -3716,7 +3716,7 @@ function generateAEOutput() {
   const attachedContext = getAttachedContext('ae-file-input');
   generatePOVWithSmartColors({
     id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
-    archetype: archetype, archetypeKey: archetypeKey, industry: 'Retail',
+    archetype: archetype, archetypeKey: archetypeKey, industry: document.getElementById('arch-industry').value || 'Retail',
     attachedContext: attachedContext,
     createdAt: new Date().toISOString()
   });
