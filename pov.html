@@ -1511,6 +1511,30 @@ const INDUSTRY_PROMPTS = {
       { label: '📦 Parts availability', prompt: 'Which distribution center has the hydraulic parts I need in stock?' },
       { label: '📊 Facility metrics', prompt: 'Show me the performance metrics for our Austin manufacturing plant.' },
       { label: '🔄 Inventory transfer', prompt: 'Can we transfer spare parts from the west warehouse to the east facility?' }
+    ],
+    'mfg-equipment-service': [
+      { label: '🔧 Equipment diagnostics', prompt: 'My CNC machine is showing error code E-4012. What does it mean and how do I fix it?' },
+      { label: '📋 Maintenance schedule', prompt: 'What is the preventive maintenance schedule for our hydraulic press fleet?' },
+      { label: '⚠️ Report equipment issue', prompt: 'One of our assembly line robots is showing intermittent errors. I need to log a service ticket.' },
+      { label: '📦 Parts order', prompt: 'I need to order replacement bearings for our conveyor system. What is in stock?' }
+    ],
+    'mfg-quality-control': [
+      { label: '📊 Quality metrics', prompt: 'Show me the defect rates and quality metrics for production Line A this month.' },
+      { label: '🔍 Inspection results', prompt: 'What were the results of the latest batch inspection for lot #MFG-2847?' },
+      { label: '⚠️ Non-conformance report', prompt: 'I need to file a non-conformance report for out-of-spec components.' },
+      { label: '📋 Compliance check', prompt: 'Are we current on all ISO 9001 compliance requirements for this quarter?' }
+    ],
+    'mfg-production-ops': [
+      { label: '📅 Production schedule', prompt: 'Show me the production schedule and capacity utilization for this week.' },
+      { label: '⚡ Line status', prompt: 'What is the current status of all production lines? Any downtime or delays?' },
+      { label: '📦 Material availability', prompt: 'Do we have enough raw materials to complete the next production run?' },
+      { label: '👷 Shift planning', prompt: 'What is the staffing plan for the night shift this week?' }
+    ],
+    'mfg-supply-chain': [
+      { label: '🚚 Shipment tracking', prompt: 'Where is the inbound shipment of steel components from our supplier?' },
+      { label: '📊 Inventory levels', prompt: 'Show me current inventory levels across all warehouses.' },
+      { label: '⚠️ Supply disruption', prompt: 'We have a potential supply disruption from a key vendor. What are our alternatives?' },
+      { label: '📋 Purchase orders', prompt: 'What purchase orders are pending approval this week?' }
     ]
   },
   'Energy & Utilities': {
@@ -1549,6 +1573,30 @@ const INDUSTRY_PROMPTS = {
       { label: '💡 Payment locations', prompt: 'Where can I make an in-person bill payment near me?' },
       { label: '📊 Facility metrics', prompt: 'Show me the performance metrics for our northwest service territory.' },
       { label: '🔧 Outage map', prompt: 'Show me the current outage map and estimated restoration times.' }
+    ],
+    'eu-field-service': [
+      { label: '🔧 Dispatch technician', prompt: 'I need a field technician dispatched to repair a transformer at my location.' },
+      { label: '📋 Work order status', prompt: 'What is the status of my field service work order?' },
+      { label: '📅 Schedule inspection', prompt: 'I need to schedule a safety inspection for our electrical systems.' },
+      { label: '⚡ Emergency repair', prompt: 'We have an emergency power issue. Can you send a crew immediately?' }
+    ],
+    'eu-customer-service': [
+      { label: '⚡ Billing question', prompt: 'I have a question about my latest utility bill. The charges seem too high.' },
+      { label: '🏠 Start/stop service', prompt: 'I need to start service at a new address and stop service at my current one.' },
+      { label: '💡 Payment plan', prompt: 'Can I set up a payment plan for my past-due balance?' },
+      { label: '📊 Usage details', prompt: 'Can you show me my energy usage breakdown for the past 3 months?' }
+    ],
+    'eu-regulatory': [
+      { label: '📋 Compliance status', prompt: 'What is our current regulatory compliance status across all service territories?' },
+      { label: '⚠️ Incident report', prompt: 'I need to file a regulatory incident report for a gas leak at site #EU-4521.' },
+      { label: '📊 Emissions data', prompt: 'Show me our emissions data and compliance metrics for this quarter.' },
+      { label: '🔍 Audit preparation', prompt: 'Help me prepare for the upcoming regulatory audit next month.' }
+    ],
+    'eu-sales': [
+      { label: '💼 Account overview', prompt: 'Give me an overview of our top commercial accounts and their contract renewal dates.' },
+      { label: '⚡ Rate optimization', prompt: 'Which of my commercial clients could benefit from switching to time-of-use rates?' },
+      { label: '🌱 Green energy proposal', prompt: 'Prepare a renewable energy proposal for a large manufacturing client.' },
+      { label: '📊 Pipeline review', prompt: 'Show me the sales pipeline for new commercial service connections this quarter.' }
     ]
   },
   'Automotive': {
@@ -1587,6 +1635,30 @@ const INDUSTRY_PROMPTS = {
       { label: '🔧 Service center', prompt: 'Find the closest authorized service center for warranty repairs.' },
       { label: '📊 Dealer metrics', prompt: 'Show me the sales and service performance for our locations this month.' },
       { label: '🚗 Vehicle availability', prompt: 'Which dealers have the vehicle trim and color I want in stock?' }
+    ],
+    'auto-vehicle-sales': [
+      { label: '🚗 Vehicle comparison', prompt: 'Compare the features and pricing between the sedan and SUV models.' },
+      { label: '💰 Financing options', prompt: 'What financing and lease options are available for a new vehicle purchase?' },
+      { label: '📋 Inventory search', prompt: 'Search your inventory for available vehicles matching my preferences.' },
+      { label: '📅 Test drive', prompt: 'I would like to schedule a test drive for this weekend.' }
+    ],
+    'auto-service-advisor': [
+      { label: '🔧 Service estimate', prompt: 'I need a service estimate for a 60,000-mile maintenance on my vehicle.' },
+      { label: '📅 Book appointment', prompt: 'I need to book a service appointment for brake inspection.' },
+      { label: '⚠️ Recall check', prompt: 'Are there any open recalls on my vehicle that need to be addressed?' },
+      { label: '📋 Service history', prompt: 'Show me the complete service history for my vehicle.' }
+    ],
+    'auto-dealership-ops': [
+      { label: '📊 Lot inventory', prompt: 'Show me current lot inventory levels by model and trim.' },
+      { label: '🔧 Service bay status', prompt: 'What is the status of all service bays today? Any delays?' },
+      { label: '📋 Staff scheduling', prompt: 'Show me the sales team schedule and coverage for this week.' },
+      { label: '📦 Parts order status', prompt: 'What is the status of our pending parts orders from the manufacturer?' }
+    ],
+    'auto-customer-retention': [
+      { label: '📊 Loyalty program', prompt: 'What benefits does my vehicle ownership loyalty program include?' },
+      { label: '🔄 Trade-in value', prompt: 'What is the estimated trade-in value for my current vehicle?' },
+      { label: '💰 Renewal offers', prompt: 'Are there any special renewal or upgrade offers available to me?' },
+      { label: '📋 Owner benefits', prompt: 'What exclusive perks and events are available for current owners?' }
     ]
   },
   'Consumer Goods': {
@@ -1625,6 +1697,36 @@ const INDUSTRY_PROMPTS = {
       { label: '📦 Stock check', prompt: 'Is this product in stock at my nearest store location?' },
       { label: '📊 Store performance', prompt: 'Show me the sell-through and compliance metrics for our top retail locations.' },
       { label: '🔄 Distribution', prompt: 'Which distribution center should fulfill orders for the northeast region?' }
+    ],
+    'cg-retail-execution': [
+      { label: '📊 Shelf compliance', prompt: 'Show me the planogram compliance scores across our top retail accounts.' },
+      { label: '📍 Store visit plan', prompt: 'What stores should my team visit this week based on priority?' },
+      { label: '📦 Stock audit', prompt: 'Run a stock availability audit for our key products at major retailers.' },
+      { label: '📋 Merchandising report', prompt: 'Generate a merchandising report for the latest product launch.' }
+    ],
+    'cg-trade-promotion': [
+      { label: '💰 Promotion ROI', prompt: 'What is the ROI on our current trade promotions by retail partner?' },
+      { label: '📊 Campaign performance', prompt: 'Show me the performance metrics for our Q2 promotional campaigns.' },
+      { label: '📋 Plan new promotion', prompt: 'Help me plan a new buy-one-get-one promotion for our beverage line.' },
+      { label: '🔍 Competitive analysis', prompt: 'What trade promotions are our competitors running at major retailers?' }
+    ],
+    'cg-distributor-service': [
+      { label: '📦 Order status', prompt: 'What is the status of the latest bulk order from our distributor?' },
+      { label: '📋 Claims processing', prompt: 'I need to process a damage claim for a shipment that arrived damaged.' },
+      { label: '📊 Distributor scorecard', prompt: 'Show me the performance scorecard for our top 5 distributors.' },
+      { label: '🔄 Restock request', prompt: 'Our distributor is requesting an emergency restock of our top-selling SKU.' }
+    ],
+    'cg-demand-planning': [
+      { label: '📊 Demand forecast', prompt: 'Show me the demand forecast for our products for the next quarter.' },
+      { label: '📦 Inventory optimization', prompt: 'Which SKUs are overstocked and which are at risk of stockout?' },
+      { label: '📈 Seasonal trends', prompt: 'What seasonal trends should we account for in our upcoming production plan?' },
+      { label: '🔍 New product launch', prompt: 'Help me plan inventory allocation for the upcoming new product launch.' }
+    ],
+    'cg-customer-service': [
+      { label: '📦 Order tracking', prompt: 'Where is my product order? I need the current shipping status.' },
+      { label: '↩️ Product return', prompt: 'I need to return a product. How do I start the return process?' },
+      { label: '🔍 Product inquiry', prompt: 'Can you tell me more about the ingredients and allergens in this product?' },
+      { label: '📋 Quality concern', prompt: 'I found something wrong with a product I purchased and want to report it.' }
     ]
   }
 };

@@ -296,6 +296,18 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 0 0 0 3px
           <input id="ae-name" type="text" placeholder="e.g. Sarah Johnson" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg focus:border-sf-accent transition">
         </div>
 
+        <!-- Industry -->
+        <div>
+          <label class="block text-sm font-semibold text-sf-blue mb-2">Industry</label>
+          <select id="ae-industry" onchange="document.querySelector('#screen-ae-form .font-bold.text-lg').textContent='Create a Demo | '+this.value" class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-sf-accent transition bg-white">
+            <option>Retail</option>
+            <option>Energy & Utilities</option>
+            <option>Consumer Goods</option>
+            <option>Manufacturing</option>
+            <option>Automotive</option>
+          </select>
+        </div>
+
         <!-- Agent Archetype -->
         <div>
           <label class="block text-sm font-semibold text-sf-blue mb-2">Agent Archetype *</label>
@@ -3716,7 +3728,7 @@ function generateAEOutput() {
   const attachedContext = getAttachedContext('ae-file-input');
   generatePOVWithSmartColors({
     id: slug, type: 'ae', customer: account, website: website, aeName: aeName,
-    archetype: archetype, archetypeKey: archetypeKey, industry: document.getElementById('arch-industry').value || 'Retail',
+    archetype: archetype, archetypeKey: archetypeKey, industry: (document.getElementById('ae-industry') || document.getElementById('arch-industry') || {}).value || 'Retail',
     attachedContext: attachedContext,
     createdAt: new Date().toISOString()
   });
