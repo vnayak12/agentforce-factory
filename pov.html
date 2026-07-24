@@ -1383,6 +1383,634 @@ const ARCHETYPES = {
     demoCapabilities: ['📞 Call the AI agent', '🗣️ Natural voice conversation', '🔧 Get real-time support', '🤝 Escalate to a human agent'],
     quickPrompts: [],
     demoConversation: (name) => []
+  },
+
+  // ═══════════════════════════════════════════════
+  // ENERGY & UTILITIES ARCHETYPES
+  // ═══════════════════════════════════════════════
+  'eu-field-service': {
+    label: 'Field Service Agent',
+    subtitle: 'Work Orders | Crews | Outages | Meters | Facilities',
+    emoji: '🔧',
+    gradient: 'from-yellow-600 to-yellow-900',
+    scenarios: [
+      { icon: '🔧', title: 'Emergency Dispatch', desc: 'Dispatch a field crew to respond to a power outage or gas leak', prompt: 'We have a transformer failure on Oak Street. Dispatch the nearest available crew.' },
+      { icon: '📋', title: 'Work Order Management', desc: 'Track work order status and assign field technicians', prompt: 'What is the status of work order WO-29481? When will the technician arrive?' },
+      { icon: '📊', title: 'Asset Inspection', desc: 'Review asset inspection results and schedule preventive maintenance', prompt: 'Show me the inspection results for substation Delta-7. Any issues flagged?' }
+    ],
+    capabilities: [
+      'Real-time work order tracking and technician dispatch',
+      'Asset health monitoring and predictive maintenance',
+      'Crew scheduling and route optimization',
+      'Outage detection and automated response coordination',
+      'Safety compliance and permit management'
+    ],
+    impact: [
+      { value: '40%', label: 'Faster response time', color: 'blue' },
+      { value: '25%', label: 'Reduction in truck rolls', color: 'green' },
+      { value: '60%', label: 'First-time fix rate', color: 'purple' },
+      { value: '3x', label: 'Crew productivity', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 🔧 I'm your ${name} Field Service Assistant. I can help you with:`,
+    demoCapabilities: ['🔧 Dispatch field crews', '📋 Track work orders', '📊 Review asset inspections', '⚡ Manage outage response'],
+    quickPrompts: [
+      { label: '🔧 Dispatch a crew', prompt: 'We have a transformer failure on Oak Street. Dispatch the nearest available crew immediately.' },
+      { label: '📋 Work order status', prompt: 'What is the status of work order WO-29481? When will the technician arrive?' },
+      { label: '📊 Asset inspection', prompt: 'Show me the inspection results for substation Delta-7. Were any issues flagged?' },
+      { label: '📅 Schedule maintenance', prompt: 'Schedule preventive maintenance for all transformers in the northwest grid sector.' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'We have a power outage on Oak Street. What crews are available?' },
+      { role: 'bot', text: 'I\'m dispatching a crew now. Here\'s the response status:', card: { title: 'Outage Response', status: 'Crew Dispatched', details: ['📍 Location: Oak Street, Sector NW-12', '👷 Crew #7 dispatched — ETA 22 mins', '⚡ Estimated customers affected: 340', '🔧 Suspected cause: Transformer failure'] } },
+    ]
+  },
+  'eu-customer-service': {
+    label: 'Customer Service Agent',
+    subtitle: 'Account Lookup | Billing | Outage Status | Rate Plans',
+    emoji: '📞',
+    gradient: 'from-blue-600 to-blue-900',
+    scenarios: [
+      { icon: '💡', title: 'High Bill Inquiry', desc: 'Customer questions an unusually high energy bill', prompt: 'My electric bill this month is double what it normally is. Can you explain why?' },
+      { icon: '⚡', title: 'Outage Report', desc: 'Customer reports a power outage and wants restoration time', prompt: 'My power just went out. When will it be restored?' },
+      { icon: '🏠', title: 'New Service Setup', desc: 'Customer moving to a new address needs service transferred', prompt: 'I\'m moving to a new home next month. How do I transfer my utility service?' }
+    ],
+    capabilities: [
+      'Account lookup and billing inquiry resolution',
+      'Real-time outage status and restoration updates',
+      'Rate plan comparison and recommendations',
+      'Service start/stop and address changes',
+      'Payment plan setup and assistance'
+    ],
+    impact: [
+      { value: '50%', label: 'Reduction in call volume', color: 'blue' },
+      { value: '4x', label: 'Faster issue resolution', color: 'green' },
+      { value: '24/7', label: 'Always-on availability', color: 'purple' },
+      { value: '92%', label: 'Customer satisfaction', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 📞 I'm your ${name} Customer Service Assistant. I can help you with:`,
+    demoCapabilities: ['💡 Billing inquiries', '⚡ Outage status updates', '📊 Rate plan options', '🏠 Start or stop service'],
+    quickPrompts: [
+      { label: '💡 Billing inquiry', prompt: 'My electric bill this month is much higher than usual. Can you help me understand why?' },
+      { label: '⚡ Report outage', prompt: 'My power just went out. Is there a known outage in my area? When will it be restored?' },
+      { label: '📊 Rate plan options', prompt: 'What rate plans do you offer? I want to find the most cost-effective option for my usage.' },
+      { label: '🏠 Start/stop service', prompt: 'I\'m moving to a new address next month. How do I transfer my utility service?' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'My electric bill this month is double what it normally is. Why?' },
+      { role: 'bot', text: 'I\'ve pulled up your account. Here\'s what I found:', card: { title: 'Billing Analysis', status: 'Usage Spike Detected', details: ['📊 This month: $247.80 (vs avg $124.50)', '🌡️ Usage up 98% — likely due to heat wave', '💡 AC ran 14 hrs/day avg (vs normal 6 hrs)', '🔋 Tip: Time-of-use plan could save you ~$40/mo'] } },
+    ]
+  },
+  'eu-regulatory': {
+    label: 'Regulatory Compliance Agent',
+    subtitle: 'Inspections | Permits | Compliance Dashboard',
+    emoji: '📋',
+    gradient: 'from-slate-600 to-slate-900',
+    scenarios: [
+      { icon: '📋', title: 'Compliance Check', desc: 'Review compliance status across all regulatory requirements', prompt: 'Show me our compliance status for all EPA and state regulations this quarter.' },
+      { icon: '⚠️', title: 'Incident Reporting', desc: 'File a regulatory incident report for a safety violation', prompt: 'I need to file an incident report for a gas leak detected at site EU-4521.' },
+      { icon: '🔍', title: 'Audit Preparation', desc: 'Prepare for an upcoming regulatory audit', prompt: 'We have a regulatory audit next month. Help me prepare the documentation.' }
+    ],
+    capabilities: [
+      'Real-time compliance monitoring across jurisdictions',
+      'Automated incident reporting and documentation',
+      'Audit preparation and evidence gathering',
+      'Permit tracking and renewal management',
+      'Emissions monitoring and regulatory filing'
+    ],
+    impact: [
+      { value: '70%', label: 'Faster compliance reporting', color: 'blue' },
+      { value: '0', label: 'Regulatory penalties', color: 'green' },
+      { value: '50%', label: 'Less audit prep time', color: 'purple' },
+      { value: '99%', label: 'Compliance rate', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 📋 I'm your ${name} Compliance Assistant. I can help you with:`,
+    demoCapabilities: ['📋 Compliance status checks', '⚠️ Incident reporting', '🔍 Audit preparation', '📊 Emissions monitoring'],
+    quickPrompts: [
+      { label: '📋 Compliance status', prompt: 'Show me our compliance status for all EPA and state regulations this quarter.' },
+      { label: '⚠️ File incident report', prompt: 'I need to file a regulatory incident report for a gas leak detected at site EU-4521.' },
+      { label: '🔍 Audit preparation', prompt: 'We have a regulatory audit coming up next month. Help me prepare all required documentation.' },
+      { label: '📊 Emissions report', prompt: 'Generate our quarterly emissions report for the state environmental agency.' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'What is our current compliance status for this quarter?' },
+      { role: 'bot', text: 'Here\'s your compliance dashboard:', card: { title: 'Q3 Compliance Status', status: '98% Compliant', details: ['✅ EPA Air Quality: Compliant', '✅ State Water Discharge: Compliant', '⚠️ Safety Inspection: 2 items pending (due Aug 15)', '✅ Emissions Reporting: Filed on time'] } },
+    ]
+  },
+  'eu-sales': {
+    label: 'Sales Agent',
+    subtitle: 'Accounts | Contracts | Rate Optimization | Renewals',
+    emoji: '💼',
+    gradient: 'from-emerald-600 to-emerald-900',
+    scenarios: [
+      { icon: '💼', title: 'Account Review', desc: 'Review commercial accounts with contract and consumption data', prompt: 'Give me an overview of our top 10 commercial accounts and their contract status.' },
+      { icon: '📊', title: 'Rate Optimization', desc: 'Identify clients who could save money with different rate plans', prompt: 'Which commercial clients would benefit from switching to time-of-use rates?' },
+      { icon: '🌱', title: 'Green Energy Proposal', desc: 'Prepare a renewable energy proposal for a large client', prompt: 'Prepare a solar PPA proposal for Greenfield Manufacturing. They use 500MWh/year.' }
+    ],
+    capabilities: [
+      'Commercial account portfolio management',
+      'Contract renewal tracking and optimization',
+      'Rate plan analysis and recommendations',
+      'Renewable energy proposal generation',
+      'Pipeline management and forecasting'
+    ],
+    impact: [
+      { value: '30%', label: 'Faster proposal generation', color: 'blue' },
+      { value: '25%', label: 'Increase in renewals', color: 'green' },
+      { value: '2x', label: 'More accounts managed', color: 'purple' },
+      { value: '15%', label: 'Revenue growth', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Good morning! 💼 I'm your ${name} Sales Assistant. I can help you with:`,
+    demoCapabilities: ['💼 Account reviews', '📊 Rate optimization', '🌱 Green energy proposals', '📅 Contract renewals'],
+    quickPrompts: [
+      { label: '💼 Account overview', prompt: 'Give me an overview of our top 10 commercial accounts and their contract renewal dates.' },
+      { label: '📊 Rate optimization', prompt: 'Which of my commercial clients could save money by switching to time-of-use rates?' },
+      { label: '🌱 Green energy proposal', prompt: 'Prepare a renewable energy proposal for a large manufacturing client using 500MWh/year.' },
+      { label: '📅 Pipeline review', prompt: 'Show me the sales pipeline for new commercial service connections this quarter.' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'Show me my top commercial accounts.' },
+      { role: 'bot', text: 'Here are your top accounts:', card: { title: 'Top Accounts', status: 'Portfolio Review', details: ['🏢 Greenfield Mfg — 500MWh/yr — Contract renews Aug 2026', '🏢 Metro Hospital — 320MWh/yr — ✅ Renewed through 2028', '🏢 TechPark Corp — 280MWh/yr — ⚠️ Renewal pending', '💰 Total portfolio value: $4.2M ARR'] } },
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // MANUFACTURING ARCHETYPES
+  // ═══════════════════════════════════════════════
+  'mfg-equipment-service': {
+    label: 'Equipment Service Agent',
+    subtitle: 'Diagnostics | Maintenance | Warranties | Parts',
+    emoji: '🔧',
+    gradient: 'from-orange-600 to-orange-900',
+    scenarios: [
+      { icon: '🔧', title: 'Equipment Diagnostics', desc: 'Troubleshoot an equipment error code and recommend resolution', prompt: 'My CNC machine is showing error code E-4012. What does it mean and how do I fix it?' },
+      { icon: '📅', title: 'Preventive Maintenance', desc: 'Check and schedule preventive maintenance for equipment fleet', prompt: 'Show me the preventive maintenance schedule for our hydraulic press fleet.' },
+      { icon: '📦', title: 'Parts Order', desc: 'Order replacement parts for equipment under warranty', prompt: 'I need to order replacement bearings for our conveyor system. What\'s in stock?' }
+    ],
+    capabilities: [
+      'Real-time equipment diagnostics and error resolution',
+      'Preventive maintenance scheduling and tracking',
+      'Warranty verification and claims processing',
+      'Spare parts inventory and ordering',
+      'Service history lookup and trend analysis'
+    ],
+    impact: [
+      { value: '45%', label: 'Less unplanned downtime', color: 'blue' },
+      { value: '30%', label: 'Faster diagnostics', color: 'green' },
+      { value: '2x', label: 'Equipment uptime', color: 'purple' },
+      { value: '25%', label: 'Maintenance cost savings', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 🔧 I'm your ${name} Equipment Service Assistant. I can help you with:`,
+    demoCapabilities: ['🔧 Equipment diagnostics', '📅 Maintenance schedules', '📦 Parts ordering', '📋 Warranty checks'],
+    quickPrompts: [
+      { label: '🔧 Diagnose equipment', prompt: 'My CNC machine is showing error code E-4012. What does it mean and how do I fix it?' },
+      { label: '📅 Maintenance schedule', prompt: 'Show me the preventive maintenance schedule for our hydraulic press fleet.' },
+      { label: '📦 Order parts', prompt: 'I need to order replacement bearings for our conveyor system. What\'s in stock?' },
+      { label: '📋 Warranty check', prompt: 'Is my milling machine still under warranty? It needs service.' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'CNC machine on Line 4 is showing error code E-4012. Help?' },
+      { role: 'bot', text: 'I\'ve identified the issue. Here\'s the diagnostic:', card: { title: 'Diagnostic Report', status: 'Error E-4012', details: ['⚠️ Error: Spindle motor overheating', '🔧 Cause: Coolant flow sensor blockage', '📋 Fix: Clean coolant filter, reset sensor', '📅 Last maintenance: 42 days ago (overdue by 12 days)'] } },
+    ]
+  },
+  'mfg-quality-control': {
+    label: 'Quality Control Agent',
+    subtitle: 'Inspections | Defect Rates | Compliance | Batch Tracking',
+    emoji: '🔍',
+    gradient: 'from-red-600 to-red-900',
+    scenarios: [
+      { icon: '📊', title: 'Quality Dashboard', desc: 'Review defect rates and quality metrics across production lines', prompt: 'Show me the defect rates and quality metrics for production Line A this month.' },
+      { icon: '🔍', title: 'Batch Inspection', desc: 'Review inspection results for a specific production batch', prompt: 'What were the results of the latest batch inspection for lot #MFG-2847?' },
+      { icon: '⚠️', title: 'Non-Conformance', desc: 'Report and track a quality non-conformance issue', prompt: 'I need to file a non-conformance report for out-of-spec components from Line B.' }
+    ],
+    capabilities: [
+      'Real-time quality metrics and defect tracking',
+      'Batch inspection management and reporting',
+      'Non-conformance report filing and resolution',
+      'ISO 9001 compliance monitoring',
+      'Statistical process control (SPC) analysis'
+    ],
+    impact: [
+      { value: '35%', label: 'Reduction in defect rate', color: 'blue' },
+      { value: '50%', label: 'Faster NCR resolution', color: 'green' },
+      { value: '99.2%', label: 'Quality pass rate', color: 'purple' },
+      { value: '40%', label: 'Less scrap & rework', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 🔍 I'm your ${name} Quality Control Assistant. I can help you with:`,
+    demoCapabilities: ['📊 Quality metrics', '🔍 Batch inspections', '⚠️ NCR filing', '📋 Compliance checks'],
+    quickPrompts: [
+      { label: '📊 Quality metrics', prompt: 'Show me the defect rates and quality metrics for production Line A this month.' },
+      { label: '🔍 Batch inspection', prompt: 'What were the results of the latest batch inspection for lot #MFG-2847?' },
+      { label: '⚠️ File NCR', prompt: 'I need to file a non-conformance report for out-of-spec components from Line B.' },
+      { label: '📋 ISO compliance', prompt: 'Are we current on all ISO 9001 compliance requirements for this quarter?' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'What are the defect rates for Line A this month?' },
+      { role: 'bot', text: 'Here\'s your quality dashboard for Line A:', card: { title: 'Quality Report — Line A', status: '99.2% Pass Rate', details: ['📊 Total units inspected: 12,480', '✅ Pass rate: 99.2% (target: 99.0%)', '⚠️ Defects found: 100 (80 cosmetic, 20 functional)', '📈 Trend: Improving — down from 1.2% last month'] } },
+    ]
+  },
+  'mfg-production-ops': {
+    label: 'Production Operations Agent',
+    subtitle: 'Scheduling | Line Status | Capacity | Shifts',
+    emoji: '🏭',
+    gradient: 'from-indigo-600 to-indigo-900',
+    scenarios: [
+      { icon: '📅', title: 'Production Schedule', desc: 'Review and adjust production schedules across all lines', prompt: 'Show me the production schedule and capacity utilization for this week.' },
+      { icon: '⚡', title: 'Line Status', desc: 'Check real-time status of all production lines', prompt: 'What is the current status of all production lines? Any downtime?' },
+      { icon: '👷', title: 'Shift Planning', desc: 'Review and manage shift assignments and staffing', prompt: 'What is the staffing plan for the night shift this week?' }
+    ],
+    capabilities: [
+      'Real-time production line monitoring and status',
+      'Production scheduling and capacity planning',
+      'Shift management and crew assignment',
+      'Material availability and requirements planning',
+      'OEE (Overall Equipment Effectiveness) tracking'
+    ],
+    impact: [
+      { value: '20%', label: 'Increase in OEE', color: 'blue' },
+      { value: '35%', label: 'Less unplanned downtime', color: 'green' },
+      { value: '15%', label: 'Production throughput gain', color: 'purple' },
+      { value: '90%', label: 'Schedule adherence', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 🏭 I'm your ${name} Production Ops Assistant. I can help you with:`,
+    demoCapabilities: ['📅 Production schedules', '⚡ Line status monitoring', '👷 Shift planning', '📊 OEE tracking'],
+    quickPrompts: [
+      { label: '📅 Production schedule', prompt: 'Show me the production schedule and capacity utilization for this week.' },
+      { label: '⚡ Line status', prompt: 'What is the current status of all production lines? Any downtime or delays?' },
+      { label: '👷 Shift planning', prompt: 'What is the staffing plan for the night shift this week? Any gaps?' },
+      { label: '📊 OEE report', prompt: 'Show me the OEE metrics for all production lines this month.' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'What is the current status of all production lines?' },
+      { role: 'bot', text: 'Here\'s the real-time production status:', card: { title: 'Production Dashboard', status: '4 of 5 Lines Running', details: ['✅ Line A: Running — 92% capacity, on schedule', '✅ Line B: Running — 87% capacity, on schedule', '✅ Line C: Running — 95% capacity, ahead of schedule', '⚠️ Line D: Down — Motor replacement in progress (ETA 2hrs)', '✅ Line E: Running — 78% capacity, material replenishment at 3pm'] } },
+    ]
+  },
+  'mfg-supply-chain': {
+    label: 'Supply Chain Agent',
+    subtitle: 'Inventory | Shipments | Suppliers | Purchase Orders',
+    emoji: '🚚',
+    gradient: 'from-teal-600 to-teal-900',
+    scenarios: [
+      { icon: '🚚', title: 'Shipment Tracking', desc: 'Track inbound shipments from suppliers', prompt: 'Where is the inbound shipment of steel components from our supplier?' },
+      { icon: '📊', title: 'Inventory Levels', desc: 'Check inventory across all warehouses', prompt: 'Show me current inventory levels across all warehouses. Any critical shortages?' },
+      { icon: '⚠️', title: 'Supply Disruption', desc: 'Manage supply chain disruptions and find alternatives', prompt: 'We have a potential supply disruption from a key vendor. What are our alternatives?' }
+    ],
+    capabilities: [
+      'Real-time shipment tracking and visibility',
+      'Multi-warehouse inventory management',
+      'Supplier performance monitoring',
+      'Purchase order management and approval',
+      'Supply disruption risk assessment and mitigation'
+    ],
+    impact: [
+      { value: '30%', label: 'Inventory cost reduction', color: 'blue' },
+      { value: '45%', label: 'Faster procurement', color: 'green' },
+      { value: '99%', label: 'On-time delivery rate', color: 'purple' },
+      { value: '25%', label: 'Supply risk reduction', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 🚚 I'm your ${name} Supply Chain Assistant. I can help you with:`,
+    demoCapabilities: ['🚚 Track shipments', '📊 Check inventory', '📋 Manage POs', '⚠️ Supply risk alerts'],
+    quickPrompts: [
+      { label: '🚚 Track shipment', prompt: 'Where is the inbound shipment of steel components from our supplier?' },
+      { label: '📊 Inventory levels', prompt: 'Show me current inventory levels across all warehouses. Any critical shortages?' },
+      { label: '⚠️ Supply disruption', prompt: 'We have a potential supply disruption from a key vendor. What are our alternatives?' },
+      { label: '📋 Purchase orders', prompt: 'What purchase orders are pending approval this week?' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'Where is the steel shipment from AcmeSteel Corp?' },
+      { role: 'bot', text: 'I\'ve tracked your shipment:', card: { title: 'Shipment Tracking', status: 'In Transit', details: ['🚚 Carrier: FastFreight Logistics', '📍 Current location: Indianapolis hub', '📅 ETA: July 28, 2026 (on time)', '📦 Contents: 2,400 lbs cold-rolled steel sheets'] } },
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // AUTOMOTIVE ARCHETYPES
+  // ═══════════════════════════════════════════════
+  'auto-vehicle-sales': {
+    label: 'Vehicle Sales Agent',
+    subtitle: 'Inventory | Financing | Test Drives | Trade-Ins',
+    emoji: '🚗',
+    gradient: 'from-blue-700 to-blue-950',
+    scenarios: [
+      { icon: '🚗', title: 'Vehicle Search', desc: 'Help a customer find the right vehicle based on preferences', prompt: 'I\'m looking for a mid-size SUV with AWD under $45,000. What do you have?' },
+      { icon: '💰', title: 'Financing Options', desc: 'Present financing and lease options for a vehicle', prompt: 'What financing and lease options are available for the new SUV?' },
+      { icon: '📅', title: 'Test Drive', desc: 'Schedule a test drive for a specific vehicle', prompt: 'I\'d like to schedule a test drive for the new electric SUV this Saturday.' }
+    ],
+    capabilities: [
+      'Inventory search by make, model, features, and price',
+      'Financing and lease calculator with real-time rates',
+      'Test drive scheduling and appointment management',
+      'Trade-in value estimation',
+      'Vehicle comparison and recommendations'
+    ],
+    impact: [
+      { value: '35%', label: 'More test drives booked', color: 'blue' },
+      { value: '20%', label: 'Higher close rate', color: 'green' },
+      { value: '24/7', label: 'Always-on lead capture', color: 'purple' },
+      { value: '40%', label: 'Faster deal cycles', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Welcome! 🚗 I'm your ${name} Sales Assistant. I can help you find the perfect vehicle:`,
+    demoCapabilities: ['🚗 Search inventory', '💰 Financing options', '📅 Book a test drive', '🔄 Trade-in value'],
+    quickPrompts: [
+      { label: '🚗 Search vehicles', prompt: 'I\'m looking for a mid-size SUV with AWD under $45,000. What do you have in stock?' },
+      { label: '💰 Financing options', prompt: 'What financing and lease options are available for a new vehicle purchase?' },
+      { label: '📅 Book test drive', prompt: 'I\'d like to schedule a test drive for this weekend. What\'s available?' },
+      { label: '🔄 Trade-in value', prompt: 'What is the estimated trade-in value for my 2022 sedan with 35,000 miles?' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'I\'m looking for an SUV with AWD under $45K. What do you have?' },
+      { role: 'bot', text: 'Great choice! Here are some options:', card: { title: 'Available SUVs', status: '3 Matches Found', details: ['🚗 Explorer XLT AWD — $42,900 — White, 12 mi | In stock', '🚗 Tucson SEL AWD — $38,500 — Blue, 8 mi | In stock', '🚗 RAV4 XLE AWD — $39,200 — Silver, 15 mi | In stock', '📅 Test drive available this Saturday'] } },
+    ]
+  },
+  'auto-service-advisor': {
+    label: 'Service Advisor Agent',
+    subtitle: 'Appointments | Estimates | Recalls | Service History',
+    emoji: '🔧',
+    gradient: 'from-gray-700 to-gray-900',
+    scenarios: [
+      { icon: '📅', title: 'Service Booking', desc: 'Schedule a service appointment for maintenance or repairs', prompt: 'I need to book a service appointment for a 60,000-mile maintenance.' },
+      { icon: '⚠️', title: 'Recall Check', desc: 'Check if a vehicle has any open recalls', prompt: 'Are there any open recalls on my 2023 sedan? I got a notice in the mail.' },
+      { icon: '💰', title: 'Service Estimate', desc: 'Get cost estimates for repairs and maintenance', prompt: 'How much would a brake pad replacement and rotor resurfacing cost?' }
+    ],
+    capabilities: [
+      'Service appointment scheduling and management',
+      'Recall verification and scheduling',
+      'Service cost estimation and quoting',
+      'Vehicle service history lookup',
+      'Loaner vehicle and shuttle arrangement'
+    ],
+    impact: [
+      { value: '50%', label: 'More appointments booked', color: 'blue' },
+      { value: '30%', label: 'Higher service retention', color: 'green' },
+      { value: '3x', label: 'Faster check-in process', color: 'purple' },
+      { value: '25%', label: 'Service revenue increase', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 🔧 I'm your ${name} Service Advisor. I can help you with:`,
+    demoCapabilities: ['📅 Book service appointment', '⚠️ Check recalls', '💰 Service estimates', '📋 Service history'],
+    quickPrompts: [
+      { label: '📅 Book appointment', prompt: 'I need to book a service appointment for a 60,000-mile maintenance on my SUV.' },
+      { label: '⚠️ Recall check', prompt: 'Are there any open recalls on my vehicle that need to be addressed?' },
+      { label: '💰 Service estimate', prompt: 'How much would a brake pad replacement and rotor resurfacing cost for my sedan?' },
+      { label: '📋 Service history', prompt: 'Can you show me the complete service history for my vehicle?' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'I need to schedule a 60,000-mile service. What does it include?' },
+      { role: 'bot', text: 'Here\'s the 60K service package:', card: { title: '60,000-Mile Service', status: 'Quote Ready', details: ['🔧 Multi-point inspection', '🛢️ Oil & filter change + tire rotation', '🔋 Battery & fluid check', '💰 Estimated cost: $489 — $529', '📅 Next available: Saturday 8:00 AM'] } },
+    ]
+  },
+  'auto-dealership-ops': {
+    label: 'Dealership Ops Agent',
+    subtitle: 'Lot Inventory | Service Bays | Staff | Parts',
+    emoji: '🏢',
+    gradient: 'from-violet-600 to-violet-900',
+    scenarios: [
+      { icon: '📊', title: 'Lot Inventory', desc: 'Review vehicle inventory levels and aging by model', prompt: 'Show me current lot inventory levels by model and trim. Any aging units?' },
+      { icon: '🔧', title: 'Service Bay Status', desc: 'Check real-time status of all service bays', prompt: 'What is the status of all service bays today? Any delays or overruns?' },
+      { icon: '👥', title: 'Staff Schedule', desc: 'Review sales and service team schedules', prompt: 'Show me the sales team schedule and coverage for this week.' }
+    ],
+    capabilities: [
+      'Vehicle lot inventory management and aging reports',
+      'Service bay utilization and capacity tracking',
+      'Staff scheduling and performance monitoring',
+      'Parts inventory and reorder management',
+      'Daily operations dashboard and KPIs'
+    ],
+    impact: [
+      { value: '20%', label: 'Better inventory turns', color: 'blue' },
+      { value: '30%', label: 'Service bay utilization', color: 'green' },
+      { value: '15%', label: 'Staff productivity gain', color: 'purple' },
+      { value: '2x', label: 'Faster operations insight', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 🏢 I'm your ${name} Dealership Ops Assistant. I can help you with:`,
+    demoCapabilities: ['📊 Lot inventory', '🔧 Service bay status', '👥 Staff schedules', '📦 Parts orders'],
+    quickPrompts: [
+      { label: '📊 Lot inventory', prompt: 'Show me current lot inventory levels by model and trim. Any aging units over 60 days?' },
+      { label: '🔧 Service bay status', prompt: 'What is the status of all service bays today? Any delays or overruns?' },
+      { label: '👥 Staff schedule', prompt: 'Show me the sales team schedule and floor coverage for this week.' },
+      { label: '📦 Parts order status', prompt: 'What is the status of our pending parts orders from the manufacturer?' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'Show me the lot inventory status by model.' },
+      { role: 'bot', text: 'Here\'s your inventory dashboard:', card: { title: 'Lot Inventory', status: '142 Units on Lot', details: ['🚗 Sedans: 38 units (12 aging >60 days)', '🚙 SUVs: 52 units (high demand — 5 aging)', '🛻 Trucks: 35 units (8 aging >60 days)', '⚡ EVs: 17 units (selling fast — reorder recommended)', '📉 Avg days on lot: 34 (target: <45)'] } },
+    ]
+  },
+  'auto-customer-retention': {
+    label: 'Customer Retention Agent',
+    subtitle: 'Loyalty | Trade-In | Renewals | Owner Benefits',
+    emoji: '🤝',
+    gradient: 'from-amber-600 to-amber-900',
+    scenarios: [
+      { icon: '🔄', title: 'Trade-In & Upgrade', desc: 'Help an owner explore trade-in options and new models', prompt: 'What is the trade-in value for my 2021 sedan? I\'m interested in upgrading to an SUV.' },
+      { icon: '💰', title: 'Lease Renewal', desc: 'Present lease renewal or buyout options', prompt: 'My lease is ending in 2 months. What are my renewal or buyout options?' },
+      { icon: '⭐', title: 'Owner Benefits', desc: 'Review available owner loyalty benefits and perks', prompt: 'What exclusive benefits and perks are available to me as a loyal owner?' }
+    ],
+    capabilities: [
+      'Trade-in value estimation and upgrade paths',
+      'Lease renewal and buyout option management',
+      'Owner loyalty program and benefits tracking',
+      'Personalized retention offers and incentives',
+      'VIP event invitations and exclusive access'
+    ],
+    impact: [
+      { value: '30%', label: 'Higher retention rate', color: 'blue' },
+      { value: '25%', label: 'More trade-in upgrades', color: 'green' },
+      { value: '40%', label: 'Lease renewal rate', color: 'purple' },
+      { value: '3x', label: 'Customer lifetime value', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Welcome back! 🤝 I'm your ${name} Owner Experience Assistant. I can help you with:`,
+    demoCapabilities: ['🔄 Trade-in & upgrade', '💰 Lease renewal options', '⭐ Owner benefits', '🎯 Exclusive offers'],
+    quickPrompts: [
+      { label: '🔄 Trade-in value', prompt: 'What is the estimated trade-in value for my 2021 sedan with 45,000 miles?' },
+      { label: '💰 Lease renewal', prompt: 'My lease is ending in 2 months. What are my renewal or buyout options?' },
+      { label: '⭐ Owner benefits', prompt: 'What exclusive perks and events are available to me as a current owner?' },
+      { label: '🎯 Special offers', prompt: 'Are there any special upgrade or loyalty offers available for returning customers?' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'My lease ends in 2 months. What are my options?' },
+      { role: 'bot', text: 'Here are your lease-end options:', card: { title: 'Lease-End Options', status: 'Lease Expires Sep 2026', details: ['🔄 Lease new model: $399/mo — 0 down with loyalty credit', '💰 Buy out current vehicle: $22,400 (below market value)', '🚗 Upgrade to new SUV: $449/mo — includes loyalty discount', '🎁 Loyalty bonus: $1,500 toward any new lease or purchase'] } },
+    ]
+  },
+
+  // ═══════════════════════════════════════════════
+  // CONSUMER GOODS ARCHETYPES
+  // ═══════════════════════════════════════════════
+  'cg-retail-execution': {
+    label: 'Retail Execution Agent',
+    subtitle: 'Shelf Compliance | Store Visits | Merchandising | Audit',
+    emoji: '📊',
+    gradient: 'from-green-600 to-green-900',
+    scenarios: [
+      { icon: '📊', title: 'Shelf Compliance', desc: 'Check planogram compliance scores across retail accounts', prompt: 'Show me the planogram compliance scores across our top retail accounts.' },
+      { icon: '📍', title: 'Store Visit Planning', desc: 'Plan and prioritize store visits for the week', prompt: 'What stores should my team visit this week based on compliance priority?' },
+      { icon: '📦', title: 'Stock Audit', desc: 'Run a stock availability audit at key retailers', prompt: 'Run a stock availability audit for our key products at the top 10 retailers.' }
+    ],
+    capabilities: [
+      'Planogram compliance monitoring and scoring',
+      'Store visit planning and route optimization',
+      'In-store stock availability tracking',
+      'Competitive shelf share analysis',
+      'Photo verification and merchandising compliance'
+    ],
+    impact: [
+      { value: '25%', label: 'Better shelf compliance', color: 'blue' },
+      { value: '30%', label: 'More efficient store visits', color: 'green' },
+      { value: '15%', label: 'Shelf share increase', color: 'purple' },
+      { value: '20%', label: 'Revenue from in-store', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 📊 I'm your ${name} Retail Execution Assistant. I can help you with:`,
+    demoCapabilities: ['📊 Shelf compliance', '📍 Store visit plans', '📦 Stock audits', '🏪 Merchandising reports'],
+    quickPrompts: [
+      { label: '📊 Shelf compliance', prompt: 'Show me the planogram compliance scores across our top retail accounts.' },
+      { label: '📍 Store visit plan', prompt: 'What stores should my team visit this week based on priority and compliance?' },
+      { label: '📦 Stock audit', prompt: 'Run a stock availability audit for our key products at major retailers.' },
+      { label: '🏪 Merchandising report', prompt: 'Generate a merchandising report for the latest product launch at our top accounts.' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'Show me shelf compliance across our top accounts.' },
+      { role: 'bot', text: 'Here\'s your compliance dashboard:', card: { title: 'Shelf Compliance', status: '78% Average Compliance', details: ['✅ Walmart: 92% — fully compliant', '✅ Target: 88% — minor display issues', '⚠️ Kroger: 71% — missing end-cap display', '❌ Costco: 62% — wrong SKU placement', '📅 3 store visits recommended this week'] } },
+    ]
+  },
+  'cg-trade-promotion': {
+    label: 'Trade Promotion Agent',
+    subtitle: 'Promotions | ROI Analysis | Campaign Performance',
+    emoji: '💰',
+    gradient: 'from-purple-600 to-purple-900',
+    scenarios: [
+      { icon: '💰', title: 'Promotion ROI', desc: 'Analyze return on investment for current trade promotions', prompt: 'What is the ROI on our current trade promotions by retail partner?' },
+      { icon: '📊', title: 'Campaign Performance', desc: 'Review promotion campaign results and effectiveness', prompt: 'Show me the performance metrics for our Q2 promotional campaigns.' },
+      { icon: '📋', title: 'Plan New Promotion', desc: 'Design and plan a new trade promotion', prompt: 'Help me plan a buy-one-get-one promotion for our beverage line.' }
+    ],
+    capabilities: [
+      'Trade promotion ROI analysis and optimization',
+      'Campaign performance tracking and reporting',
+      'Promotion planning and budget management',
+      'Competitive promotion monitoring',
+      'Retailer fund management and deduction tracking'
+    ],
+    impact: [
+      { value: '20%', label: 'Better promotion ROI', color: 'blue' },
+      { value: '30%', label: 'Faster campaign analysis', color: 'green' },
+      { value: '15%', label: 'Revenue from promotions', color: 'purple' },
+      { value: '25%', label: 'Trade spend efficiency', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 💰 I'm your ${name} Trade Promotion Assistant. I can help you with:`,
+    demoCapabilities: ['💰 Promotion ROI', '📊 Campaign performance', '📋 Plan promotions', '🔍 Competitive analysis'],
+    quickPrompts: [
+      { label: '💰 Promotion ROI', prompt: 'What is the ROI on our current trade promotions by retail partner?' },
+      { label: '📊 Campaign performance', prompt: 'Show me the performance metrics for our Q2 promotional campaigns.' },
+      { label: '📋 Plan a promotion', prompt: 'Help me plan a buy-one-get-one promotion for our beverage line at major retailers.' },
+      { label: '🔍 Competitive analysis', prompt: 'What trade promotions are our competitors running at major retailers right now?' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'What is the ROI on our trade promotions this quarter?' },
+      { role: 'bot', text: 'Here\'s your promotion ROI summary:', card: { title: 'Trade Promotion ROI', status: 'Q3 Performance', details: ['💰 Total trade spend: $1.2M', '📈 Incremental revenue: $3.8M (3.2x ROI)', '✅ Best performer: BOGO Beverages — 5.1x ROI', '⚠️ Underperforming: Snack display — 1.4x ROI', '🎯 Recommendation: Reallocate $80K from snack to beverage'] } },
+    ]
+  },
+  'cg-distributor-service': {
+    label: 'Distributor Service Agent',
+    subtitle: 'Orders | Claims | Scorecards | Restocking',
+    emoji: '🏪',
+    gradient: 'from-teal-600 to-teal-900',
+    scenarios: [
+      { icon: '📦', title: 'Order Status', desc: 'Track distributor order status and delivery', prompt: 'What is the status of the latest bulk order from our distributor?' },
+      { icon: '📋', title: 'Claims Processing', desc: 'Process damage claims for shipped products', prompt: 'I need to process a damage claim for a shipment that arrived damaged.' },
+      { icon: '📊', title: 'Distributor Scorecard', desc: 'Review distributor performance metrics', prompt: 'Show me the performance scorecard for our top 5 distributors.' }
+    ],
+    capabilities: [
+      'Distributor order tracking and fulfillment',
+      'Damage and shortage claims processing',
+      'Distributor performance scoring and ranking',
+      'Emergency restock and priority ordering',
+      'Distributor onboarding and compliance'
+    ],
+    impact: [
+      { value: '40%', label: 'Faster order processing', color: 'blue' },
+      { value: '60%', label: 'Faster claims resolution', color: 'green' },
+      { value: '98%', label: 'Fill rate achieved', color: 'purple' },
+      { value: '30%', label: 'Better distributor scores', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 🏪 I'm your ${name} Distributor Service Assistant. I can help you with:`,
+    demoCapabilities: ['📦 Order tracking', '📋 Claims processing', '📊 Distributor scorecards', '🔄 Emergency restocking'],
+    quickPrompts: [
+      { label: '📦 Order status', prompt: 'What is the status of the latest bulk order from our distributor?' },
+      { label: '📋 Process claim', prompt: 'I need to process a damage claim for a shipment that arrived with damaged cases.' },
+      { label: '📊 Distributor scorecard', prompt: 'Show me the performance scorecard for our top 5 distributors.' },
+      { label: '🔄 Emergency restock', prompt: 'Our distributor is requesting an emergency restock of our top-selling SKU.' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'Show me our distributor scorecards.' },
+      { role: 'bot', text: 'Here are your top distributor performance scores:', card: { title: 'Distributor Scorecards', status: 'Q3 Performance', details: ['🥇 DistCo National: 96/100 — 99.5% on-time, 0.2% damage rate', '🥈 Regional Foods Inc: 91/100 — 97% on-time, 0.8% damage rate', '🥉 Metro Supply: 87/100 — 95% on-time, 1.2% damage rate', '⚠️ Pacific Dist: 72/100 — 88% on-time, 3.1% damage rate', '📉 Pacific Dist trending down — review meeting recommended'] } },
+    ]
+  },
+  'cg-demand-planning': {
+    label: 'Demand Planning Agent',
+    subtitle: 'Forecasting | Inventory | Seasonal Trends | Launches',
+    emoji: '📈',
+    gradient: 'from-indigo-600 to-indigo-900',
+    scenarios: [
+      { icon: '📊', title: 'Demand Forecast', desc: 'Review demand forecasts for products next quarter', prompt: 'Show me the demand forecast for our products for the next quarter.' },
+      { icon: '📦', title: 'Inventory Optimization', desc: 'Identify overstocked and at-risk SKUs', prompt: 'Which SKUs are overstocked and which are at risk of stockout?' },
+      { icon: '📈', title: 'Seasonal Planning', desc: 'Analyze seasonal demand trends', prompt: 'What seasonal trends should we account for in our upcoming production plan?' }
+    ],
+    capabilities: [
+      'AI-powered demand forecasting by SKU and region',
+      'Inventory optimization and safety stock calculations',
+      'Seasonal trend analysis and planning',
+      'New product launch demand estimation',
+      'Promotion impact forecasting'
+    ],
+    impact: [
+      { value: '25%', label: 'Forecast accuracy improvement', color: 'blue' },
+      { value: '30%', label: 'Reduction in stockouts', color: 'green' },
+      { value: '20%', label: 'Less excess inventory', color: 'purple' },
+      { value: '15%', label: 'Working capital savings', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hello! 📈 I'm your ${name} Demand Planning Assistant. I can help you with:`,
+    demoCapabilities: ['📊 Demand forecasts', '📦 Inventory optimization', '📈 Seasonal trends', '🚀 Launch planning'],
+    quickPrompts: [
+      { label: '📊 Demand forecast', prompt: 'Show me the demand forecast for our products for the next quarter by SKU and region.' },
+      { label: '📦 Inventory status', prompt: 'Which SKUs are overstocked and which are at risk of stockout in the next 30 days?' },
+      { label: '📈 Seasonal trends', prompt: 'What seasonal trends should we account for in our Q4 production plan?' },
+      { label: '🚀 Launch forecast', prompt: 'Help me estimate demand for the upcoming new product launch across all channels.' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'Which SKUs are at risk of stockout?' },
+      { role: 'bot', text: 'Here\'s your inventory risk assessment:', card: { title: 'Stockout Risk Assessment', status: '4 SKUs at Risk', details: ['🔴 Sparkling Water 12pk: 3 days of supply left — urgent reorder', '🔴 Protein Bar Variety: 5 days of supply — reorder triggered', '🟡 Organic Chips: 12 days — approaching safety stock', '🟡 Energy Drink 6pk: 14 days — seasonal spike expected', '✅ 47 other SKUs within normal range'] } },
+    ]
+  },
+  'cg-customer-service': {
+    label: 'Customer Service Agent',
+    subtitle: 'Orders | Returns | Product Info | Quality',
+    emoji: '🎧',
+    gradient: 'from-blue-600 to-blue-900',
+    scenarios: [
+      { icon: '📦', title: 'Order Tracking', desc: 'Customer checking on a product order', prompt: 'Where is my product order? I ordered it 5 days ago.' },
+      { icon: '↩️', title: 'Product Return', desc: 'Customer wants to return a product', prompt: 'I need to return a product I bought. It\'s not what I expected.' },
+      { icon: '🔍', title: 'Product Inquiry', desc: 'Customer has questions about product details', prompt: 'Can you tell me about the ingredients and allergens in this product?' }
+    ],
+    capabilities: [
+      'Order tracking and delivery status updates',
+      'Product return and exchange processing',
+      'Product information and allergen lookups',
+      'Quality concern reporting and case creation',
+      'Coupon and promotion code assistance'
+    ],
+    impact: [
+      { value: '45%', label: 'Reduction in case volume', color: 'blue' },
+      { value: '3x', label: 'Faster resolution time', color: 'green' },
+      { value: '24/7', label: 'Always-on support', color: 'purple' },
+      { value: '88%', label: 'Customer satisfaction', color: 'orange' }
+    ],
+    demoGreeting: (name) => `Hi there! 🎧 I'm your ${name} Customer Service Assistant. I can help you with:`,
+    demoCapabilities: ['📦 Order tracking', '↩️ Returns & exchanges', '🔍 Product information', '📋 Quality concerns'],
+    quickPrompts: [
+      { label: '📦 Track order', prompt: 'Where is my product order? I placed it 5 days ago and haven\'t received any updates.' },
+      { label: '↩️ Return product', prompt: 'I need to return a product I purchased recently. How do I start the process?' },
+      { label: '🔍 Product info', prompt: 'Can you tell me about the ingredients and allergens in this product?' },
+      { label: '📋 Quality concern', prompt: 'I found something wrong with a product I purchased and want to report a quality issue.' }
+    ],
+    demoConversation: (name) => [
+      { role: 'user', text: 'Where is my order? I placed it 5 days ago.' },
+      { role: 'bot', text: 'I found your order! Here\'s the latest:', card: { title: 'Order Status', status: 'Out for Delivery', details: ['📦 Order #CG-87412', '📍 Currently: Out for delivery with carrier', '📅 Expected delivery: Today by 6 PM', '🛒 Items: 3 items in this shipment'] } },
+    ]
   }
 };
 
@@ -1401,13 +2029,35 @@ const ORG_ID = '00Dbm00000jtzs9';
 
 // Map each archetype to its correct Embedded Service deployment
 const ARCHETYPE_ES_MAP = {
+  // Retail archetypes
   'product-advisor': 'Sales_Assistant_Teams_API',
   'order-returns':   'Sales_Assistant_Teams_API',
   'loyalty':         'Sales_Assistant_Teams_API',
   'store-locator':   'Sales_Assistant_Teams_API',
   'employee-ops':    'Sales_Assistant_Teams_API',
   'sales-agent':     'Sales_Assistant_Teams_API',
-  'voice-agent':     'Headless_Voice_Agent'
+  'voice-agent':     'Headless_Voice_Agent',
+  // Energy & Utilities archetypes
+  'eu-field-service':     'Sales_Assistant_Teams_API',
+  'eu-customer-service':  'Sales_Assistant_Teams_API',
+  'eu-regulatory':        'Sales_Assistant_Teams_API',
+  'eu-sales':             'Sales_Assistant_Teams_API',
+  // Manufacturing archetypes
+  'mfg-equipment-service': 'Sales_Assistant_Teams_API',
+  'mfg-quality-control':   'Sales_Assistant_Teams_API',
+  'mfg-production-ops':    'Sales_Assistant_Teams_API',
+  'mfg-supply-chain':      'Sales_Assistant_Teams_API',
+  // Automotive archetypes
+  'auto-vehicle-sales':      'Sales_Assistant_Teams_API',
+  'auto-service-advisor':    'Sales_Assistant_Teams_API',
+  'auto-dealership-ops':     'Sales_Assistant_Teams_API',
+  'auto-customer-retention': 'Sales_Assistant_Teams_API',
+  // Consumer Goods archetypes
+  'cg-retail-execution':    'Sales_Assistant_Teams_API',
+  'cg-trade-promotion':     'Sales_Assistant_Teams_API',
+  'cg-distributor-service':  'Sales_Assistant_Teams_API',
+  'cg-demand-planning':      'Sales_Assistant_Teams_API',
+  'cg-customer-service':     'Sales_Assistant_Teams_API'
 };
 const DEFAULT_ES_DEV_NAME = 'Sales_Assistant_Teams_API';
 
